@@ -1,0 +1,9 @@
+{
+  "settings": {
+    "user": "admin",
+    "host": "db",
+    "database": "area",
+    "password": "password",
+    "port": 5432
+  }
+}

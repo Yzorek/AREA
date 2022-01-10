@@ -1,0 +1,9 @@
+{
+  "settings": {
+    "service": "gmail",
+    "auth": {
+      "user": "yodash246@gmail.com",
+      "pass": "DashEpitechBoard21!"
+    }
+  }
+}
