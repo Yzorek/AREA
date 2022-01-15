@@ -1,14 +1,47 @@
-import React from 'react';
-import {Divider, Drawer, Grid, Toolbar, Typography} from "@mui/material";
-import {drawWith} from "./config";
+import React, {useState} from 'react';
+import {
+    Divider,
+    Drawer,
+    Grid,
+    Toolbar,
+    Typography,
+    List,
+    ListSubheader,
+    ListItemButton,
+    ListItemIcon, ListItemText, Box
+} from "@mui/material";
+import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE} from "./config";
+import {Dashboard, Person} from "@mui/icons-material";
+import {DEFAULT_PAGE} from "./config";
+import {useNavigate} from "react-router-dom";
+
+function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon, redirectTo}) {
+    let navigate = useNavigate();
+
+    return <ListItemButton onClick={() => {onSelectedChange(id); navigate(redirectTo);}} sx={{
+        [`&:hover`]: {bgcolor: 'rgba(255, 255, 255, 0.08)', borderRadius: '10px', marginLeft: '5px', marginRight: '5px'},
+    }}>
+        <ListItemIcon sx={{color: idSelected === id ? 'secondary.main' : 'rgb(209, 213, 219)'}}>
+            {icon}
+        </ListItemIcon>
+        <ListItemText primary={label} sx={{color: idSelected === id ? 'secondary.main' : 'rgb(209, 213, 219)'}}/>
+    </ListItemButton>
+}
 
 export default function DrawerArea() {
+    const [idSelected, setIdSelected] = useState(DEFAULT_PAGE)
+
+    const onSelectedChange = (id) => {
+        setIdSelected(id)
+    }
+
     return <Drawer
         variant="permanent"
+        open={true}
         sx={{
             width: drawWith,
             flexShrink: 0,
-            [`& .MuiDrawer-paper`]: { width: drawWith, boxSizing: 'border-box', bgcolor: 'rgb(11, 15, 25)' },
+            [`& .MuiDrawer-paper`]: {width: drawWith, boxSizing: 'border-box', bgcolor: 'primary.main'},
         }}
     >
         <Toolbar>
@@ -19,8 +52,17 @@ export default function DrawerArea() {
             </Grid>
         </Toolbar>
         <Divider color={'gray'}/>
-        <Toolbar>
-            List Item
-        </Toolbar>
+        <Box sx={{overflow: 'auto'}}>
+            <List
+                subheader={
+                    <ListSubheader sx={{bgcolor: 'rgb(11, 15, 25)', color: 'rgb(107, 114, 128)', fontWeight: 'bold'}}>
+                        General
+                    </ListSubheader>
+                }
+            >
+                <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard />} id={GENERAL_DASHBOARD} label={'Dashboard'} idSelected={idSelected} onSelectedChange={onSelectedChange}/>
+                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person />} id={GENERAL_PROFILE} label={'Profile'} idSelected={idSelected} onSelectedChange={onSelectedChange}/>
+            </List>
+        </Box>
     </Drawer>
 }

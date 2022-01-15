@@ -15,7 +15,16 @@ function App() {
     const [isConnected, setIsConnected] = useState(false);
     let navigate = useNavigate();
 
-    const theme = createTheme({});
+    const theme = createTheme({
+        palette: {
+            secondary: {
+                main: 'rgb(16, 185, 129)'
+            },
+            primary: {
+                main: 'rgb(11, 15, 25)'
+            },
+        }
+    });
 
     useEffect(() => {
         (async () => {
@@ -26,7 +35,6 @@ function App() {
                 setIsConnected(false);
             } else {
                 setIsConnected(true);
-                navigate('/App');
             }
         })()
     }, [navigate])
@@ -35,9 +43,17 @@ function App() {
         <ThemeProvider theme={theme}>
             <Routes>
                 <Route path="/" element={<Login/>}/>
-                <Route path="/Login" element={<Login/>}/>
-                <Route path="/Register" element={<Register/>}/>
-                <Route path="/App" element={!isConnected ? <Navigate to={"/Login"}/> : <Main/>}/>
+                <Route path="Login" element={<Login/>}/>
+                <Route path="Register" element={<Register/>}/>
+                <Route path="App/*" element={isConnected ? <Main/> : <Navigate to={"Login"}/>}/>
+                <Route
+                    path="*"
+                    element={
+                        <main style={{ padding: "1rem" }}>
+                            <p>There's nothing here!</p>
+                        </main>
+                    }
+                />
             </Routes>
         </ThemeProvider>
     );
