@@ -9,10 +9,13 @@ import Register from "./Components/Register/Register";
 import Main from "./Components/Main/Main";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 function App() {
     const [isConnected, setIsConnected] = useState(false);
     let navigate = useNavigate();
+
+    const theme = createTheme({});
 
     useEffect(() => {
         (async () => {
@@ -29,12 +32,14 @@ function App() {
     }, [navigate])
 
     return (
-        <Routes>
-            <Route path="/" element={<Login/>}/>
-            <Route path="/Login" element={<Login/>}/>
-            <Route path="/Register" element={<Register/>}/>
-            <Route path="/App" element={!isConnected ? <Navigate to={"/Login"}/> : <Main/>}/>
-        </Routes>
+        <ThemeProvider theme={theme}>
+            <Routes>
+                <Route path="/" element={<Login/>}/>
+                <Route path="/Login" element={<Login/>}/>
+                <Route path="/Register" element={<Register/>}/>
+                <Route path="/App" element={!isConnected ? <Navigate to={"/Login"}/> : <Main/>}/>
+            </Routes>
+        </ThemeProvider>
     );
 }
 

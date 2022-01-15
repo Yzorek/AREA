@@ -1,8 +1,14 @@
 import React from 'react';
-import {Grid} from "@mui/material";
+import {Box, Grid} from "@mui/material";
+import AppBarArea from "./AppBarArea";
+import DrawerArea from "./DrawerArea";
 
 export default function Main() {
     return <Grid container item xs={12}>
-        grid container main
+        <AppBarArea />
+        <DrawerArea />
+        <Box component="main" sx={{ flexGrow: 1 }}>
+            jijij
+        </Box>
     </Grid>
 }
