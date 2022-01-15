@@ -45,7 +45,7 @@ function App() {
                 <Route path="/" element={<Login/>}/>
                 <Route path="Login" element={<Login/>}/>
                 <Route path="Register" element={<Register/>}/>
-                <Route path="App/*" element={isConnected ? <Main/> : <Navigate to={"Login"}/>}/>
+                <Route path="App/*" element={<Main/>}/>
                 <Route
                     path="*"
                     element={
