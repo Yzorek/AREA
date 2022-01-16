@@ -8,10 +8,10 @@ import {
     List,
     ListSubheader,
     ListItemButton,
-    ListItemIcon, ListItemText, Box, IconButton, Avatar, Tooltip
+    ListItemIcon, ListItemText, Box
 } from "@mui/material";
 import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE} from "./config";
-import {Dashboard, Logout, Person} from "@mui/icons-material";
+import {Dashboard, Person} from "@mui/icons-material";
 import {DEFAULT_PAGE} from "./config";
 import {useNavigate} from "react-router-dom";
 
@@ -23,22 +23,21 @@ function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon
         navigate(redirectTo);
     }} sx={{
         [`&:hover`]: {
-            bgcolor: 'rgba(255, 255, 255, 0.08)',
+            bgcolor: 'dashboard.drawer.hover',
             borderRadius: '10px',
             marginLeft: '5px',
             marginRight: '5px'
         },
     }}>
-        <ListItemIcon sx={{color: idSelected === id ? 'secondary.main' : 'rgb(209, 213, 219)'}}>
+        <ListItemIcon sx={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}}>
             {icon}
         </ListItemIcon>
-        <ListItemText primary={label} sx={{color: idSelected === id ? 'secondary.main' : 'rgb(209, 213, 219)'}}/>
+        <ListItemText primary={label} sx={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}}/>
     </ListItemButton>
 }
 
 export default function DrawerArea() {
     const [idSelected, setIdSelected] = useState(DEFAULT_PAGE)
-    let navigate = useNavigate();
 
     const onSelectedChange = (id) => {
         setIdSelected(id)
@@ -50,7 +49,7 @@ export default function DrawerArea() {
         sx={{
             width: drawWith,
             flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {width: drawWith, boxSizing: 'border-box', bgcolor: 'primary.main'},
+            [`& .MuiDrawer-paper`]: {width: drawWith, boxSizing: 'border-box', bgcolor: 'dashboard.drawer.background'},
         }}
     >
         <Toolbar>
@@ -63,8 +62,9 @@ export default function DrawerArea() {
         <Divider color={'gray'}/>
         <Box sx={{overflow: 'auto'}}>
             <List
+                dense
                 subheader={
-                    <ListSubheader sx={{bgcolor: 'rgb(11, 15, 25)', color: 'rgb(107, 114, 128)', fontWeight: 'bold'}}>
+                    <ListSubheader sx={{bgcolor: 'dashboard.drawer.background', color: 'dashboard.drawer.titleList', fontWeight: 'bold'}}>
                         General
                     </ListSubheader>
                 }
@@ -77,35 +77,6 @@ export default function DrawerArea() {
             </List>
         </Box>
 
-        <Box style={{
-            width: '100%',
-            position: 'absolute',
-            bottom: 'env(safe-area-inset-bottom)'
-        }} sx={{
-            p: 1,
-            borderTop: 1,
-            borderColor: 'gray'
-        }}>
-            <Grid container item xs={12} justifyContent={'space-around'} alignItems={'center'}>
-                <Grid item>
-                    <Avatar alt="Remy Sharp"/>
-                </Grid>
-                <Grid item>
-                    <Typography color={'rgb(209, 213, 219)'} variant="button">
-                        Damien Maillard
-                    </Typography>
-                </Grid>
-                <Grid item>
-                    <Tooltip title={'Log out'}>
-                        <IconButton onClick={() => {
-                            localStorage.clear()
-                            navigate('/Login')
-                        }} style={{color: 'rgb(209, 213, 219)'}}>
-                            <Logout/>
-                        </IconButton>
-                    </Tooltip>
-                </Grid>
-            </Grid>
-        </Box>
+
     </Drawer>
 }

@@ -9,21 +9,13 @@ import Main from "./Components/Main/Main";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {createTheme, ThemeProvider} from "@mui/material";
+import {theme_default} from "./Components/Main/config";
 
 function App() {
     const [isConnected, setIsConnected] = useState(false);
     let navigate = useNavigate();
 
-    const theme = createTheme({
-        palette: {
-            secondary: {
-                main: 'rgb(16, 185, 129)'
-            },
-            primary: {
-                main: 'rgb(11, 15, 25)'
-            },
-        }
-    });
+    const theme = createTheme(theme_default);
 
     useEffect(() => {
         (async () => {
