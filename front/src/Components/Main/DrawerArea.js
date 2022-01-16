@@ -8,18 +8,26 @@ import {
     List,
     ListSubheader,
     ListItemButton,
-    ListItemIcon, ListItemText, Box
+    ListItemIcon, ListItemText, Box, IconButton, Avatar, Tooltip
 } from "@mui/material";
 import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE} from "./config";
-import {Dashboard, Person} from "@mui/icons-material";
+import {Dashboard, Logout, Person} from "@mui/icons-material";
 import {DEFAULT_PAGE} from "./config";
 import {useNavigate} from "react-router-dom";
 
 function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon, redirectTo}) {
     let navigate = useNavigate();
 
-    return <ListItemButton onClick={() => {onSelectedChange(id); navigate(redirectTo);}} sx={{
-        [`&:hover`]: {bgcolor: 'rgba(255, 255, 255, 0.08)', borderRadius: '10px', marginLeft: '5px', marginRight: '5px'},
+    return <ListItemButton onClick={() => {
+        onSelectedChange(id);
+        navigate(redirectTo);
+    }} sx={{
+        [`&:hover`]: {
+            bgcolor: 'rgba(255, 255, 255, 0.08)',
+            borderRadius: '10px',
+            marginLeft: '5px',
+            marginRight: '5px'
+        },
     }}>
         <ListItemIcon sx={{color: idSelected === id ? 'secondary.main' : 'rgb(209, 213, 219)'}}>
             {icon}
@@ -30,6 +38,7 @@ function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon
 
 export default function DrawerArea() {
     const [idSelected, setIdSelected] = useState(DEFAULT_PAGE)
+    let navigate = useNavigate();
 
     const onSelectedChange = (id) => {
         setIdSelected(id)
@@ -60,9 +69,43 @@ export default function DrawerArea() {
                     </ListSubheader>
                 }
             >
-                <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard />} id={GENERAL_DASHBOARD} label={'Dashboard'} idSelected={idSelected} onSelectedChange={onSelectedChange}/>
-                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person />} id={GENERAL_PROFILE} label={'Profile'} idSelected={idSelected} onSelectedChange={onSelectedChange}/>
+                <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard/>} id={GENERAL_DASHBOARD}
+                                          label={'Dashboard'} idSelected={idSelected}
+                                          onSelectedChange={onSelectedChange}/>
+                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
+                                          idSelected={idSelected} onSelectedChange={onSelectedChange}/>
             </List>
+        </Box>
+
+        <Box style={{
+            width: '100%',
+            position: 'absolute',
+            bottom: 'env(safe-area-inset-bottom)'
+        }} sx={{
+            p: 1,
+            borderTop: 1,
+            borderColor: 'gray'
+        }}>
+            <Grid container item xs={12} justifyContent={'space-around'} alignItems={'center'}>
+                <Grid item>
+                    <Avatar alt="Remy Sharp"/>
+                </Grid>
+                <Grid item>
+                    <Typography color={'rgb(209, 213, 219)'} variant="button">
+                        Damien Maillard
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <Tooltip title={'Log out'}>
+                        <IconButton onClick={() => {
+                            localStorage.clear()
+                            navigate('/Login')
+                        }} style={{color: 'rgb(209, 213, 219)'}}>
+                            <Logout/>
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+            </Grid>
         </Box>
     </Drawer>
 }

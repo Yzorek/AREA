@@ -2,7 +2,6 @@ import {
     Routes,
     Route,
     useNavigate,
-    Navigate
 } from "react-router-dom";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
