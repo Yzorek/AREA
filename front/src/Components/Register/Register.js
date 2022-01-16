@@ -44,7 +44,7 @@ export default function Register() {
             const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/register`, body);
 
             localStorage.setItem('JWT', response.data.accessToken);
-            navigate('/Main')
+            navigate('/App')
             setIsLoading(false)
         } catch (err) {
             if (err.response) {
