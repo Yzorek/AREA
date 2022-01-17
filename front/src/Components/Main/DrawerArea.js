@@ -55,7 +55,7 @@ export default function DrawerArea() {
         <Toolbar>
             <Grid container item xs={12} justifyContent={'center'}>
                 <Typography color={"white"} variant={'h3'} style={{fontWeight: 'bold'}}>
-                    AREA
+                    ULYS
                 </Typography>
             </Grid>
         </Toolbar>

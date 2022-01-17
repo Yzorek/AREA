@@ -3,6 +3,7 @@ import {Box, Grid} from "@mui/material";
 import AppBarArea from "./AppBarArea";
 import DrawerArea from "./DrawerArea";
 import {Navigate, Route, Routes} from "react-router-dom";
+import Profile from "../Profile/Profile";
 
 export default function Main() {
     return <Grid container item xs={12}>
@@ -12,7 +13,7 @@ export default function Main() {
             <Routes>
                 <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
                 <Route path={`Dashboard`} element={<div>Dashboard</div>}/>
-                <Route path={`Profile`} element={<div>Profile</div>}/>
+                <Route path={`Profile/*`} element={<Profile/>}/>
                 <Route
                     path="*"
                     element={
