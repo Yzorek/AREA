@@ -14,7 +14,7 @@ router.get('/me', fctToken.auth, fctMe.getUserData);
 router.get('/:id', fctToken.auth, fctById.getUserDataById);
 
 /* GET user all data */
-router.get('/all', fctToken.auth, fctAll.getUserDataAll);
+router.get('/', fctToken.auth, fctAll.getUserDataAll);
 
 /* PUT user edit */
 router.put('/me', fctToken.auth, fctMe.editUser);

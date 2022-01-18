@@ -2,7 +2,7 @@ const fctDataBase = require("../../tools/fctDBRequest");
 
 async function getUserDataById(req, res) {
     try {
-        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [req.query.id]);
+        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(req.params.id)]);
 
         if (data.rowCount === 0) {
             res.status(403).send({

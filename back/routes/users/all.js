@@ -4,7 +4,9 @@ const fctToken = require("../../tools/fctToken");
 async function getUserDataAll(req, res) {
     let dataToken = fctToken.getTokenData(req);
 
+    console.log('-----------', dataToken)
     try {
+
         let data = await fctDataBase.request('SELECT * FROM clients WHERE id!=$1;', [dataToken.id]);
         let response = []
 
