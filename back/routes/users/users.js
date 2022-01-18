@@ -5,6 +5,7 @@ const fctToken = require('../../tools/fctToken');
 const fctMe = require('./me')
 const fctById = require('./byId')
 const fctAll = require('./all')
+const fctExit = require('./identification')
 
 /* GET my user data */
 router.get('/me', fctToken.auth, fctMe.getUserData);
@@ -19,6 +20,6 @@ router.get('/all', fctToken.auth, fctAll.getUserDataAll);
 router.put('/me', fctToken.auth, fctMe.editUser);
 
 /* POST user edit */
-router.post('/identification/:id');
+router.post('/identification/:id', fctExit.identification);
 
 module.exports = router;
