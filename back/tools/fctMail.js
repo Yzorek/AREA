@@ -9,9 +9,9 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-function createMail(recipient, sender, subject, text, html) {
+function createMail(recipient, subject, text, html) {
     const mailOptions = {
-        from: sender,
+        from: settings.auth.user,
         to: recipient,
         subject: subject,
         text: text,
@@ -22,7 +22,7 @@ function createMail(recipient, sender, subject, text, html) {
         if (error) {
             console.log(error);
         } else {
-            console.log('Email sent: ' + info.response);
+            console.log('Email sent to ' + recipient + ': ' + info.response);
         }
     });
 }
