@@ -2,11 +2,29 @@ import React, {useState} from 'react';
 import {Grid, Tab, Tabs, Typography} from "@mui/material";
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 
+const pages = [
+    {
+        label: 'Me',
+        value: 'Me',
+        component: <Grid container item xs={7}>Me</Grid>,
+    },
+    {
+        label: 'Settings',
+        value: 'Settings',
+        component: <Grid container item xs={7}>Settings</Grid>,
+    },
+    {
+        label: 'Theme',
+        value: 'Theme',
+        component: <Grid container item xs={7}>Theme</Grid>,
+    },
+]
+
 export default function Profile() {
     const [tabs, setTabs] = useState("Me");
     let navigate = useNavigate();
 
-    const handleChange = (event, newValue) => {
+    const handleTabsChange = (event, newValue) => {
         setTabs(newValue);
         navigate(newValue);
     };
@@ -18,18 +36,14 @@ export default function Profile() {
             </Typography>
         </Grid>
         <Grid container item xs={7}>
-            <Tabs value={tabs} onChange={handleChange}>
-                <Tab label="Me" value={"Me"}/>
-                <Tab label="Settings" value={"Settings"}/>
-                <Tab label="Theme" value={"Theme"}/>
+            <Tabs value={tabs} onChange={handleTabsChange}>
+                {pages.map((item, index) => <Tab key={`${item.label}-${index}-tabs-profile`} label={item.label} value={item.value}/>)}
             </Tabs>
         </Grid>
 
         <Routes>
-            <Route path={`/`} element={<Navigate to={'Me'}/>}/>
-            <Route path={`Me`} element={<Grid container item xs={7}>Me</Grid>}/>
-            <Route path={`Settings`} element={<Grid container item xs={7}>Settings</Grid>}/>
-            <Route path={`Theme`} element={<Grid container item xs={7}>Theme</Grid>}/>
+            <Route path={`/`} element={<Navigate to={pages[0].value}/>}/>
+            {pages.map((item, index) => <Route key={`${item.label}-${index}-router-profile`} path={item.value} element={item.component}/>)}
         </Routes>
 
     </Grid>
