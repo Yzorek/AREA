@@ -10,10 +10,10 @@ async function getUserDataById(req, res) {
             });
         } else {
             res.status(200).send({
-                id: data[0].id,
-                username: data[0].username,
-                email: data[0].email,
-                avatar: data[0].avatar
+                id: data.rows[0].id,
+                username: data.rows[0].username,
+                email: data.rows[0].email,
+                avatar: data.rows[0].avatar
             })
         }
     } catch (err) {
