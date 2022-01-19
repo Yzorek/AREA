@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: area
+    volumes:
+      - db-data:/var/lib/data/postgres
+      - ./db-dump:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+
+  back:
+    restart: unless-stopped
+    build:
+      context: ./back
+      target: prod
+    ports:
+      - "8080:8080"
+    env_file:
+      - .back.env
+    depends_on:
+      - db
+
+  front:
+    restart: unless-stopped
+    build:
+      context: ./front
+      target: prod
+    ports:
+      - "8082:3000"
+    env_file:
+      - .front.env
+    depends_on:
+      - back
+      - mobile
+    volumes:
+      - client:/app/
+
+  mobile:
+    restart: unless-stopped
+    build:
+      context: ./mobile
+      target: prod
+
+
+volumes:
+  db-data:
+  client:
