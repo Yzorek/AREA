@@ -27,6 +27,7 @@ export default function Login() {
 
     const onFailureGoogle = (response) => {
         console.log('Err Google: ', response);
+        console.log('Key: ', process.env.REACT_APP_GOOGLE_CLIENT_ID)
         setIsGoogleError(true);
     }
 
@@ -125,7 +126,7 @@ export default function Login() {
                     <Grid item xs={12} style={{paddingTop: 5}}>
                         <Grid item xs={4}>
                             <GoogleLogin
-                                clientId={process.env.GOOGLE_API_KEY}
+                                clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
                                 render={renderProps => (
                                     <LoadingButton variant={'contained'} fullWidth onClick={renderProps.onClick}
                                                    disabled={renderProps.disabled} startIcon={<Google/>}>

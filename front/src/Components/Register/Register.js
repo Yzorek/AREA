@@ -111,7 +111,7 @@ export default function Register() {
                 <Grid item xs={12} sx={{p: 3}} style={{paddingTop: 5, paddingBottom: 5}}>
                     <Grid item xs={4}>
                         <GoogleLogin
-                            clientId={process.env.GOOGLE_API_KEY}
+                            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
                             render={renderProps => (
                                 <LoadingButton variant={'contained'} fullWidth onClick={renderProps.onClick}
                                                disabled={renderProps.disabled} startIcon={<Google/>}>
