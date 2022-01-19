@@ -2,8 +2,9 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import {Button, Divider, Grid, IconButton, InputAdornment, Paper, Snackbar, TextField, Typography} from "@mui/material";
-import {Email, Create, Lock, Visibility, VisibilityOff} from "@mui/icons-material";
+import {Email, Create, Lock, Visibility, VisibilityOff, Google} from "@mui/icons-material";
 import {Alert, LoadingButton} from '@mui/lab';
+import { GoogleLogin } from 'react-google-login';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -11,16 +12,31 @@ export default function Login() {
     const [isBlindPass, setIsBlindPass] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [isGoogleError, setIsGoogleError] = useState(false);
     let navigate = useNavigate();
 
-    async function onSubmit(e) {
-        e.preventDefault();
+    const onSuccessGoogle = (response) => {
+        (async () => {
+            try {
+                await loginInSerer('google', response.profileObj.googleId, response.profileObj.email)
+            } catch (err) {
+                console.log(err);
+            }
+        })()
+    }
 
+    const onFailureGoogle = (response) => {
+        console.log('Err Google: ', response);
+        setIsGoogleError(true);
+    }
+
+    async function loginInSerer(type, pass, mail) {
         try {
             setIsLoading(true);
             let body = {
-                email: email,
-                password: password
+                email: mail,
+                password: pass,
+                type: type
             }
             const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/login`, body);
 
@@ -37,6 +53,11 @@ export default function Login() {
                 setIsLoading(false);
             }
         }
+    }
+
+    async function onSubmit(e) {
+        e.preventDefault();
+        await loginInSerer('local', password, email);
     }
 
     return <Grid container item xs={12} alignItems={'center'} justifyContent={'center'} style={{height: '100vh'}}>
@@ -101,6 +122,23 @@ export default function Login() {
                         </LoadingButton>
                     </Grid>
 
+                    <Grid item xs={12} style={{paddingTop: 5}}>
+                        <Grid item xs={4}>
+                            <GoogleLogin
+                                clientId={process.env.GOOGLE_API_KEY}
+                                render={renderProps => (
+                                    <LoadingButton variant={'contained'} fullWidth onClick={renderProps.onClick}
+                                                   disabled={renderProps.disabled} startIcon={<Google/>}>
+                                        Sign in
+                                    </LoadingButton>
+                                )}
+                                onSuccess={onSuccessGoogle}
+                                onFailure={onFailureGoogle}
+                                cookiePolicy={'single_host_origin'}
+                            />
+                        </Grid>
+                    </Grid>
+
                 </Grid>
 
                 <Divider variant="middle"/>
@@ -116,6 +154,13 @@ export default function Login() {
                       anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
                 <Alert onClose={() => setIsError(false)} severity="warning" sx={{width: '100%'}}>
                     You have enter a wrong mail or password!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={isGoogleError} autoHideDuration={6000} onClose={() => setIsGoogleError(false)}
+                      anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+                <Alert icon={<Google/>} onClose={() => setIsGoogleError(false)} severity="error" sx={{width: '100%'}}>
+                    Google turn into error!
                 </Alert>
             </Snackbar>
 
