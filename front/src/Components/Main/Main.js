@@ -4,6 +4,7 @@ import AppBarArea from "./AppBarArea";
 import DrawerArea from "./DrawerArea";
 import {Navigate, Route, Routes} from "react-router-dom";
 import Profile from "../Profile/Profile";
+import Services from "../Services/Services";
 
 export default function Main() {
     return <Grid container item xs={12}>
@@ -14,6 +15,7 @@ export default function Main() {
                 <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
                 <Route path={`Dashboard`} element={<div>Dashboard</div>}/>
                 <Route path={`Profile/*`} element={<Profile/>}/>
+                <Route path={`Service/*`} element={<Services/>}/>
                 <Route
                     path="*"
                     element={
