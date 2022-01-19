@@ -67,6 +67,7 @@ export default function Register() {
     }
 
     const onSuccessGoogle = (response) => {
+        console.log(response);
         (async () => {
             try {
                 await registerInSerer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
@@ -76,8 +77,8 @@ export default function Register() {
         })()
     }
 
-    const onFailureGoogle = (response) => {
-        console.log('Err Google: ', response);
+    const onFailureGoogle = (err) => {
+        console.log(err);
         setIsGoogleError(true);
     }
 
@@ -111,9 +112,9 @@ export default function Register() {
                 <Grid item xs={12} sx={{p: 3}} style={{paddingTop: 5, paddingBottom: 5}}>
                     <Grid item xs={4}>
                         <GoogleLogin
-                            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                             render={renderProps => (
-                                <LoadingButton variant={'contained'} fullWidth onClick={renderProps.onClick}
+                                <LoadingButton loading={isLoading} variant={'contained'} fullWidth onClick={renderProps.onClick}
                                                disabled={renderProps.disabled} startIcon={<Google/>}>
                                     Sign in
                                 </LoadingButton>
