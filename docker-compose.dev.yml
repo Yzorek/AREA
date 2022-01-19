@@ -44,5 +44,10 @@ services:
       - ./front/src:/app/src
       - ./front/public:/app/public
 
+  mobile:
+    build:
+      context: ./mobile
+      target: dev
+
 volumes:
   db-data:
