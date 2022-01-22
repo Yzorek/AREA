@@ -6,13 +6,23 @@ import {
     IconButton,
     Grid,
     TextField,
-    InputAdornment, Avatar, Typography, Paper, Popover, List, ListItemButton, ListItemIcon, ListItemText,
+    InputAdornment,
+    Avatar,
+    Typography,
+    Paper,
+    Popover,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    CircularProgress,
+    Skeleton
 } from "@mui/material";
 import {Notifications, ChatBubble, Search, Logout} from "@mui/icons-material";
 import {drawWith} from "./config";
 import {useNavigate} from "react-router-dom";
 
-export default function AppBarArea() {
+export default function AppBarArea({isLoading}) {
     const [onHoverPaper, setOnHoverPaper] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     let navigate = useNavigate()
@@ -30,7 +40,8 @@ export default function AppBarArea() {
             <Grid container item xs={12}>
                 <Grid container item xs={6} alignItems={'center'}>
                     <Grid item xs={7} style={{marginLeft: drawWith + 10}}>
-                        <TextField fullWidth size={"small"} label={'Search Bar'} variant={'outlined'} type={'search'}
+                        <TextField disabled={isLoading} fullWidth size={"small"} label={'Search Bar'}
+                                   variant={'outlined'} type={'search'}
                                    InputProps={{
                                        endAdornment: (
                                            <InputAdornment position="end">
@@ -41,12 +52,26 @@ export default function AppBarArea() {
                     </Grid>
                 </Grid>
                 <Grid container item xs={6} justifyContent={'flex-end'} alignItems={'center'} spacing={2}>
-                    <Grid item>
+                    {isLoading ? <Grid item>
+                        <Paper
+                            variant="outlined" style={{
+                            borderRadius: 5,
+                        }}>
+                            <Grid item container xs={12} alignItems={'center'} style={{width: 250, padding: 5}}>
+                                <Grid container item xs={9} justifyContent={'center'}>
+                                    <Skeleton variant="text" height={40} style={{width: '100%'}}/>
+                                </Grid>
+                                <Grid item container xs={3} justifyContent={'center'} alignItems={'center'}>
+                                    <Skeleton variant="circular" width={40} height={40}/>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                    </Grid> : <Grid item>
                         <Paper
                             onClick={handleClick}
                             onMouseEnter={() => setOnHoverPaper(true)}
                             onMouseLeave={() => setOnHoverPaper(false)} variant="outlined" style={{
-                            borderRadius: 20,
+                            borderRadius: 5,
                             cursor: 'pointer',
                         }} sx={{
                             bgcolor: onHoverPaper && 'dashboard.appBar.hover',
@@ -64,23 +89,28 @@ export default function AppBarArea() {
                                 </Grid>
                             </Grid>
                         </Paper>
+                    </Grid>}
 
-                    </Grid>
-                    <Grid item>
+
+                    {isLoading ? <Grid item>
+                        <CircularProgress style={{width: 25, height: 25}}/>
+                    </Grid> : <Grid item>
                         <Tooltip title="Chat">
                             <IconButton>
                                 <ChatBubble/>
                             </IconButton>
                         </Tooltip>
-                    </Grid>
+                    </Grid>}
 
-                    <Grid item>
+                    {isLoading ? <Grid item>
+                        <CircularProgress style={{width: 25, height: 25}}/>
+                    </Grid> : <Grid item>
                         <Tooltip title="Notifications">
                             <IconButton>
                                 <Notifications/>
                             </IconButton>
                         </Tooltip>
-                    </Grid>
+                    </Grid>}
 
                 </Grid>
             </Grid>
