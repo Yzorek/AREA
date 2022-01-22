@@ -19,10 +19,11 @@ export default function Main() {
         (async () => {
            try {
                setIsLoading(true);
-               /*const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/users/me`,
-                   {'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}})
+               const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/users/me`,
+                   {'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}});
+               console.log(response.data);
                setUser(response.data);
-               setIsLoading(false);*/
+               setIsLoading(false);
            } catch (err) {
                if (err.response) {
                     alert('Error has occured please retry your connection.');

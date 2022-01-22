@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {
     Toolbar,
     AppBar,
@@ -21,10 +21,12 @@ import {
 import {Notifications, ChatBubble, Search, Logout} from "@mui/icons-material";
 import {drawWith} from "./config";
 import {useNavigate} from "react-router-dom";
+import UserContext from "../Tools/UserContext/UserContext";
 
 export default function AppBarArea({isLoading}) {
     const [onHoverPaper, setOnHoverPaper] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    let userContext = useContext(UserContext);
     let navigate = useNavigate()
 
     const handleClick = (event) => {
@@ -79,12 +81,12 @@ export default function AppBarArea({isLoading}) {
                             <Grid item container xs={12} alignItems={'center'}>
                                 <Grid container item xs={9} justifyContent={'center'}>
                                     <Typography>
-                                        Damien Maillard
+                                        {userContext.username}
                                     </Typography>
                                 </Grid>
                                 <Grid item container xs={3} justifyContent={'center'}>
                                     <IconButton style={{paddingTop: 5, paddingBottom: 5}}>
-                                        <Avatar/>
+                                        <Avatar alt={userContext.username} src={userContext.avatar}/>
                                     </IconButton>
                                 </Grid>
                             </Grid>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
     Divider,
     Drawer,
@@ -8,12 +8,13 @@ import {
     List,
     ListSubheader,
     ListItemButton,
-    ListItemIcon, ListItemText, Box, ListItem, Skeleton
+    ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert
 } from "@mui/material";
 import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE} from "./config";
 import {Dashboard, Person} from "@mui/icons-material";
 import {DEFAULT_PAGE} from "./config";
 import {useNavigate} from "react-router-dom";
+import UserContext from "../Tools/UserContext/UserContext";
 
 function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon, redirectTo, isLoading}) {
     let navigate = useNavigate();
@@ -42,7 +43,8 @@ function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon
 }
 
 export default function DrawerArea({isLoading}) {
-    const [idSelected, setIdSelected] = useState(DEFAULT_PAGE)
+    const [idSelected, setIdSelected] = useState(DEFAULT_PAGE);
+    let userContext = useContext(UserContext);
 
     const onSelectedChange = (id) => {
         setIdSelected(id)
@@ -66,6 +68,7 @@ export default function DrawerArea({isLoading}) {
         </Toolbar>
         <Divider color={'gray'}/>
         <Box sx={{overflow: 'auto'}}>
+            {userContext && !userContext.isIdentified && <Alert severity="warning" style={{margin: 10}}>Your account is not identified, please check your mail box.</Alert>}
             <List
                 dense
                 subheader={
