@@ -155,7 +155,7 @@ export default function BasicDetails({hotReload, data, isLoading}) {
                     }}/>}
                 </Grid>
                 <Grid container item xs={12} alignItems={'center'} justifyContent={'flex-start'}>
-                    {isEdit ? <TextField value={email} disabled={TYPE_LOCAL !== data.auth} type={'mail'} onChange={(e) => setEmail(e.target.value)} disabled={isSaving} required size={'small'} fullWidth variant={'outlined'}
+                    {isEdit ? <TextField value={email} disabled={TYPE_LOCAL !== data.auth || isSaving} type={'mail'} onChange={(e) => setEmail(e.target.value)} required size={'small'} fullWidth variant={'outlined'}
                                          label={'Mail'} InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
