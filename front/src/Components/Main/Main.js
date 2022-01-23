@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Box, CircularProgress, createTheme, Grid, ThemeProvider} from "@mui/material";
+import {Box, createTheme, Grid, ThemeProvider} from "@mui/material";
 import AppBarArea from "./AppBarArea";
-import DrawerArea from "./DrawerArea";
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import Profile from "../Profile/Profile";
-import {theme_default} from "./config";
+import {theme_default, drawWith} from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
 import MainLoader from "../Tools/MainLoader";
+import DrawerArea from "./DrawerArea";
 
 export default function Main() {
     const theme = createTheme(theme_default);
@@ -40,7 +40,7 @@ export default function Main() {
                 <AppBarArea isLoading={isLoading}/>
                 <DrawerArea isLoading={isLoading}/>
                 <Box component="main"
-                     sx={{flexGrow: 1, overflow: 'auto', bgcolor: 'grey.100', height: 'calc(100vh - 68px)'}}>
+                     sx={{bgcolor: 'grey.100'}} style={{flexGrow: 1, overflow: 'auto', height: 'calc(100vh - 68px)', width: `calc(100% - ${drawWith}px)`}}>
                     {isLoading ? <Grid item container xs={12} style={{height: '100%'}} alignItems={'center'} justifyContent={'center'}>
                         <MainLoader/>
                     </Grid> : <Routes>
