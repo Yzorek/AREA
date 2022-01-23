@@ -3,27 +3,33 @@ import {Grid, Tab, Tabs, Typography} from "@mui/material";
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import Me from "./Me/Me";
 import Security from "./Security/Security";
+import Theme from "./Theme/Theme";
+import {PhoneMissed, Badge, Palette, GppGood, Settings} from "@mui/icons-material";
 
 const pages = [
     {
         label: 'Me',
         value: 'Me',
         component: <Me/>,
+        icon: <Badge/>
     },
     {
         label: 'Theme',
         value: 'Theme',
-        component: <Grid container item xs={7}>Theme</Grid>,
+        component: <Theme/>,
+        icon: <Palette/>
     },
     {
         label: 'Security',
         value: 'Security',
         component: <Security/>,
+        icon: <GppGood/>
     },
     {
         label: 'Settings',
         value: 'Settings',
         component: <Grid container item xs={7}>Settings</Grid>,
+        icon: <Settings/>
     },
 ]
 
@@ -44,7 +50,7 @@ export default function Profile() {
         </Grid>
         <Grid container item xs={7}>
             <Tabs value={tabs} onChange={handleTabsChange}>
-                {pages.map((item, index) => <Tab key={`${item.label}-${index}-tabs-profile`} label={item.label} value={item.value}/>)}
+                {pages.map((item, index) => <Tab icon={item.icon} iconPosition="start" key={`${item.label}-${index}-tabs-profile`} label={item.label} value={item.value}/>)}
             </Tabs>
         </Grid>
         <Routes>
