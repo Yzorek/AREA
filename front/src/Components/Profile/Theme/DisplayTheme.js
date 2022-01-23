@@ -1,7 +1,19 @@
 import React from 'react';
 import {FormControlLabel, Grid, Radio} from "@mui/material";
+import {Skeleton} from "@mui/lab";
 
-export default function DisplayTheme({color, name, isChecked}) {
+export default function DisplayTheme({color, name, isChecked, isLoading}) {
+    if (isLoading)
+        return <Grid container item xs={12} sx={{border: 1, borderColor: 'divider'}} style={{borderRadius: 5}}>
+            <Grid container item xs={12} style={{height: 130}}>
+                <Skeleton variant="rectangular" width={'100%'} height={'100%'} />
+            </Grid>
+            <Grid container item xs={12} style={{padding: '5px 10px'}} sx={{borderTop: 1, borderColor: 'divider'}} justifyContent={'space-around'} alignItems={'center'}>
+                <Skeleton variant="circular" width={15} height={15} />
+                <Skeleton variant="text" width={100} />
+            </Grid>
+        </Grid>
+
     return <Grid container item xs={12} sx={{border: 1, borderColor: 'divider'}} style={{borderRadius: 5}}>
         <Grid container item xs={12} style={{height: 130}}>
             <div style={{width: '20%', height: '100%', background: color.palette.dashboard.drawer.background, borderRadius: '5px 0px 0px 0px'}}>
