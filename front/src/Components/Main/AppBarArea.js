@@ -78,7 +78,7 @@ export default function AppBarArea({isLoading}) {
                         }} sx={{
                             bgcolor: onHoverPaper && 'dashboard.appBar.hover',
                         }}>
-                            <Grid item container xs={12} alignItems={'center'}>
+                            <Grid item container xs={12} alignItems={'center'} style={{width: 250}}>
                                 <Grid container item xs={9} justifyContent={'center'}>
                                     <Typography>
                                         {userContext.username}
