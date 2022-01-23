@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Box, createTheme, Grid, ThemeProvider} from "@mui/material";
 import AppBarArea from "./AppBarArea";
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
@@ -13,16 +13,28 @@ export default function Main() {
     const theme = createTheme(theme_default);
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState(null);
+    const [isFirstLoading, setIsFirstLoading] = useState(true);
+    const isMounted = useRef(null);
     let navigate = useNavigate();
 
     useEffect(() => {
+        if (!isFirstLoading)
+            return;
+        isMounted.current = true
+        const source = axios.CancelToken.source();
         (async () => {
            try {
                setIsLoading(true);
                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/users/me`,
-                   {'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}});
-               setUser(response.data);
-               setIsLoading(false);
+                   {
+                       cancelToken: source.token,
+                       'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                   });
+               if (isMounted && isMounted.current) {
+                   setUser(response.data);
+                   setIsLoading(false);
+                   setIsFirstLoading(false);
+               }
            } catch (err) {
                if (err.response) {
                     alert('Error has occured please retry your connection.');
@@ -31,7 +43,11 @@ export default function Main() {
                }
            }
         })()
-    }, [navigate])
+        return () => {
+            isMounted.current = false;
+            source.cancel("Component Main GET user data got unmounted");
+        }
+    }, [navigate, isFirstLoading])
 
     return <ThemeProvider theme={theme}>
         <UserContextProvider user={user}>
