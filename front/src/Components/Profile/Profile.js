@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Grid, Tab, Tabs, Typography} from "@mui/material";
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import Me from "./Me/Me";
+import Security from "./Security/Security";
 
 const pages = [
     {
@@ -17,7 +18,7 @@ const pages = [
     {
         label: 'Security',
         value: 'Security',
-        component: <Grid container item xs={7}>Security</Grid>,
+        component: <Security/>,
     },
     {
         label: 'Settings',
@@ -35,7 +36,7 @@ export default function Profile() {
         navigate(newValue);
     };
 
-    return <Grid container item xs={12} style={{ padding: 10 }} justifyContent={'center'}>
+    return <Grid container item xs={12} style={{padding: 10}} justifyContent={'center'}>
         <Grid container item xs={7} style={{paddingBottom: 30, paddingTop: 30}}>
             <Typography variant={'h5'} style={{fontWeight: 'bold'}}>
                 PROFILE

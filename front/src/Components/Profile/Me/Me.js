@@ -13,7 +13,6 @@ export default function Me() {
     const isMounted = useRef(null);
 
     useEffect(() => {
-        console.log("reload");
         if (!isReload)
             return;
         isMounted.current = true
