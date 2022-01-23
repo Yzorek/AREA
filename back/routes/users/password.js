@@ -51,8 +51,8 @@ async function checkPassword(req, res, next) {
         let data = await fctDataBase.request('SELECT password FROM clients WHERE id=$1;', [dataToken.id]);
 
         if (data.rowCount === 0) {
-            res.status(403).send({
-                error: "This user doesn't exist"
+            res.status(204).send({
+                message: "This user doesn't exist"
             });
         } else {
             let checkPassword = await hashCheck(req.body.lastPassword, data.rows[0].password);
@@ -60,15 +60,15 @@ async function checkPassword(req, res, next) {
             if (checkPassword) {
                 next();
             } else {
-                res.status(403).send({
-                    error: 'Wrong password, try again.',
+                res.status(204).send({
+                    message: 'Wrong password, try again.',
                 });
             }
         }
     } catch (err) {
         console.log(err);
         res.status(500).send({
-            error: 'BDD error',
+            message: 'BDD error',
         });
     }
 }
