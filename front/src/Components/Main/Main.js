@@ -21,7 +21,6 @@ export default function Main() {
                setIsLoading(true);
                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/users/me`,
                    {'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}});
-               console.log(response.data);
                setUser(response.data);
                setIsLoading(false);
            } catch (err) {
@@ -32,7 +31,7 @@ export default function Main() {
                }
            }
         })()
-    }, [])
+    }, [navigate])
 
     return <ThemeProvider theme={theme}>
         <UserContextProvider user={user}>

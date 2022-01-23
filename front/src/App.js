@@ -26,7 +26,7 @@ function App() {
                 setIsConnected(true);
             }
         })()
-    }, [navigate])
+    }, [navigate, isConnected])
 
     return (
         <Routes>
