@@ -40,7 +40,7 @@ export default function Main() {
                 <AppBarArea isLoading={isLoading}/>
                 <DrawerArea isLoading={isLoading}/>
                 <Box component="main"
-                     sx={{bgcolor: 'grey.100'}} style={{flexGrow: 1, overflow: 'auto', height: 'calc(100vh - 68px)'}}>
+                     sx={{bgcolor: 'grey.100'}} style={{flexGrow: 1, overflow: 'auto', height: 'calc(100vh - 68px)', width: `calc(100% - ${drawWith}px)`}}>
                     {isLoading ? <Grid item container xs={12} style={{height: '100%'}} alignItems={'center'} justifyContent={'center'}>
                         <MainLoader/>
                     </Grid> : <Routes>
