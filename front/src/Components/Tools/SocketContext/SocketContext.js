@@ -2,9 +2,7 @@ import React, { useState, useEffect, createContext } from "react";
 import io from "socket.io-client";
 import AlertError from "../AlertError";
 
-const defaultValue = {
-    isConnected: false,
-}
+const defaultValue = null
 
 const SocketContext = createContext(defaultValue);
 
@@ -16,19 +14,15 @@ const globalDisconnectSocket = (client) => {
 }
 
 export function SocketContextProvider({children}) {
-    const [value, setValue] = useState({
-        isConnected: false,
-    });
+    const [value, setValue] = useState(null);
     const [isError, setIsError] = useState(false);
 
     useEffect(() => {
         (async () => {
             try {
-                console.log("I am connected ", process.env.REACT_APP_DASHBOARD_API)
-                const socket = await io(process.env.REACT_APP_DASHBOARD_API)
-                console.log(socket);
+                const socket = await io(process.env.REACT_APP_DASHBOARD_API, { transports : ['websocket'] })
                 setValue(socket)
-                console.log("I am connected After")
+                console.log("I am connected ", process.env.REACT_APP_DASHBOARD_API)
             } catch (err) {
                 setIsError(true);
             }
