@@ -76,8 +76,8 @@ export default function AppBarArea({isLoading}) {
                         <CircularProgress style={{width: 25, height: 25}}/>
                     </Grid> : <Grid item>
                         <Tooltip title="Open Profile">
-                            <IconButton>
-                                <Avatar alt={userContext.username} src={userContext.avatar} onClick={handleClick}/>
+                            <IconButton onClick={handleClick}>
+                                <Avatar alt={userContext.username} src={userContext.avatar}/>
                             </IconButton>
                         </Tooltip>
                     </Grid>}
