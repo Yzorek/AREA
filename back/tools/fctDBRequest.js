@@ -13,7 +13,7 @@ function request(sql, tab) {
     return new Promise(async (resolve, reject) => {
         try {
             let data = await pool.query(sql, tab);
-            console.log(data);
+            //console.log(data);
             resolve(data);
         } catch (err) {
             console.log('err', err)

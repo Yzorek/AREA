@@ -12,7 +12,8 @@
     "http-errors": "~1.6.3",
     "jade": "^0.31.2",
     "morgan": "~1.9.1",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "bcrypt": "^5.0.1",
