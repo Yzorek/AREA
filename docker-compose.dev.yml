@@ -45,6 +45,7 @@ services:
       - ./front/public:/app/public
 
   mobile:
+    restart: unless-stopped
     build:
       context: ./mobile
       target: dev

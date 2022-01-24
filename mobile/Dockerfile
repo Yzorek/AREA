@@ -1,12 +1,9 @@
-FROM androidsdk/android-30:latest as dev
+FROM androidsdk/android-30:latest
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get install nodejs -y
+COPY package.json /tmp/package.json
+RUN cd /tmp && npm install --no-progress --ignore-optional && npm audit fix
 
-COPY ./myapp/ /home/
-WORKDIR /home/
-
-RUN npm install
-WORKDIR /home/android/
+COPY . /usr/src/app/
+WORKDIR /usr/src/app/android/
 
 CMD ["./gradlew", "assembleRelease"]
