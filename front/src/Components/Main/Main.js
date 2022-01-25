@@ -9,6 +9,7 @@ import axios from "axios";
 import MainLoader from "../Tools/MainLoader";
 import DrawerArea from "./DrawerArea";
 import {SocketContextProvider} from "../Tools/SocketContext/SocketContext";
+import Dashboard from "../Dashboard/Dashboard";
 
 export default function Main() {
     const theme = createTheme(theme_default);
@@ -68,7 +69,7 @@ export default function Main() {
                             <MainLoader/>
                         </Grid> : <Routes>
                             <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
-                            <Route path={`Dashboard`} element={<div>Dashboard</div>}/>
+                            <Route path={`Dashboard`} element={<Dashboard/>}/>
                             <Route path={`Profile/*`} element={<Profile/>}/>
                             <Route
                                 path="*"

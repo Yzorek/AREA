@@ -10,7 +10,7 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
-import {Business, DateRange, Dns} from "@mui/icons-material";
+import {DateRange, Dns} from "@mui/icons-material";
 import moment from "moment";
 import axios from "axios";
 import AlertError from "../../Tools/AlertError";
