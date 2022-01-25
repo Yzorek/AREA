@@ -10,7 +10,7 @@ services:
     volumes:
       - db-data:/var/lib/data/postgres
       - ./db-dump:/docker-entrypoint-initdb.d
-    restart: unless-stopped
+    restart: always
     ports:
       - "5432:5432"
 
@@ -18,35 +18,33 @@ services:
     restart: unless-stopped
     build:
       context: ./back
-      dockerfile: Dockerfile.dev
-      target: dev
+      target: prod
     ports:
       - "8080:8080"
     env_file:
       - .back.env
     depends_on:
       - db
-    volumes:
-      - ./back/app.js:/app/app.js
-      - ./back/routes:/app/routes
-      - ./back/socket:/app/socket
-      - ./back/tools:/app/tools
 
   front:
     restart: unless-stopped
     build:
       context: ./front
-      dockerfile: Dockerfile.dev
-      target: dev
+      target: prod
     ports:
-      - "3000:3000"
+      - "8082:8082"
     env_file:
       - .front.env
     depends_on:
       - back
     volumes:
-      - ./front/src:/app/src
-      - ./front/public:/app/public
+      - client:/app/
+
+  mobile:
+    build:
+      context: ./mobile
+      target: prod
 
 volumes:
   db-data:
+  client:
