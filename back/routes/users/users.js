@@ -7,9 +7,13 @@ const fctById = require('./byId')
 const fctAll = require('./all')
 const fctExit = require('./identification')
 const fctPassword = require('./password')
+const fctHistoryCommunication = require('./historyConnection');
 
 /* GET my user data */
 router.get('/me', fctToken.auth, fctMe.getUserData);
+
+/* GET history connection by user */
+router.get('/historyConnection', fctToken.auth, fctHistoryCommunication.getHistoryConnection);
 
 /* GET user data by id */
 router.get('/:id', fctToken.auth, fctById.getUserDataById);
