@@ -4,7 +4,7 @@ import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import Me from "./Me/Me";
 import Security from "./Security/Security";
 import Theme from "./Theme/Theme";
-import {PhoneMissed, Badge, Palette, GppGood, Settings} from "@mui/icons-material";
+import {Badge, Palette, GppGood, Settings} from "@mui/icons-material";
 
 const pages = [
     {
@@ -43,12 +43,12 @@ export default function Profile() {
     };
 
     return <Grid container item xs={12} style={{padding: 10}} justifyContent={'center'}>
-        <Grid container item xs={7} style={{paddingBottom: 30, paddingTop: 30}}>
+        <Grid container item xs={12} sm={10} md={7} style={{paddingBottom: 30, paddingTop: 30}}>
             <Typography variant={'h5'} style={{fontWeight: 'bold'}}>
                 PROFILE
             </Typography>
         </Grid>
-        <Grid container item xs={7}>
+        <Grid container item xs={12} sm={10} md={7}>
             <Tabs value={tabs} onChange={handleTabsChange}>
                 {pages.map((item, index) => <Tab icon={item.icon} iconPosition="start" key={`${item.label}-${index}-tabs-profile`} label={item.label} value={item.value}/>)}
             </Tabs>

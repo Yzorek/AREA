@@ -48,7 +48,7 @@ export default function Me() {
         setIsReload(true);
     }
 
-    return <Grid container item xs={7} spacing={4}>
+    return <Grid container item xs={12} sm={10} md={7} spacing={4}>
         <Grid item xs={12} style={{marginTop: 25}}>
             <BasicDetails hotReload={hotReload} data={data} isLoading={isLoading}/>
         </Grid>

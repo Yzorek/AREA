@@ -15,7 +15,7 @@ import moment from "moment";
 import axios from "axios";
 import AlertError from "../../Tools/AlertError";
 
-export default function LoginHistory({}) {
+export default function LoginHistory() {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
     const [isError, setIsError] = useState(false)
