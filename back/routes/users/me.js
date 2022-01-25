@@ -5,7 +5,7 @@ async function getUserData(req, res) {
     let dataToken = fctToken.getTokenData(req);
 
     try {
-        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [dataToken.id]);
+        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(dataToken.id)]);
 
         if (data.rowCount === 0) {
             res.status(403).send({
@@ -34,7 +34,7 @@ async function editUser(req, res) {
     let dataToken = fctToken.getTokenData(req);
 
     try {
-        await fctDataBase.request('UPDATE clients SET username=$1, first_name=$2, last_name=$3, avatar=$4, email=$5 WHERE id=$6;', [req.body.username, req.body.firstName, req.body.lastName, req.body.avatar, req.body.email, dataToken.id]);
+        await fctDataBase.request('UPDATE clients SET username=$1, first_name=$2, last_name=$3, avatar=$4, email=$5 WHERE id=$6;', [req.body.username, req.body.firstName, req.body.lastName, req.body.avatar, req.body.email, parseInt(dataToken.id)]);
         res.status(200).send({message: 'Done!'})
     } catch (err) {
         res.status(500).send({
