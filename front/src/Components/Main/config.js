@@ -28,3 +28,11 @@ export const theme_default = {
         }
     }
 }
+
+export const dataTheme = [
+    {
+        id: 1,
+        name: 'Default',
+        color: theme_default,
+    },
+]

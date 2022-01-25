@@ -13,8 +13,20 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {Email, Lock, Visibility, VisibilityOff, Login, Person, Badge, KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
+import {
+    Email,
+    Lock,
+    Visibility,
+    VisibilityOff,
+    Login,
+    Person,
+    Badge,
+    KeyboardArrowDown,
+    KeyboardArrowUp,
+    Google
+} from "@mui/icons-material";
 import {Alert, LoadingButton} from "@mui/lab";
+import { GoogleLogin } from 'react-google-login';
 
 export default function Register() {
     const [firstName, setFirstName] = useState('');
@@ -22,24 +34,24 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isError, setIsError] = useState(false);
+    const [isGoogleError, setIsGoogleError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isBlindPass, setIsBlindPass] = useState(true);
     const [isTermActive, setIsTermActive] = useState(false);
     const [showTerm, setShowTerm] = useState(false);
     let navigate = useNavigate();
 
-    async function onSubmit(e) {
-        e.preventDefault();
-
+    async function registerInSerer(type, pass, mail, lName, FName, avatar) {
         try {
             setIsLoading(true)
             let body = {
-                email: email,
-                password: password,
-                username: firstName + ' ' + lastName,
-                firstName: firstName,
-                lastName: lastName,
-                auth: 'local',
+                email: mail,
+                password: pass,
+                username: FName + ' ' + lName,
+                firstName: FName,
+                lastName: lName,
+                avatar: avatar,
+                auth: type,
             }
             const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/register`, body);
 
@@ -52,6 +64,27 @@ export default function Register() {
                 setIsLoading(false)
             }
         }
+    }
+
+    const onSuccessGoogle = (response) => {
+        console.log(response);
+        (async () => {
+            try {
+                await registerInSerer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
+            } catch (err) {
+                console.log(err);
+            }
+        })()
+    }
+
+    const onFailureGoogle = (err) => {
+        console.log(err);
+        setIsGoogleError(true);
+    }
+
+    async function onSubmit(e) {
+        e.preventDefault();
+        await registerInSerer('local', password, email, lastName, firstName, '');
     }
 
     return <Grid container item xs={12} alignItems={'center'} justifyContent={'center'} style={{height: '100vh'}}>
@@ -72,6 +105,25 @@ export default function Register() {
                         </Typography>
                     </Grid>
 
+                </Grid>
+
+                <Divider variant="middle"/>
+
+                <Grid item xs={12} sx={{p: 3}} style={{paddingTop: 5, paddingBottom: 5}}>
+                    <Grid item xs={4}>
+                        <GoogleLogin
+                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                            render={renderProps => (
+                                <LoadingButton loading={isLoading} variant={'contained'} fullWidth onClick={renderProps.onClick}
+                                               disabled={renderProps.disabled} startIcon={<Google/>}>
+                                    Sign in
+                                </LoadingButton>
+                            )}
+                            onSuccess={onSuccessGoogle}
+                            onFailure={onFailureGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
+                    </Grid>
                 </Grid>
 
                 <Divider variant="middle"/>
@@ -176,6 +228,13 @@ export default function Register() {
                       anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
                 <Alert onClose={() => setIsError(false)} severity="warning" sx={{width: '100%'}}>
                     A error has occurred!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={isGoogleError} autoHideDuration={6000} onClose={() => setIsGoogleError(false)}
+                      anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+                <Alert icon={<Google/>} onClose={() => setIsGoogleError(false)} severity="error" sx={{width: '100%'}}>
+                    Google turn into error!
                 </Alert>
             </Snackbar>
 

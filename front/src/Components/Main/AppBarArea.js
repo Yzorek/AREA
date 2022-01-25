@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {
     Toolbar,
     AppBar,
@@ -6,15 +6,25 @@ import {
     IconButton,
     Grid,
     TextField,
-    InputAdornment, Avatar, Typography, Paper, Popover, List, ListItemButton, ListItemIcon, ListItemText,
+    InputAdornment,
+    Avatar,
+    Typography,
+    Popover,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    CircularProgress,
+    ListItem, Divider, ListItemAvatar
 } from "@mui/material";
-import {Notifications, ChatBubble, Search, Logout} from "@mui/icons-material";
+import {Notifications, ChatBubble, Search, Logout, Person, Settings, Palette} from "@mui/icons-material";
 import {drawWith} from "./config";
 import {useNavigate} from "react-router-dom";
+import UserContext from "../Tools/UserContext/UserContext";
 
-export default function AppBarArea() {
-    const [onHoverPaper, setOnHoverPaper] = useState(false);
+export default function AppBarArea({isLoading}) {
     const [anchorEl, setAnchorEl] = useState(null);
+    let userContext = useContext(UserContext);
     let navigate = useNavigate()
 
     const handleClick = (event) => {
@@ -30,7 +40,8 @@ export default function AppBarArea() {
             <Grid container item xs={12}>
                 <Grid container item xs={6} alignItems={'center'}>
                     <Grid item xs={7} style={{marginLeft: drawWith + 10}}>
-                        <TextField fullWidth size={"small"} label={'Search Bar'} variant={'outlined'} type={'search'}
+                        <TextField disabled={isLoading || !userContext} fullWidth size={"small"} label={'Search Bar'}
+                                   variant={'outlined'} type={'search'}
                                    InputProps={{
                                        endAdornment: (
                                            <InputAdornment position="end">
@@ -41,52 +52,40 @@ export default function AppBarArea() {
                     </Grid>
                 </Grid>
                 <Grid container item xs={6} justifyContent={'flex-end'} alignItems={'center'} spacing={2}>
-                    <Grid item>
-                        <Paper
-                            onClick={handleClick}
-                            onMouseEnter={() => setOnHoverPaper(true)}
-                            onMouseLeave={() => setOnHoverPaper(false)} variant="outlined" style={{
-                            borderRadius: 20,
-                            cursor: 'pointer',
-                        }} sx={{
-                            bgcolor: onHoverPaper && 'dashboard.appBar.hover',
-                        }}>
-                            <Grid item container xs={12} alignItems={'center'}>
-                                <Grid container item xs={9} justifyContent={'center'}>
-                                    <Typography>
-                                        Damien Maillard
-                                    </Typography>
-                                </Grid>
-                                <Grid item container xs={3} justifyContent={'center'}>
-                                    <IconButton style={{paddingTop: 5, paddingBottom: 5}}>
-                                        <Avatar/>
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-                        </Paper>
-
-                    </Grid>
-                    <Grid item>
+                    {isLoading || !userContext ? <Grid item>
+                        <CircularProgress style={{width: 25, height: 25}}/>
+                    </Grid> : <Grid item>
                         <Tooltip title="Chat">
                             <IconButton>
                                 <ChatBubble/>
                             </IconButton>
                         </Tooltip>
-                    </Grid>
+                    </Grid>}
 
-                    <Grid item>
+                    {isLoading || !userContext ? <Grid item>
+                        <CircularProgress style={{width: 25, height: 25}}/>
+                    </Grid> : <Grid item>
                         <Tooltip title="Notifications">
                             <IconButton>
                                 <Notifications/>
                             </IconButton>
                         </Tooltip>
-                    </Grid>
+                    </Grid>}
 
+                    {isLoading || !userContext ? <Grid item>
+                        <CircularProgress style={{width: 25, height: 25}}/>
+                    </Grid> : <Grid item>
+                        <Tooltip title="Open Profile">
+                            <IconButton>
+                                <Avatar alt={userContext.username} src={userContext.avatar} onClick={handleClick}/>
+                            </IconButton>
+                        </Tooltip>
+                    </Grid>}
                 </Grid>
             </Grid>
         </Toolbar>
 
-        <Popover
+        {userContext && <Popover
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}
             onClose={handleClose}
@@ -95,7 +94,52 @@ export default function AppBarArea() {
                 horizontal: 'left',
             }}
         >
-            <List dense style={{width: 175, padding: 0}}>
+            <List dense style={{width: 300, padding: 0}}>
+                <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                        <Avatar alt={userContext.username} src={userContext.avatar}/>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={userContext.username}
+                        secondary={
+                            <Typography
+                                variant="caption"
+                                color="gray"
+                            >
+                                {userContext.firstName} {userContext.lastName}
+                            </Typography>
+                        }
+                    />
+                </ListItem>
+                <Divider/>
+                <ListItemButton onClick={() => {
+                    handleClose();
+                    navigate('/App/Profile/Me');
+                }}>
+                    <ListItemIcon>
+                        <Person/>
+                    </ListItemIcon>
+                    <ListItemText primary={'Profile'}/>
+                </ListItemButton>
+                <ListItemButton onClick={() => {
+                    handleClose();
+                    navigate('/App/Profile/Settings');
+                }}>
+                    <ListItemIcon>
+                        <Settings/>
+                    </ListItemIcon>
+                    <ListItemText primary={'Settings'}/>
+                </ListItemButton>
+                <ListItemButton onClick={() => {
+                    handleClose();
+                    navigate('/App/Profile/Theme');
+                }}>
+                    <ListItemIcon>
+                        <Palette/>
+                    </ListItemIcon>
+                    <ListItemText primary={'Theme'}/>
+                </ListItemButton>
+                <Divider/>
                 <ListItemButton onClick={() => {
                     localStorage.clear();
                     navigate('/Login');
@@ -106,6 +150,6 @@ export default function AppBarArea() {
                     <ListItemText primary={'Log out'}/>
                 </ListItemButton>
             </List>
-        </Popover>
+        </Popover>}
     </AppBar>
 }

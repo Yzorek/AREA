@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
     Divider,
     Drawer,
@@ -8,16 +8,22 @@ import {
     List,
     ListSubheader,
     ListItemButton,
-    ListItemIcon, ListItemText, Box
+    ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert
 } from "@mui/material";
 import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
 import {Dashboard, Person} from "@mui/icons-material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import {DEFAULT_PAGE} from "./config";
 import {useNavigate} from "react-router-dom";
+import UserContext from "../Tools/UserContext/UserContext";
 
-function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon, redirectTo}) {
+function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon, redirectTo, isLoading}) {
     let navigate = useNavigate();
+
+    if (isLoading)
+        return <ListItem style={{width: '100%'}}>
+            <Skeleton style={{width: '100%'}} sx={{bgcolor: 'grey.900'}}/>
+        </ListItem>
 
     return <ListItemButton onClick={() => {
         onSelectedChange(id);
@@ -37,8 +43,9 @@ function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon
     </ListItemButton>
 }
 
-export default function DrawerArea() {
-    const [idSelected, setIdSelected] = useState(DEFAULT_PAGE)
+export default function DrawerArea({isLoading}) {
+    const [idSelected, setIdSelected] = useState(DEFAULT_PAGE);
+    let userContext = useContext(UserContext);
 
     const onSelectedChange = (id) => {
         setIdSelected(id)
@@ -62,6 +69,7 @@ export default function DrawerArea() {
         </Toolbar>
         <Divider color={'gray'}/>
         <Box sx={{overflow: 'auto'}}>
+            {userContext && !userContext.isIdentified && <Alert severity="warning" style={{margin: 10}}>Your account is not identified, please check your mail box.</Alert>}
             <List
                 dense
                 subheader={
@@ -72,9 +80,9 @@ export default function DrawerArea() {
             >
                 <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard/>} id={GENERAL_DASHBOARD}
                                           label={'Dashboard'} idSelected={idSelected}
-                                          onSelectedChange={onSelectedChange}/>
+                                          onSelectedChange={onSelectedChange} isLoading={isLoading}/>
                 <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
-                                          idSelected={idSelected} onSelectedChange={onSelectedChange}/>
+                                          idSelected={idSelected} onSelectedChange={onSelectedChange} isLoading={isLoading}/>
             </List>
             <Divider color={'gray'}/>
             <List
