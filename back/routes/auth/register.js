@@ -3,6 +3,7 @@ const fctDataBase = require("../../tools/fctDBRequest");
 const fctMail = require("../../tools/fctMail");
 const {settings: settingsToken} = require("../../config/token.json");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
 
 //const { networkInterfaces } = require('os');
 
@@ -17,11 +18,24 @@ function makeCode(length) {
     return result;
 }
 
-function sendToken(req, res) {
-    res.status(200).json({
-        accessToken: fctToken.generateToken(res.locals.id),
-        duration: settingsToken.expiresIn,
-    });
+async function sendToken(req, res) {
+    try {
+        let ip = req.socket.remoteAddress
+
+        if (ip.substr(0, 7) == "::ffff:") {
+            ip = ip.substr(7)
+        }
+        await fctDataBase.request('INSERT INTO connexion_history(id_user, ip, date) VALUES ($1, $2, $3);', [res.locals.id, ip, `${moment().format('YYYY-MM-DDTHH:mm:ss')}`]);
+
+        res.status(200).json({
+            accessToken: fctToken.generateToken(res.locals.id),
+            duration: settingsToken.expiresIn,
+        });
+    } catch (err) {
+        res.status(500).send({
+            error: 'BDD error',
+        });
+    }
 }
 
 function identificationMail(req, res, next) {

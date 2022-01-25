@@ -29,6 +29,8 @@ services:
     volumes:
       - ./back/app.js:/app/app.js
       - ./back/routes:/app/routes
+      - ./back/socket:/app/socket
+      - ./back/tools:/app/tools
 
   front:
     restart: unless-stopped

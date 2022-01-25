@@ -1,5 +1,4 @@
---Table User--
-
+--Table clients--
 CREATE TABLE clients (
     id              SERIAL,
     username        varchar(255) not null,
@@ -11,4 +10,11 @@ CREATE TABLE clients (
     avatar          varchar(255),
     auth            varchar(255),
     primary key(id)
+);
+
+--Table connexion_history--
+CREATE TABLE connexion_history (
+    id_user         INT,
+    ip              varchar(255) not null,
+    date            varchar(255) not null
 );

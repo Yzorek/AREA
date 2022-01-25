@@ -17,15 +17,27 @@ import {
     CircularProgress,
     ListItem, Divider, ListItemAvatar
 } from "@mui/material";
-import {Notifications, ChatBubble, Search, Logout, Person, Settings, Palette} from "@mui/icons-material";
+import {
+    Notifications,
+    ChatBubble,
+    Search,
+    Logout,
+    Person,
+    Settings,
+    Palette,
+    Power,
+    PowerOff
+} from "@mui/icons-material";
 import {drawWith} from "./config";
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
+import socketContext from "../Tools/SocketContext/SocketContext";
 
 export default function AppBarArea({isLoading}) {
     const [anchorEl, setAnchorEl] = useState(null);
     let userContext = useContext(UserContext);
-    let navigate = useNavigate()
+    let navigate = useNavigate();
+    let socket = useContext(socketContext)
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -76,8 +88,8 @@ export default function AppBarArea({isLoading}) {
                         <CircularProgress style={{width: 25, height: 25}}/>
                     </Grid> : <Grid item>
                         <Tooltip title="Open Profile">
-                            <IconButton>
-                                <Avatar alt={userContext.username} src={userContext.avatar} onClick={handleClick}/>
+                            <IconButton onClick={handleClick}>
+                                <Avatar alt={userContext.username} src={userContext.avatar}/>
                             </IconButton>
                         </Tooltip>
                     </Grid>}
@@ -95,7 +107,14 @@ export default function AppBarArea({isLoading}) {
             }}
         >
             <List dense style={{width: 300, padding: 0}}>
-                <ListItem alignItems="flex-start">
+                <ListItem alignItems="flex-start"
+                          secondaryAction={
+                              <Tooltip title={!socket ? 'Socket is disconnected' : 'Socket is connected'}>
+                                  <IconButton>
+                                      {!socket ? <PowerOff/> : <Power/>}
+                                  </IconButton>
+                              </Tooltip>
+                          }>
                     <ListItemAvatar>
                         <Avatar alt={userContext.username} src={userContext.avatar}/>
                     </ListItemAvatar>
