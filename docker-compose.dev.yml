@@ -18,6 +18,7 @@ services:
     restart: unless-stopped
     build:
       context: ./back
+      dockerfile: Dockerfile.dev
       target: dev
     ports:
       - "8080:8080"
@@ -33,6 +34,7 @@ services:
     restart: unless-stopped
     build:
       context: ./front
+      dockerfile: Dockerfile.dev
       target: dev
     ports:
       - "3000:3000"
@@ -43,12 +45,6 @@ services:
     volumes:
       - ./front/src:/app/src
       - ./front/public:/app/public
-
-  mobile:
-    restart: unless-stopped
-    build:
-      context: ./mobile
-      target: dev
 
 volumes:
   db-data:
