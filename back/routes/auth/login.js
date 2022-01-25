@@ -2,12 +2,22 @@ const fctToken = require('../../tools/fctToken');
 const fctDataBase = require("../../tools/fctDBRequest");
 const settingsToken = require('../../config/token.json').settings;
 const bcrypt = require("bcrypt");
+const moment = require("moment");
 
-function sendToken(req, res) {
-    res.status(200).json({
-        accessToken: fctToken.generateToken(res.locals.id),
-        duration: settingsToken.expiresIn,
-    });
+async function sendToken(req, res) {
+    try {
+        await fctDataBase.request('INSERT INTO connexion_history(id_user, ip, date) VALUES ($1, $2, $3);', [res.locals.id, req.socket.remoteAddress, `${moment().format('YYYY-MM-DDTHH:mm:ss')}`]);
+
+        res.status(200).json({
+            accessToken: fctToken.generateToken(res.locals.id),
+            duration: settingsToken.expiresIn,
+        });
+    } catch (err) {
+        res.status(500).send({
+            error: 'BDD error',
+        });
+    }
+
 }
 
 function hashCheck(body, hash) {
