@@ -72,8 +72,8 @@ export default function LoginHistory() {
             <Table>
                 <TableHead sx={{borderBottom: 1, borderTop: 1, borderColor: 'divider'}}>
                     <TableRow>
-                        <TableCell style={{padding: 5}}>
-                            <Grid container item xs={12} alignItems={'center'} spacing={1}>
+                        <TableCell style={{padding: 5}} align={'center'}>
+                            <Grid container item xs={12} spacing={1} justifyContent={'center'}>
                                 <Grid item>
                                     <DateRange/>
                                 </Grid>
@@ -82,8 +82,8 @@ export default function LoginHistory() {
                                 </Grid>
                             </Grid>
                         </TableCell>
-                        <TableCell style={{padding: 5}}>
-                            <Grid container item xs={12} alignItems={'center'} spacing={1}>
+                        <TableCell style={{padding: 5}} align={'center'}>
+                            <Grid container item xs={12} spacing={1} justifyContent={'center'}>
                                 <Grid item>
                                     <Dns/>
                                 </Grid>
@@ -92,7 +92,7 @@ export default function LoginHistory() {
                                 </Grid>
                             </Grid>
                         </TableCell>
-                        <TableCell style={{padding: 5}}>
+                        {/*<TableCell style={{padding: 5}}>
                             <Grid container item xs={12} alignItems={'center'} spacing={1}>
                                 <Grid item>
                                     <Business/>
@@ -101,18 +101,18 @@ export default function LoginHistory() {
                                     CLIENT
                                 </Grid>
                             </Grid>
-                        </TableCell>
+                        </TableCell>*/}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {data.map((elem, index) => <TableRow key={`Table row history communication ${index}`}>
-                            <TableCell>
-                                {moment(elem.date, 'YYYY-MM-DDTHH:mm:ss').format('MMMM Do YYYY, HH:mm:ss')}
-                            </TableCell>
-                        <TableCell>
+                        <TableCell align={'center'}>
+                            {moment(elem.date, 'YYYY-MM-DDTHH:mm:ss').format('MMMM Do YYYY, HH:mm:ss')}
+                        </TableCell>
+                        <TableCell align={'center'}>
                             {elem.ip}
                         </TableCell>
-                        </TableRow>)}
+                    </TableRow>)}
                 </TableBody>
             </Table>
         </Grid>
