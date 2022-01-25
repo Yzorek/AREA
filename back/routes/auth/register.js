@@ -20,7 +20,12 @@ function makeCode(length) {
 
 async function sendToken(req, res) {
     try {
-        await fctDataBase.request('INSERT INTO connexion_history(id_user, ip, date) VALUES ($1, $2, $3);', [res.locals.id, req.socket.remoteAddress, `${moment().format('YYYY-MM-DDTHH:mm:ss')}`]);
+        let ip = req.socket.remoteAddress
+
+        if (ip.substr(0, 7) == "::ffff:") {
+            ip = ip.substr(7)
+        }
+        await fctDataBase.request('INSERT INTO connexion_history(id_user, ip, date) VALUES ($1, $2, $3);', [res.locals.id, ip, `${moment().format('YYYY-MM-DDTHH:mm:ss')}`]);
 
         res.status(200).json({
             accessToken: fctToken.generateToken(res.locals.id),
