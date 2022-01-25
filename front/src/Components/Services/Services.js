@@ -1,17 +1,13 @@
-import { ButtonBase, Card, Divider, Grid, SvgIcon, Switch, Typography } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import { Card, Grid, SvgIcon, Switch, Typography } from "@mui/material";
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import { ReactComponent as DiscordIcon } from '../../assets/discord.svg'
 import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg'
-import AreaDialog from "./AreaDialog";
 import { useState } from "react";
 
 export default function Services() {
-    const [isAddOpen, setIsAddOpen] = useState(false)
-    const [areas, setAreas] = useState([])
     const [services, setServices] = useState([
         {
             name: 'Twitter',
