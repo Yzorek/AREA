@@ -10,6 +10,7 @@ const indexRouter = require('./routes/index');
 const aboutRouter = require('./routes/about/about');
 const authRouter = require('./routes/auth/auth');
 const usersRoute = require('./routes/users/users');
+const servicesRouter = require('./routes/services/services');
 
 const app = express();
 const server = http.createServer(app);
@@ -30,6 +31,7 @@ app.use('/', indexRouter);
 app.use('/', aboutRouter);
 app.use('/auth', authRouter);
 app.use('/users', usersRoute);
+app.use('/services', servicesRouter);
 
 require('./socket/socket')(io);
 
