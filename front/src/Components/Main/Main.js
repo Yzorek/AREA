@@ -8,7 +8,7 @@ import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
 import MainLoader from "../Tools/MainLoader";
 import DrawerArea from "./DrawerArea";
-import Services from '../Services/Services';
+import ServiceSettings from '../Services/ServiceSettings';
 
 export default function Main() {
     const theme = createTheme(theme_default);
@@ -63,7 +63,7 @@ export default function Main() {
                         <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
                         <Route path={`Dashboard`} element={<div>Dashboard</div>}/>
                         <Route path={`Profile/*`} element={<Profile/>}/>
-                        <Route path={`Service/*`} element={<Services/>}/>
+                        <Route path={`Service/*`} element={<ServiceSettings/>}/>
                         <Route
                             path="*"
                             element={

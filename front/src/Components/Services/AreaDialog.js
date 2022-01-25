@@ -8,13 +8,12 @@ export default function AreaDialog({isAddOpen, onClose}) {
     const [isActionNeeded, setIsActionNeeded] = useState(false);
     const [isReActionNeeded, setIsReActionNeeded] = useState(false)
     const handleClose = () => {
-        onClose({});
+        onClose({});                // TODO pass requests
     }
 
     const handleSave = () => {
         if (action === '') {
             setIsActionNeeded(true);
-            return;
         }
         if (reAction === '') {
             setIsReActionNeeded(true);
@@ -26,6 +25,8 @@ export default function AreaDialog({isAddOpen, onClose}) {
         });
         setAction('');
         setReAction('');
+        setIsActionNeeded(false);
+        setIsReActionNeeded(false);
     }
 
     const handleActChange = (event) => {
@@ -45,16 +46,16 @@ export default function AreaDialog({isAddOpen, onClose}) {
                         <DialogContentText style={{paddingBottom: 10}}>
                             You can set a maximum of 30 action-reaction.
                         </DialogContentText>
-                        <FormControl fullWidth color={isActionNeeded ? 'error' : 'primary'}>
+                        <FormControl fullWidth error={isActionNeeded ? true : false}>
                             <InputLabel>Action</InputLabel>
                             <Select
                             value={action}
                             label="Action"
                             onChange={handleActChange}
                             style={{width: '100%'}}>
-                                {Actions.map((element) => {
+                                {Actions.map((element, index) => {
                                     return (
-                                        <MenuItem value={element.id}>
+                                        <MenuItem value={element.id} key={`${element.id}-${index}-menuitems-action`}>
                                             <ListItemIcon>
                                                 {element.icon}
                                             </ListItemIcon>
@@ -65,16 +66,16 @@ export default function AreaDialog({isAddOpen, onClose}) {
                             </Select>
                         </FormControl>
                         <Divider orientation="vertical" style={{height: 128, marginTop: 20, marginBottom: 20, borderRightWidth: 2}}/>
-                        <FormControl fullWidth color={isReActionNeeded ? 'error' : 'primary'}>
+                        <FormControl fullWidth error={isReActionNeeded ? true : false}>
                             <InputLabel>Reaction</InputLabel>
                             <Select
                             value={reAction}
                             label="ReAction"
                             onChange={handleReActChange}
                             style={{width: '100%'}}>
-                                {Reactions.map((element) => {
+                                {Reactions.map((element, index) => {
                                     return (
-                                        <MenuItem value={element.id}>
+                                        <MenuItem value={element.id} key={`${element.id}-${index}-menuitems-reaction`}>
                                             <ListItemIcon>
                                                 {element.icon}
                                             </ListItemIcon>
