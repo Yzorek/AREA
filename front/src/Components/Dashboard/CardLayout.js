@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
+import {Responsive as ResponsiveGridLayout} from "react-grid-layout";
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { withSize } from "react-sizeme";
-import {Grid} from "@mui/material";
+import {withSize} from "react-sizeme";
+import {Grid, Alert} from "@mui/material";
 import Widget from "./Widget/Widget";
 
 function getFromLS(key) {
@@ -17,7 +17,7 @@ function getFromLS(key) {
     return ls[key];
 }
 
-function CardLayout({size, isEdit}) {
+function CardLayout({size, isEdit, widget, setWidget}) {
     const [layouts, setLayouts] = useState(
         getFromLS("layouts")
     );
@@ -27,10 +27,11 @@ function CardLayout({size, isEdit}) {
     };
 
     const handleRemoveItem = (itemId) => {
-        //setItems(items.filter((i) => i !== itemId));
+        setWidget(widget.filter((i) => i !== itemId));
     };
 
     return <Grid container item xs={12} style={{marginTop: 20}}>
+        {widget.length === 0 && <Alert severity="info" style={{width: '100%'}}>Any widget, has selected !</Alert>}
         <ResponsiveGridLayout
             className="layout"
             layouts={layouts}
@@ -41,12 +42,11 @@ function CardLayout({size, isEdit}) {
             onLayoutChange={onLayoutChange}
             isResizable={false}
         >
-            <div
-                key={`1 - 1`}
-                data-grid={{w: 3, h: 3, x: 0, y: Infinity}}
-            >
-                <Widget isEdit={isEdit} handleRemoveItem={handleRemoveItem} idWidget={1}/>
-            </div>
+            {widget.map((item, index) => <div
+                key={`${item.id} - Widget - ${index}`}
+                data-grid={item.size}>
+                <Widget isEdit={isEdit} handleRemoveItem={handleRemoveItem} idWidget={item.id}/>
+            </div>)}
         </ResponsiveGridLayout>
     </Grid>
 
