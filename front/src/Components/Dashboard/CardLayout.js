@@ -3,9 +3,8 @@ import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { withSize } from "react-sizeme";
-import {Grid, IconButton, Paper, Tooltip} from "@mui/material";
-import {Cancel, Settings} from "@mui/icons-material";
-import WidgetAction from "./Widget/WidgetAction";
+import {Grid} from "@mui/material";
+import Widget from "./Widget/Widget";
 
 function getFromLS(key) {
     let ls = {};
@@ -44,11 +43,9 @@ function CardLayout({size, isEdit}) {
         >
             <div
                 key={`1 - 1`}
-                data-grid={{w: 5, h: 5, x: 0, y: Infinity}}
+                data-grid={{w: 3, h: 3, x: 0, y: Infinity}}
             >
-                <Paper style={{height: '100%', width: "100%"}}>
-                    {isEdit && <WidgetAction handleRemoveItem={handleRemoveItem} handleOpenSettings={() => {}} />}
-                </Paper>
+                <Widget isEdit={isEdit} handleRemoveItem={handleRemoveItem} idWidget={1}/>
             </div>
         </ResponsiveGridLayout>
     </Grid>
