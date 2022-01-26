@@ -9,6 +9,7 @@ import axios from "axios";
 import MainLoader from "../Tools/MainLoader";
 import DrawerArea from "./DrawerArea";
 import {SocketContextProvider} from "../Tools/SocketContext/SocketContext";
+import WrongPageRouter from "../Tools/WrongPageRouter";
 
 export default function Main() {
     const theme = createTheme(theme_default);
@@ -74,7 +75,7 @@ export default function Main() {
                                 path="*"
                                 element={
                                     <main style={{padding: "1rem"}}>
-                                        <p>There's nothing here!</p>
+                                        <WrongPageRouter/>
                                     </main>
                                 }
                             />
