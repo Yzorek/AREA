@@ -33,6 +33,24 @@ import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
 import socketContext from "../Tools/SocketContext/SocketContext";
 
+let status = [
+    {
+        id: 1,
+        label: 'Online',
+        color: 'green',
+    },
+    {
+        id: 2,
+        label: 'Inactive',
+        color: 'yellow',
+    },
+    {
+        id: 3,
+        label: 'Absent',
+        color: 'red',
+    }
+]
+
 export default function AppBarArea({isLoading}) {
     const [anchorEl, setAnchorEl] = useState(null);
     let userContext = useContext(UserContext);
