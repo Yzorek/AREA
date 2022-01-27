@@ -3,7 +3,7 @@ import {Box, createTheme, Grid, ThemeProvider} from "@mui/material";
 import AppBarArea from "./AppBarArea";
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import Profile from "../Profile/Profile";
-import {theme_default, drawWith} from "./config";
+import {theme_default, drawWith, dataTheme} from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
 import MainLoader from "../Tools/MainLoader";
@@ -13,7 +13,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import WrongPageRouter from "../Tools/WrongPageRouter";
 
 export default function Main() {
-    const theme = createTheme(theme_default);
+    const [theme, setTheme] = useState(createTheme(theme_default));
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [isFirstLoading, setIsFirstLoading] = useState(true);
@@ -35,6 +35,9 @@ export default function Main() {
                     });
                 if (isMounted && isMounted.current) {
                     setUser(response.data);
+                    let themeTarget = dataTheme.find(item => item.id === response.data.idTheme)
+                    if (themeTarget)
+                        setTheme(createTheme(themeTarget.color))
                     setIsLoading(false);
                     setIsFirstLoading(false);
                 }

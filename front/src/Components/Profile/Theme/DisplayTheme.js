@@ -2,7 +2,7 @@ import React from 'react';
 import {FormControlLabel, Grid, Radio} from "@mui/material";
 import {Skeleton} from "@mui/lab";
 
-export default function DisplayTheme({color, name, isChecked, isLoading}) {
+export default function DisplayTheme({color, name, isChecked, isLoading, handleThemeChange}) {
     if (isLoading)
         return <Grid container item xs={12} sx={{border: 1, borderColor: 'divider'}} style={{borderRadius: 5}}>
             <Grid container item xs={12} style={{height: 130}}>
@@ -36,7 +36,7 @@ export default function DisplayTheme({color, name, isChecked, isLoading}) {
             </div>
         </Grid>
         <Grid item xs={12} style={{padding: '0px 10px'}} sx={{borderTop: 1, borderColor: 'divider'}}>
-            <FormControlLabel value="female" control={<Radio size="small" checked={isChecked}/>} label={name}/>
+            <FormControlLabel value="female" control={<Radio size="small" checked={isChecked} onClick={handleThemeChange}/>} label={name}/>
         </Grid>
     </Grid>
 }

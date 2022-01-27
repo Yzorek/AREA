@@ -8,9 +8,16 @@ const fctAll = require('./all')
 const fctExit = require('./identification')
 const fctPassword = require('./password')
 const fctHistoryCommunication = require('./historyConnection');
+const fctTheme = require('./theme');
 
 /* GET my user data */
 router.get('/me', fctToken.auth, fctMe.getUserData);
+
+/* GET Theme user */
+router.get('/theme', fctToken.auth, fctTheme.getTheme);
+
+/* PUT Theme user */
+router.put('/theme', fctToken.auth, fctTheme.editTheme);
 
 /* GET history connection by user */
 router.get('/historyConnection', fctToken.auth, fctHistoryCommunication.getHistoryConnection);
