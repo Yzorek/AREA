@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Drawer, Grid, IconButton, InputAdornment, TextField} from "@mui/material";
 import {ArrowForwardIos, Save, Search} from "@mui/icons-material";
 
-export default function DrawerWidget({open, handleClose}) {
+export default function DrawerWidget({open, handleClose, addNewWidget}) {
     const [search, setSearch] = useState('');
 
     return <Drawer

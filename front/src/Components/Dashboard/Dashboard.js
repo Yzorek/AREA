@@ -47,8 +47,12 @@ export default function Dashboard() {
         setDrawerWidgetOpen(false);
     }
 
+    const addNewWidget = (allId) => {
+        //setWidget([...allId, widget]);
+    }
+
     return <Grid container item xs={12} sx={{p: 4}}>
-        <DrawerWidget handleClose={handleCloseDrawerWidget} open={drawerWidgetOpen}/>
+        <DrawerWidget handleClose={handleCloseDrawerWidget} open={drawerWidgetOpen} addNewWidget={addNewWidget}/>
         <Grid item xs={6}>
             <Typography style={{fontWeight: 'bold'}} variant={'h3'}>
                 Welcome
