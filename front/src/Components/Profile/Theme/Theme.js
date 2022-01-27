@@ -7,7 +7,7 @@ export default function Theme() {
     const [selectedId, setSelectedId] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
-    return <Grid item xs={7} style={{marginTop: 25}}>
+    return <Grid item xs={12} sm={10} md={7} style={{marginTop: 25}}>
         <Paper elevation={1} sx={{p: 4}}>
             <Grid container item xs={12}>
                 <Grid item xs={12}>

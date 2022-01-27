@@ -62,7 +62,7 @@ export default function Login() {
     }
 
     return <Grid container item xs={12} alignItems={'center'} justifyContent={'center'} style={{height: '100vh'}}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={8} md={4}>
             <Paper elevation={8} style={{width: '100%'}}>
 
                 <Grid container item xs={12} spacing={1} justifyContent={'center'} alignItems={'center'} sx={{p: 1}}

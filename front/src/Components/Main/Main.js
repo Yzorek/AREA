@@ -9,6 +9,7 @@ import axios from "axios";
 import MainLoader from "../Tools/MainLoader";
 import DrawerArea from "./DrawerArea";
 import {SocketContextProvider} from "../Tools/SocketContext/SocketContext";
+import Dashboard from "../Dashboard/Dashboard";
 import WrongPageRouter from "../Tools/WrongPageRouter";
 
 export default function Main() {
@@ -69,13 +70,13 @@ export default function Main() {
                             <MainLoader/>
                         </Grid> : <Routes>
                             <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
-                            <Route path={`Dashboard`} element={<div>Dashboard</div>}/>
+                            <Route path={`Dashboard`} element={<Dashboard/>}/>
                             <Route path={`Profile/*`} element={<Profile/>}/>
                             <Route
                                 path="*"
                                 element={
                                     <main style={{padding: "1rem"}}>
-                                        <WrongPageRouter/>
+                                        <WrongPageRouter redirect={'/App/'}/>
                                     </main>
                                 }
                             />
