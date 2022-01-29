@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
     Toolbar,
     AppBar,
@@ -15,8 +15,9 @@ import {
     ListItemIcon,
     ListItemText,
     CircularProgress,
-    ListItem, Divider, ListItemAvatar
+    ListItem, Divider, ListItemAvatar, Collapse, Badge
 } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import {
     Notifications,
     ChatBubble,
@@ -26,18 +27,47 @@ import {
     Settings,
     Palette,
     Power,
-    PowerOff
+    PowerOff, Circle, KeyboardArrowDown, KeyboardArrowUp
 } from "@mui/icons-material";
 import {drawWith} from "./config";
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
 import socketContext from "../Tools/SocketContext/SocketContext";
+import AlertError from "../Tools/AlertError";
+import axios from "axios";
+
+let statusData = [
+    {
+        id: 1,
+        label: 'Online',
+        color: 'green',
+    },
+    {
+        id: 2,
+        label: 'Inactive',
+        color: 'yellow',
+    },
+    {
+        id: 3,
+        label: 'Absent',
+        color: 'red',
+    }
+]
 
 export default function AppBarArea({isLoading}) {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [openStatus, setOpenStatus] = useState(false);
     let userContext = useContext(UserContext);
+    const [status, setStatus] = useState(1);
+    const [isError, setIsError] = useState(true);
+    const [isLoadingStatus, setIsLoadingStatus] = useState(false);
     let navigate = useNavigate();
     let socket = useContext(socketContext)
+
+    useEffect(() => {
+        if (userContext)
+            setStatus(userContext.idStatus || 1)
+    }, [userContext])
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -46,6 +76,40 @@ export default function AppBarArea({isLoading}) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const StyledBadge = styled(Badge)(({theme}) => ({
+        '& .MuiBadge-badge': {
+            backgroundColor: statusData.find(item => item.id === status) ? statusData.find(item => item.id === status).color : 'black',
+            color: statusData.find(item => item.id === status) ? statusData.find(item => item.id === status).color : 'black',
+            boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+        },
+    }));
+
+    const handleStatusChange = async (idStatus) => {
+        try {
+            setIsLoadingStatus(true);
+            await axios.put(`${process.env.REACT_APP_DASHBOARD_API}/users/status`, {idStatus: idStatus},
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+            setStatus(idStatus);
+            setOpenStatus(false);
+            setIsLoadingStatus(false);
+        } catch (err) {
+            if (err.response) {
+                setIsError(true);
+                setIsLoadingStatus(false);
+            }
+        }
+    }
+
+    const getSecondaryActionStatus = () => {
+        if (isLoadingStatus)
+            return <CircularProgress style={{width: 15, height: 15}}/>
+        return <IconButton size={'small'}>
+            {openStatus ? <KeyboardArrowUp/> : <KeyboardArrowDown/>}
+        </IconButton>
+    }
 
     return <AppBar position="static" sx={{bgcolor: 'white'}}>
         <Toolbar>
@@ -89,7 +153,13 @@ export default function AppBarArea({isLoading}) {
                     </Grid> : <Grid item>
                         <Tooltip title="Open Profile">
                             <IconButton onClick={handleClick}>
-                                <Avatar alt={userContext.username} src={userContext.avatar}/>
+                                <StyledBadge
+                                    overlap="circular"
+                                    anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+                                    variant="dot"
+                                >
+                                    <Avatar alt={userContext.username} src={userContext.avatar}/>
+                                </StyledBadge>
                             </IconButton>
                         </Tooltip>
                     </Grid>}
@@ -131,6 +201,31 @@ export default function AppBarArea({isLoading}) {
                     />
                 </ListItem>
                 <Divider/>
+                <ListItem button style={{paddingTop: 0, paddingBottom: 0}} disabled={isLoadingStatus} onClick={() => setOpenStatus(prevState => !prevState)}
+                          secondaryAction={getSecondaryActionStatus()}>
+                    <ListItemIcon>
+                        <Circle style={{color: statusData.find(item => item.id === status).color, fontSize: 15}}/>
+                    </ListItemIcon>
+                    <ListItemText primary={statusData.find(item => item.id === status).label}/>
+                </ListItem>
+                <Collapse in={openStatus}>
+                    <Divider/>
+                    <ListItem style={{padding: 0}}>
+                        <List style={{padding: 0, width: '100%'}} dense>
+                            {statusData.map(elem => <ListItemButton key={`${elem.id} all status data`} style={{
+                                display: elem.id === status ? 'none' : '',
+                                paddingTop: 0,
+                                paddingBottom: 0
+                            }} onClick={async () => await handleStatusChange(elem.id)}>
+                                <ListItemIcon>
+                                    <Circle style={{color: elem.color, fontSize: 15}}/>
+                                </ListItemIcon>
+                                <ListItemText primary={elem.label}/>
+                            </ListItemButton>)}
+                        </List>
+                    </ListItem>
+                </Collapse>
+                <Divider/>
                 <ListItemButton onClick={() => {
                     handleClose();
                     navigate('/App/Profile/Me');
@@ -170,5 +265,6 @@ export default function AppBarArea({isLoading}) {
                 </ListItemButton>
             </List>
         </Popover>}
+        <AlertError isError={isError} setIsError={setIsError}/>
     </AppBar>
 }
