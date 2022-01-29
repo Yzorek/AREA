@@ -3,7 +3,7 @@ import {Grid} from "@mui/material";
 import BasicDetails from "./BasicDetails";
 import AlertError from "../../Tools/AlertError";
 import axios from "axios";
-import DeleteAccount from "./DeleteAccount";
+import DeleteAccount from "./DeleteAccount/DeleteAccount";
 
 export default function Me() {
     const [data, setData] = useState(null);

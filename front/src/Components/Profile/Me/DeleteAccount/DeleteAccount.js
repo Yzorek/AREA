@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Grid, Paper, Typography, Skeleton} from "@mui/material";
 import {LoadingButton} from "@mui/lab";
+import DialogConfirmationDelete from "./DialogConfirmationDelete";
+import {useNavigate} from "react-router-dom";
 
 function SkeletonDeleteAccount() {
     return <Paper elevation={1} sx={{p: 4}}>
@@ -24,8 +26,17 @@ function SkeletonDeleteAccount() {
 }
 
 export default function DeleteAccount({isLoading}) {
+    const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
+    let navigate = useNavigate()
+
     if (isLoading)
         return <SkeletonDeleteAccount/>
+
+    const handleCloseDialogConfirmation = async (isToRedirect) => {
+        if (isToRedirect)
+            navigate('/login');
+        setOpenDialogConfirmation(false);
+    }
 
     return <Paper elevation={1} sx={{p: 4}}>
         <Grid container item xs={12}>
@@ -41,11 +52,12 @@ export default function DeleteAccount({isLoading}) {
                     </Typography>
                 </Grid>
                 <Grid item xs={4}>
-                    <LoadingButton variant={'outlined'} color={'error'} fullWidth>
+                    <LoadingButton variant={'outlined'} color={'error'} fullWidth onClick={() => setOpenDialogConfirmation(true)}>
                         Delete account
                     </LoadingButton>
                 </Grid>
             </Grid>
         </Grid>
+        <DialogConfirmationDelete handleClose={handleCloseDialogConfirmation} open={openDialogConfirmation}/>
     </Paper>
 }

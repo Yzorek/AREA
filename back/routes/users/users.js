@@ -22,7 +22,7 @@ router.get('/theme', fctToken.auth, fctTheme.getTheme);
 router.put('/theme', fctToken.auth, fctTheme.editTheme);
 
 /* Delete Theme user */
-router.delete('/', fctToken.auth, fctDeleteAccount.deleteAccount);
+router.delete('/deleteAccount', fctToken.auth, fctDeleteAccount.deleteAccount);
 
 /* PUT Status user */
 router.put('/status', fctToken.auth, fctStatus.editStatus);
