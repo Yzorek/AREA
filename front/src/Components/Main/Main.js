@@ -3,20 +3,28 @@ import {Box, createTheme, Grid, ThemeProvider} from "@mui/material";
 import AppBarArea from "./AppBarArea";
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import Profile from "../Profile/Profile";
-import {theme_default, drawWith} from "./config";
+import {theme_default, drawWith, dataTheme, DEFAULT_PAGE, GENERAL_DASHBOARD, GENERAL_PROFILE} from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
 import MainLoader from "../Tools/MainLoader";
 import DrawerArea from "./DrawerArea";
 import ServiceSettings from '../Services/ServiceSettings';
 import {SocketContextProvider} from "../Tools/SocketContext/SocketContext";
+import Dashboard from "../Dashboard/Dashboard";
+import WrongPageRouter from "../Tools/WrongPageRouter";
+
+function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
+    setIdSelectedDrawerButton(idRoute)
+    return app
+}
 
 export default function Main() {
-    const theme = createTheme(theme_default);
+    const [theme, setTheme] = useState(createTheme(theme_default));
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [isFirstLoading, setIsFirstLoading] = useState(true);
     const isMounted = useRef(null);
+    const [idSelectedDrawerButton, setIdSelectedDrawerButton] = useState(DEFAULT_PAGE);
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -34,6 +42,9 @@ export default function Main() {
                     });
                 if (isMounted && isMounted.current) {
                     setUser(response.data);
+                    let themeTarget = dataTheme.find(item => item.id === response.data.idTheme)
+                    if (themeTarget)
+                        setTheme(createTheme(themeTarget.color))
                     setIsLoading(false);
                     setIsFirstLoading(false);
                 }
@@ -56,7 +67,7 @@ export default function Main() {
             <UserContextProvider user={user}>
                 <Grid container item xs={12}>
                     <AppBarArea isLoading={isLoading}/>
-                    <DrawerArea isLoading={isLoading}/>
+                    <DrawerArea isLoading={isLoading} idSelected={idSelectedDrawerButton}/>
                     <Box component="main"
                          sx={{bgcolor: 'grey.100'}} style={{
                         flexGrow: 1,
@@ -69,14 +80,14 @@ export default function Main() {
                             <MainLoader/>
                         </Grid> : <Routes>
                             <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
-                            <Route path={`Dashboard`} element={<div>Dashboard</div>}/>
-                            <Route path={`Profile/*`} element={<Profile/>}/>
                             <Route path={`Service/*`} element={<ServiceSettings/>}/>
+                            <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
+                            <Route path={`Profile/*`} element={<SelectedRouter app={<Profile/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                             <Route
                                 path="*"
                                 element={
                                     <main style={{padding: "1rem"}}>
-                                        <p>There's nothing here!</p>
+                                        <WrongPageRouter redirect={'/App/'}/>
                                     </main>
                                 }
                             />

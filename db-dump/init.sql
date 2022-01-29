@@ -9,6 +9,8 @@ CREATE TABLE clients (
     is_identified   bool,
     avatar          varchar(255),
     auth            varchar(255),
+    id_theme        INT,
+    id_status       INT,
     primary key(id)
 );
 

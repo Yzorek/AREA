@@ -8,6 +8,7 @@ import Register from "./Components/Register/Register";
 import Main from "./Components/Main/Main";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import WrongPageRouter from "./Components/Tools/WrongPageRouter";
 
 function App() {
     const [isConnected, setIsConnected] = useState(false);
@@ -38,7 +39,7 @@ function App() {
                 path="*"
                 element={
                     <main style={{padding: "1rem"}}>
-                        <p>There's nothing here!</p>
+                        <WrongPageRouter redirect={'/'}/>
                     </main>
                 }
             />

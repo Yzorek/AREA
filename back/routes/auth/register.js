@@ -5,8 +5,6 @@ const {settings: settingsToken} = require("../../config/token.json");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
 
-//const { networkInterfaces } = require('os');
-
 function makeCode(length) {
     let result = '';
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -40,26 +38,11 @@ async function sendToken(req, res) {
 
 function identificationMail(req, res, next) {
     try {
-        /*const nets = networkInterfaces();
-        const results = Object.create(null);
-
-        for (const name of Object.keys(nets)) {
-            for (const net of nets[name]) {
-                if (net.family === 'IPv4' && !net.internal) {
-                    if (!results[name]) {
-                        results[name] = [];
-                    }
-                    results[name].push(net.address);
-                }
-            }
-        }*/
-
-
-        fctMail.createMail(req.body.email, "Welcome to Ulys! Please confirme your email! to Ulys application!", `http://localhost:3000/users/identification/${res.locals.id}?code=${makeCode(6)}`,
+        fctMail.createMail(req.body.email, "Welcome to Ulys! Please confirme your email! to Ulys application!", `http://localhost:8082/users/identification/${res.locals.id}?code=${makeCode(6)}`,
             '<div>' +
             '<p>Welcome to Ulys!</p>' +
             '<p>Please click on this link for confirme your email!</p>' +
-            `<p>http://localhost:3000/users/identification/${res.locals.id}?code=${makeCode(6)}</p>` +
+            `<p>http://localhost:8082/users/identification/${res.locals.id}?code=${makeCode(6)}</p>` +
             '</div>')
         next();
     } catch (err) {
@@ -79,8 +62,8 @@ async function insertIntoClients(req, res, next) {
                     reject(err);
                 }
                 try {
-                    await fctDataBase.request("INSERT INTO clients(username, first_name, last_name, email, password, is_identified, avatar, auth) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);",
-                        [req.body.username, req.body.firstName, req.body.lastName, req.body.email, hash, false, req.body.avatar ? req.body.avatar : null, req.body.auth]);
+                    await fctDataBase.request("INSERT INTO clients(username, first_name, last_name, email, password, is_identified, avatar, auth, id_theme, id_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);",
+                        [req.body.username, req.body.firstName, req.body.lastName, req.body.email, hash, false, req.body.avatar ? req.body.avatar : null, req.body.auth, 1, 1]);
                     next();
                     resolve();
                 } catch (err) {
