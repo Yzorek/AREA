@@ -18,6 +18,7 @@ services:
     restart: unless-stopped
     build:
       context: ./back
+      dockerfile: Dockerfile.dev
       target: dev
     ports:
       - "8080:8080"
@@ -28,14 +29,17 @@ services:
     volumes:
       - ./back/app.js:/app/app.js
       - ./back/routes:/app/routes
+      - ./back/socket:/app/socket
+      - ./back/tools:/app/tools
 
   front:
     restart: unless-stopped
     build:
       context: ./front
+      dockerfile: Dockerfile.dev
       target: dev
     ports:
-      - "3000:3000"
+      - "8082:8082"
     env_file:
       - .front.env
     depends_on:
