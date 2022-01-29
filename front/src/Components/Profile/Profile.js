@@ -33,12 +33,16 @@ const pages = [
     },
 ]
 
+function SelectedRouter({setTabs, app, value}) {
+    setTabs(value)
+    return app
+}
+
 export default function Profile() {
     const [tabs, setTabs] = useState("Me");
     let navigate = useNavigate();
 
     const handleTabsChange = (event, newValue) => {
-        setTabs(newValue);
         navigate(newValue);
     };
 
@@ -55,8 +59,7 @@ export default function Profile() {
         </Grid>
         <Routes>
             <Route path={`/`} element={<Navigate to={pages[0].value}/>}/>
-            {pages.map((item, index) => <Route key={`${item.label}-${index}-router-profile`} path={item.value} element={item.component}/>)}
+            {pages.map((item, index) => <Route key={`${item.label}-${index}-router-profile`} path={item.value} element={<SelectedRouter setTabs={setTabs} value={item.value} app={item.component}/>}/>)}
         </Routes>
     </Grid>
-
 }
