@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {
     Divider,
     Drawer,
@@ -12,11 +12,10 @@ import {
 } from "@mui/material";
 import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE} from "./config";
 import {Dashboard, Person} from "@mui/icons-material";
-import {DEFAULT_PAGE} from "./config";
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
 
-function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon, redirectTo, isLoading}) {
+function ClassicListItemButtonNav({idSelected, id, label, icon, redirectTo, isLoading}) {
     let navigate = useNavigate();
 
     if (isLoading)
@@ -25,7 +24,6 @@ function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon
         </ListItem>
 
     return <ListItemButton onClick={() => {
-        onSelectedChange(id);
         navigate(redirectTo);
     }} sx={{
         [`&:hover`]: {
@@ -42,13 +40,8 @@ function ClassicListItemButtonNav({idSelected, onSelectedChange, id, label, icon
     </ListItemButton>
 }
 
-export default function DrawerArea({isLoading}) {
-    const [idSelected, setIdSelected] = useState(DEFAULT_PAGE);
+export default function DrawerArea({isLoading, idSelected}) {
     let userContext = useContext(UserContext);
-
-    const onSelectedChange = (id) => {
-        setIdSelected(id)
-    }
 
     return <Drawer
         variant="permanent"
@@ -78,10 +71,9 @@ export default function DrawerArea({isLoading}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard/>} id={GENERAL_DASHBOARD}
-                                          label={'Dashboard'} idSelected={idSelected}
-                                          onSelectedChange={onSelectedChange} isLoading={isLoading}/>
+                                          label={'Dashboard'} idSelected={idSelected} isLoading={isLoading}/>
                 <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
-                                          idSelected={idSelected} onSelectedChange={onSelectedChange} isLoading={isLoading}/>
+                                          idSelected={idSelected} isLoading={isLoading}/>
             </List>
         </Box>
 
