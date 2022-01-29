@@ -22,6 +22,7 @@ async function getUserData(req, res) {
                 avatar: data.rows[0].avatar,
                 auth: data.rows[0].auth,
                 idTheme: data.rows[0].id_theme,
+                idStatus: data.rows[0].id_status,
             })
         }
     } catch (err) {

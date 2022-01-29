@@ -9,6 +9,7 @@ const fctExit = require('./identification')
 const fctPassword = require('./password')
 const fctHistoryCommunication = require('./historyConnection');
 const fctTheme = require('./theme');
+const fctStatus = require('./status');
 
 /* GET my user data */
 router.get('/me', fctToken.auth, fctMe.getUserData);
@@ -18,6 +19,9 @@ router.get('/theme', fctToken.auth, fctTheme.getTheme);
 
 /* PUT Theme user */
 router.put('/theme', fctToken.auth, fctTheme.editTheme);
+
+/* PUT Status user */
+router.put('/status', fctToken.auth, fctStatus.editStatus);
 
 /* GET history connection by user */
 router.get('/historyConnection', fctToken.auth, fctHistoryCommunication.getHistoryConnection);
