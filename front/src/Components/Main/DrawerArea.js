@@ -10,8 +10,10 @@ import {
     ListItemButton,
     ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert
 } from "@mui/material";
-import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE} from "./config";
+import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
 import {Dashboard, Person} from "@mui/icons-material";
+import SettingsIcon from '@mui/icons-material/Settings';
+import {DEFAULT_PAGE} from "./config";
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
 
@@ -74,6 +76,18 @@ export default function DrawerArea({isLoading, idSelected}) {
                                           label={'Dashboard'} idSelected={idSelected} isLoading={isLoading}/>
                 <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
                                           idSelected={idSelected} isLoading={isLoading}/>
+            </List>
+            <Divider color={'gray'}/>
+            <List
+                dense
+                subheader={
+                    <ListSubheader sx={{bgcolor: 'dashboard.drawer.background', color: 'dashboard.drawer.titleList', fontWeight: 'bold'}}>
+                        Services
+                    </ListSubheader>
+                }
+            >
+                <ClassicListItemButtonNav redirectTo={'Service'} icon={<SettingsIcon/>} id={SERVICE_SETTINGS}
+                                          label={'Service settings'} idSelected={idSelected}/>
             </List>
         </Box>
 
