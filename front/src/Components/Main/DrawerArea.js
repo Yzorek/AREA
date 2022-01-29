@@ -13,7 +13,6 @@ import {
 import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
 import {Dashboard, Person} from "@mui/icons-material";
 import SettingsIcon from '@mui/icons-material/Settings';
-import {DEFAULT_PAGE} from "./config";
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
 
@@ -22,7 +21,7 @@ function ClassicListItemButtonNav({idSelected, id, label, icon, redirectTo, isLo
 
     if (isLoading)
         return <ListItem style={{width: '100%'}}>
-            <Skeleton style={{width: '100%'}} sx={{bgcolor: 'grey.900'}}/>
+            <Skeleton variant={'rectangular'} width={'100%'} height={30} style={{width: '100%'}} sx={{bgcolor: 'grey.900'}}/>
         </ListItem>
 
     return <ListItemButton onClick={() => {
@@ -77,7 +76,6 @@ export default function DrawerArea({isLoading, idSelected}) {
                 <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
                                           idSelected={idSelected} isLoading={isLoading}/>
             </List>
-            <Divider color={'gray'}/>
             <List
                 dense
                 subheader={
@@ -87,7 +85,7 @@ export default function DrawerArea({isLoading, idSelected}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Service'} icon={<SettingsIcon/>} id={SERVICE_SETTINGS}
-                                          label={'Service settings'} idSelected={idSelected}/>
+                                          label={'Service settings'} idSelected={idSelected} isLoading={true}/>
             </List>
         </Box>
 

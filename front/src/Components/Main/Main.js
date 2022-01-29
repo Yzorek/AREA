@@ -3,7 +3,15 @@ import {Box, createTheme, Grid, ThemeProvider} from "@mui/material";
 import AppBarArea from "./AppBarArea";
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import Profile from "../Profile/Profile";
-import {theme_default, drawWith, dataTheme, DEFAULT_PAGE, GENERAL_DASHBOARD, GENERAL_PROFILE} from "./config";
+import {
+    theme_default,
+    drawWith,
+    dataTheme,
+    DEFAULT_PAGE,
+    GENERAL_DASHBOARD,
+    GENERAL_PROFILE,
+    SERVICE_SETTINGS
+} from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
 import MainLoader from "../Tools/MainLoader";
@@ -80,7 +88,7 @@ export default function Main() {
                             <MainLoader/>
                         </Grid> : <Routes>
                             <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
-                            <Route path={`Service/*`} element={<ServiceSettings/>}/>
+                            <Route path={`Service/*`} element={<SelectedRouter app={<ServiceSettings/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>}/>
                             <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                             <Route path={`Profile/*`} element={<SelectedRouter app={<Profile/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                             <Route
