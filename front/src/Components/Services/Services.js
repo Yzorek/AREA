@@ -1,4 +1,4 @@
-import {Card, Grid, Paper, SvgIcon, Switch, Typography} from "@mui/material";
+import {Grid, Paper, SvgIcon, Alert, Typography} from "@mui/material";
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -53,17 +53,20 @@ export default function Services() {
     }
 
     return (
-        <Grid container item xs={12}>
-            <Grid container item xs={12} style={{ padding: 20 }}>
+        <Grid container item xs={12} style={{ padding: 20 }} spacing={2}>
+            <Grid container item xs={12}>
                 <Typography variant={'h5'} style={{fontWeight: 'bold'}}>
                     SERVICES
                 </Typography>
             </Grid>
-            <Grid container item xs={12} style={{ padding: 20 }} spacing={2}>
+            <Grid container item xs={12}>
+                <Alert severity="info" style={{width: '100%'}}>Selected your service bellow.</Alert>
+            </Grid>
+            <Grid container item xs={12} spacing={2}>
                 {services.map((item, index) => <Grid item xs={2} key={`${item.name}-${index}-card-service`}>
                             <Paper style={{height: 140, background: item.isActive ? item.color : 'gray', cursor: 'pointer'}} sx={{
                                 transition: '0.5s',
-                                '&:hover': {boxShadow: 10}
+                                '&:hover': {boxShadow: 12}
                             }} elevation={5} onClick={() => handleServiceActivation(index)}>
                                 <Grid container item xs={12} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}} style={{height: '100%'}}>
                                     {item.icon}
