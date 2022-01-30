@@ -10,8 +10,8 @@ import {
     ListItemButton,
     ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert
 } from "@mui/material";
-import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
-import {Dashboard, Person} from "@mui/icons-material";
+import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, NOTIFICATION_CENTER, SERVICE_SETTINGS} from "./config";
+import {Dashboard, Notifications, Person} from "@mui/icons-material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
@@ -74,6 +74,8 @@ export default function DrawerArea({isLoading, idSelected}) {
                 <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard/>} id={GENERAL_DASHBOARD}
                                           label={'Dashboard'} idSelected={idSelected} isLoading={isLoading}/>
                 <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
+                                          idSelected={idSelected} isLoading={isLoading}/>
+                <ClassicListItemButtonNav redirectTo={'NotificationCenter'} icon={<Notifications/>} id={NOTIFICATION_CENTER} label={'Notification Center'}
                                           idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
