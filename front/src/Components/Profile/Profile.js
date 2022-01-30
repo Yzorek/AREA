@@ -5,6 +5,7 @@ import Me from "./Me/Me";
 import Security from "./Security/Security";
 import Theme from "./Theme/Theme";
 import {Badge, Palette, GppGood, Settings} from "@mui/icons-material";
+import SettingsPage from "./Settings/SettingsPage";
 
 const pages = [
     {
@@ -28,7 +29,7 @@ const pages = [
     {
         label: 'Settings',
         value: 'Settings',
-        component: <Grid container item xs={7}>Settings</Grid>,
+        component: <SettingsPage/>,
         icon: <Settings/>
     },
 ]
