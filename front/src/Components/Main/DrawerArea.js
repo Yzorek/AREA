@@ -10,8 +10,8 @@ import {
     ListItemButton,
     ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert
 } from "@mui/material";
-import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
-import {Dashboard, Person} from "@mui/icons-material";
+import {API_WEATHER, drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
+import {Cloud, Dashboard, Person} from "@mui/icons-material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
@@ -75,6 +75,17 @@ export default function DrawerArea({isLoading, idSelected}) {
                                           label={'Dashboard'} idSelected={idSelected} isLoading={isLoading}/>
                 <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
                                           idSelected={idSelected} isLoading={isLoading}/>
+            </List>
+            <List
+                dense
+                subheader={
+                    <ListSubheader sx={{bgcolor: 'dashboard.drawer.background', color: 'dashboard.drawer.titleList', fontWeight: 'bold'}}>
+                        API
+                    </ListSubheader>
+                }
+            >
+                <ClassicListItemButtonNav redirectTo={'Weather'} icon={<Cloud/>} id={API_WEATHER}
+                                          label={'Weather'} idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
                 dense

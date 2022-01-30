@@ -10,7 +10,7 @@ import {
     DEFAULT_PAGE,
     GENERAL_DASHBOARD,
     GENERAL_PROFILE,
-    SERVICE_SETTINGS
+    SERVICE_SETTINGS, API_WEATHER
 } from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
@@ -20,6 +20,7 @@ import ServiceSettings from '../Services/ServiceSettings';
 import {SocketContextProvider} from "../Tools/SocketContext/SocketContext";
 import Dashboard from "../Dashboard/Dashboard";
 import WrongPageRouter from "../Tools/WrongPageRouter";
+import Weather from "../Weather/Weather";
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -91,6 +92,7 @@ export default function Main() {
                             <Route path={`Service/*`} element={<SelectedRouter app={<ServiceSettings/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>}/>
                             <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                             <Route path={`Profile/*`} element={<SelectedRouter app={<Profile/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
+                            <Route path={`Weather/*`} element={<SelectedRouter app={<Weather/>} idRoute={API_WEATHER} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                             <Route
                                 path="*"
                                 element={
