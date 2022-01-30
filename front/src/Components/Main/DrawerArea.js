@@ -85,7 +85,7 @@ export default function DrawerArea({isLoading, idSelected}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Service'} icon={<SettingsIcon/>} id={SERVICE_SETTINGS}
-                                          label={'Service settings'} idSelected={idSelected} isLoading={true}/>
+                                          label={'Service settings'} idSelected={idSelected} isLoading={isLoading}/>
             </List>
         </Box>
 

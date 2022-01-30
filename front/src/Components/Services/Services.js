@@ -1,4 +1,4 @@
-import { Card, Grid, SvgIcon, Switch, Typography } from "@mui/material";
+import {Card, Grid, Paper, SvgIcon, Switch, Typography} from "@mui/material";
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -48,9 +48,8 @@ export default function Services() {
     ])
 
     const handleServiceActivation = (index) => {                // TODO make proper request
-        let newArray = services;
-        newArray[index].isActive = !(newArray[index].isActive);
-        setServices(newArray);
+        services[index].isActive = !services[index].isActive;
+        setServices([...services]);
     }
 
     return (
@@ -60,16 +59,39 @@ export default function Services() {
                     SERVICES
                 </Typography>
             </Grid>
-            <Grid container item xs={12} style={{ padding: 20 }}>
-                {services.map((item, index) => {
-                    return (
-                        <Card key={`${item.name}-${index}-card-service`} style={{ padding: 15, marginRight: 50, marginBottom: 20, background: item.color, width: 100, height: 100, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
-                            {item.icon}
-                            <Switch checked={services.isActive} onChange={() => {handleServiceActivation(index)}}/>
-                        </Card>
-                    )
-                })}
+            <Grid container item xs={12} style={{ padding: 20 }} spacing={2}>
+                {services.map((item, index) => <Grid item xs={2} key={`${item.name}-${index}-card-service`}>
+                            <Paper style={{height: 140, background: item.isActive ? item.color : 'gray', cursor: 'pointer'}} sx={{
+                                transition: '0.5s',
+                                '&:hover': {boxShadow: 10}
+                            }} elevation={5} onClick={() => handleServiceActivation(index)}>
+                                <Grid container item xs={12} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}} style={{height: '100%'}}>
+                                    {item.icon}
+                                    <Typography color={'white'} style={{fontWeight: 'bold'}}>
+                                        {item.name}
+                                    </Typography>
+                                </Grid>
+                            </Paper>
+                        </Grid>)}
             </Grid>
+
+            {/*<Grid container item xs={12} style={{ padding: 20 }} spacing={2}>
+                {services.map((item, index) => <Grid item xs={2} key={`${item.name}-${index}-card-service V2`}>
+                    <Paper style={{height: 140, background: item.color}} sx={{
+                        transition: '0.5s',
+                        bgcolor: 'background.paper',
+                        '&:hover': {boxShadow: 10}
+                    }} elevation={5}>
+                        <Grid container item xs={12} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}}>
+                            {item.icon}
+                            <Typography color={'white'} style={{fontWeight: 'bold'}}>
+                                {item.name}
+                            </Typography>
+                            <Switch checked={item.isActive} onChange={() => handleServiceActivation(index)}/>
+                        </Grid>
+                    </Paper>
+                </Grid>)}
+            </Grid>*/}
         </Grid>
     )
 
