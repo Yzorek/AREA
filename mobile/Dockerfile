@@ -1,4 +1,4 @@
-FROM androidsdk/android-30:latest as dev
+FROM androidsdk/android-30:latest as prod
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get install nodejs -y
