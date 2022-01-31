@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, Alert, FlatList } from 'react-native';
 import { connect } from 'react-redux'
 import colors from '../../charte/colors';
+import axios from 'axios';
 
 const Account = [
     {id: 1, email: "Area@gmail.com", password: "1234"},
@@ -12,7 +13,28 @@ class Login extends Component{
     super(props);
         this.state = {
             email: "", password: "",
+            isError: false,
         };
+    }
+
+    async onSubmit(e) {
+        e.preventDefault();
+
+        try {
+            let body = {
+                email: this.state.email,
+                password: this.state.password
+            }
+            const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/login`, body);
+            localStorage.setItem('JWT', response.accessToken);
+            console.log("yes")
+            // navigate('/App')
+        }
+        catch (err) {
+            if (err.response) {
+                this.setState({isError: true})
+            }
+        }
     }
 
     checkEmail = () => {
@@ -68,7 +90,7 @@ class Login extends Component{
                         onChangeText={(value) => {this.setState({password: value})}}
                     ></TextInput>
                 </View>
-                <TouchableOpacity style={styles.btn_login} onPress={() => {this._conditionToGoHome()}}>
+                <TouchableOpacity style={styles.btn_login} onPress={(e) => {this.onSubmit(e)}}>
                     <Text style={styles.txt_login}>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.social_media}>
