@@ -1,6 +1,6 @@
 const colors = {
-    primary: "#060887", //bleu foncé
-    secondary: "#91CDFF", //bleu clair
+    primary: "#0B0F19", //NOIR MAT
+    secondary: "#4CAB79", //VERT
     txt_create_account: "#2F88FA",
     login: {
         txt_input: "#B1B3B4",

@@ -11,6 +11,7 @@ import {
   Switch,
 } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import colors from "../../../../charte/colors";
 
 import { AuthContext } from "./../context";
 

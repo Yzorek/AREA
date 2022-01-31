@@ -15,6 +15,7 @@ import NotificationsScreen from "./Components/screens/NotificationsScreen";
 import SettingsScreen from "./Components/screens/SettingsScreen";
 import HomeScreen from "./Components/screens/HomeScreen";
 import DrawerContent from "./Components/screens/DrawerContent";
+import colors from "../../charte/colors";
 
 const Drawer = createDrawerNavigator();
 
@@ -24,7 +25,12 @@ export default class Accueil extends Component {
       <View style={{flex: 1, width: "100%"}}>
         <NavigationContainer>
           <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
-            <Drawer.Screen name="MainTabScreen" component={MainTabScreen} />
+            <Drawer.Screen options={{
+                headerStyle: {backgroundColor: colors.primary},
+                headerTitleStyle: {fontWeight: 'bold', color: "white"}
+              }}
+              name="MainTabScreen"
+              component={MainTabScreen} />
           </Drawer.Navigator>
         </NavigationContainer>
       </View>

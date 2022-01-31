@@ -14,7 +14,7 @@ class Register extends Component{
     render() {
         return (
             <View style={styles.container}>
-                {/* <Image style={styles.img_logo} source={require("../assets/logo.png")} /> */}
+                <Text style={styles.txt_logo}>ULYS</Text>
                 <Text style={styles.txt_input}>FIRST NAME</Text>
                 <View style={styles.input}>
                     <TextInput
@@ -52,6 +52,9 @@ class Register extends Component{
                 <TouchableOpacity style={styles.btn_login} onPress={() => {}}>
                     <Text style={styles.txt_login}>Register</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => {this.props.dispatch({type: 'index', value: 0})}}>
+                    <Text style={styles.txt_register}>Sign in</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -64,6 +67,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    txt_logo: {
+        fontSize: 44,
+        fontWeight: "bold",
+        textAlign: 'center',
+        marginBottom: "20%",
     },
     img_logo: {
         width: 100,
@@ -86,9 +95,9 @@ const styles = StyleSheet.create({
     },
     btn_login: {
         width: "35%",
-        height: "5%",
+        height: "6%",
         borderRadius: 10,
-        backgroundColor: colors.login.btn_login,
+        backgroundColor: colors.secondary,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: "5%",
@@ -99,6 +108,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textDecorationLine: "underline"
     },
+    txt_register: {
+        color: colors.secondary,
+        fontSize: 20,
+        textDecorationLine: 'underline'
+    }
 });
 
 const mapStateToProps = (state) => {

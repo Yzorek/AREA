@@ -1,6 +1,6 @@
 // store/reducer/reducer.js
 
-const initialState = { index: 0, name: ""}
+const initialState = { index: 2, name: ""}
 
 function Store(state = initialState, action) {
     let nextState

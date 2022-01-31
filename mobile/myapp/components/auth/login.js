@@ -72,7 +72,7 @@ class Login extends Component{
     render() {
         return (
             <View style={styles.container}>
-                {/* <Image style={styles.img_logo} source={require("../assets/logo.png")} /> */}
+                <Text style={styles.txt_logo}>ULYS</Text>
                 <Text style={styles.txt_input}>EMAIL</Text>
                 <View style={styles.input}>
                     <TextInput
@@ -113,6 +113,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     },
+    txt_logo: {
+        fontSize: 44,
+        fontWeight: "bold",
+        textAlign: 'center',
+        marginBottom: "20%",
+    },
     img_logo: {
         width: 100,
         height: 160,
@@ -133,10 +139,10 @@ const styles = StyleSheet.create({
         marginBottom: "5%",
     },
     btn_login: {
-        width: "35%",
-        height: "5%",
+        width: "40%",
+        height: "6%",
         borderRadius: 10,
-        backgroundColor: colors.login.btn_login,
+        backgroundColor: colors.secondary,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: "5%",
@@ -149,10 +155,10 @@ const styles = StyleSheet.create({
     },
     social_media: {
         flexDirection: "row",
-        width: "35%",
+        width: "45%",
         marginBottom: "6%",
         justifyContent: 'center',
-        alignContent: 'center',
+        alignItems: 'center',
         borderWidth: 1,
         borderRadius: 10,
     },
@@ -161,7 +167,7 @@ const styles = StyleSheet.create({
         height:40,
     },
     txt_register: {
-        color: colors.txt_create_account,
+        color: colors.secondary,
         fontSize: 20,
         textDecorationLine: 'underline'
     }
