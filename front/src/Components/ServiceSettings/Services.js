@@ -69,9 +69,26 @@ export default function Services() {
         }
     }
 
-    const handleServiceActivation = (index) => {                // TODO make proper request
+    const handleServiceActivation = async (index) => {
+        // OAuth step
         services[index].isActive = !services[index].isActive;
         setServices([...services]);
+        const source = axios.CancelToken.source();
+        try {
+            let body = {
+                action: services[index].isActive ? 'sub' : 'unsub',
+                serviceId: services[index].id
+            };
+            await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/services/subscribe`, body,
+                {
+                    cancelToken: source.token,
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+        } catch (err) {
+            if (err.response) {
+                alert('Error has occured please retry your connection.');
+            }
+        }
     }
 
     return (
