@@ -11,9 +11,10 @@ const fctHistoryCommunication = require('./historyConnection');
 const fctTheme = require('./theme');
 const fctStatus = require('./status');
 const fctDeleteAccount = require('./deleteAccount');
+const fctService = require('../services/all');
 
 /* GET my user data */
-router.get('/me', fctToken.auth, fctMe.getUserData);
+router.get('/me', fctToken.auth, fctMe.getUserData, fctService.getServiceDataAll, fctMe.getServiceActive, fctMe.sendMe);
 
 /* GET Theme user */
 router.get('/theme', fctToken.auth, fctTheme.getTheme);
