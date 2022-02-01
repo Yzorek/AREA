@@ -9,10 +9,12 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import SkeletonServices from "./SkeletonServices";
 import React from "react";
+import AlertError from "../Tools/AlertError";
 
 export default function Services() {
     const [isLoading, setIsLoading] = useState(true);
-    const [services, setServices] = useState([])
+    const [services, setServices] = useState([]);
+    const [isError, setIsError] = useState(false);
     const isMounted = useRef(null);
 
     useEffect(() => {
@@ -39,7 +41,7 @@ export default function Services() {
                 }
             } catch (err) {
                 if (err.response) {
-                    alert('Error has occured please retry your connection.');
+                    setIsError(true);
                     setIsLoading(false);
                 }
             }
@@ -86,7 +88,7 @@ export default function Services() {
                 });
         } catch (err) {
             if (err.response) {
-                alert('Error has occured please retry your connection.');
+                setIsError(true);
             }
         }
     }
@@ -98,11 +100,10 @@ export default function Services() {
                     SERVICES
                 </Typography>
             </Grid>
+            <Grid container item xs={12}>
+                <Alert severity="info" style={{width: '100%'}}>Select your service below.</Alert>
+            </Grid>
             {isLoading ? <SkeletonServices/> :
-                <React.Fragment>
-                    <Grid container item xs={12}>
-                        <Alert severity="info" style={{width: '100%'}}>Select your service below.</Alert>
-                    </Grid>
                     <Grid container item xs={12} spacing={2}>
                         {services.map((item, index) => <Grid item xs={2} key={`${item.name}-${index}-card-service`}>
                                     <Paper style={{height: 140, background: item.isActive ? item.color : 'gray', cursor: 'pointer'}} sx={{
@@ -118,26 +119,8 @@ export default function Services() {
                                     </Paper>
                                 </Grid>)}
                     </Grid>
-                </React.Fragment>
             }
-
-            {/*<Grid container item xs={12} style={{ padding: 20 }} spacing={2}>
-                {services.map((item, index) => <Grid item xs={2} key={`${item.name}-${index}-card-service V2`}>
-                    <Paper style={{height: 140, background: item.color}} sx={{
-                        transition: '0.5s',
-                        bgcolor: 'background.paper',
-                        '&:hover': {boxShadow: 10}
-                    }} elevation={5}>
-                        <Grid container item xs={12} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}}>
-                            {item.icon}
-                            <Typography color={'white'} style={{fontWeight: 'bold'}}>
-                                {item.name}
-                            </Typography>
-                            <Switch checked={item.isActive} onChange={() => handleServiceActivation(index)}/>
-                        </Grid>
-                    </Paper>
-                </Grid>)}
-            </Grid>*/}
+            <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>
     )
 
