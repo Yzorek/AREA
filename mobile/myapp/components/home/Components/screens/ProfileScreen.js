@@ -1,42 +1,64 @@
 import {React, Component} from "react";
 import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import colors from "../../../../charte/colors";
+import { connect } from 'react-redux'
+import axios from 'axios';
 
-class ProfileScreen extends Component{
+class ProfileScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {},
+      isError: false,
+    };
+  }
+
+  async componentDidMount() {
+    const IP = this.props.ip
+    const source = axios.CancelToken.source();
+    try {
+      const response = await axios.get('http://'+IP+':8080/users/me',
+      {
+        cancelToken: source.token,
+        'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
+      });
+      this.setState({data: response.data})
+    } catch (error) {
+      this.setState({isError: true})
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Image style={styles.profil_img} source={{uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}}/>
-        <Text style={styles.txt_name}>Houssam El Affas</Text>
+        <View style={{flexDirection: "row", alignItems: 'center', marginBottom: "10%"}}>
+          <Text style={styles.txt_name}>{this.state.data.username}</Text>
+          <TouchableOpacity style={{marginLeft: "2%"}}>
+            <MaterialIcons name="edit" color={colors.secondary} size={28} />
+          </TouchableOpacity>
+        </View>
         <View style={{marginTop: "8%"}}></View>
 
         <View style={styles.view_info}>
           <Text style={{width: "25%"}}>First name:</Text>
           <View style={styles.view_info_detail}>
-            <Text>Houssam</Text>
-            <TouchableOpacity>
-              <MaterialIcons name="edit" color="black" size={28} />
-            </TouchableOpacity>
+            <Text>{this.state.data.firstName}</Text>
           </View>
         </View>
 
         <View style={styles.view_info}>
           <Text style={{width: "25%"}}>Last name:</Text>
           <View style={styles.view_info_detail}>
-            <Text>El Affas</Text>
-            <TouchableOpacity>
-              <MaterialIcons name="edit" color="black" size={28} />
-            </TouchableOpacity>
+            <Text>{this.state.data.lastName}</Text>
           </View>
         </View>
 
         <View style={styles.view_info}>
           <Text style={{width: "25%"}}>Email:</Text>
           <View style={styles.view_info_detail}>
-            <Text>houssam@gmail.com</Text>
-            <TouchableOpacity>
-              <MaterialIcons name="edit" color="black" size={28} />
-            </TouchableOpacity>
+            <Text>{this.state.data.email}</Text>
           </View>
         </View>
 
@@ -44,17 +66,12 @@ class ProfileScreen extends Component{
           <Text style={{width: "25%"}}>Password:</Text>
           <View style={styles.view_info_detail}>
             <Text>********</Text>
-            <TouchableOpacity>
-              <MaterialIcons name="edit" color="black" size={28} />
-            </TouchableOpacity>
           </View>
         </View>
       </View>
     );
   }
 };
-
-export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -66,7 +83,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderWidth: 1,
     borderRadius: 50,
-    marginTop: "4%"
+    marginTop: "10%"
   },
   txt_name: {
     fontSize: 16,
@@ -84,10 +101,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: "70%",
     marginLeft: "5%",
-    padding: 6,
+    padding: 8,
+    paddingVertical: 12,
     borderRadius: 5,
     flexDirection: "row",
     alignItems: 'center',
     justifyContent: 'space-between'
   }
 });
+
+const mapStateToProps = (state) => {
+  return {
+  index: state.index,
+  accessToken: state.accessToken,
+  ip: state.ip
+  }
+}
+export default connect(mapStateToProps)(ProfileScreen) 

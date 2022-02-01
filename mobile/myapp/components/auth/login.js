@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, Alert, FlatList } from 'react-native';
 import { connect } from 'react-redux'
-import colors from '../../charte/colors';
 import axios from 'axios';
+import colors from '../../charte/colors';
 
 class Login extends Component{
     constructor(props) {
