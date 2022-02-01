@@ -2,13 +2,58 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, Alert, FlatList } from 'react-native';
 import { connect } from 'react-redux'
 import colors from '../../charte/colors';
+import axios from 'axios';
 
 class Register extends Component{
     constructor(props) {
     super(props);
         this.state = {
-            first: "", last: "", email: "", password: "",
+            first: "", last: "", email: "", password: "", isError: false,
         };
+    }
+
+    async onSubmit(e) {
+        e.preventDefault();
+        const IP = this.props.ip
+
+        try {
+            let body = {
+                email: this.state.email,
+                password: this.state.password,
+                username: this.state.first + ' ' + this.state.last,
+                firstName: this.state.first,
+                lastName: this.state.last,
+                avatar: '',
+                auth: 'local',
+            }
+            const response = await axios.post(
+                'http://'+IP+':8080/auth/register', body
+            );
+            this.setState({isError: false})
+        } catch (error) {
+            this.setState({isError: true})
+        }
+    }
+
+    checkRegister(e) {
+        this.onSubmit(e)
+
+        if (this.state.email!=="" && this.state.password!=="" && this.state.first!=="" && this.state.last!=="") {
+            if (this.state.isError===false) {
+                this.props.dispatch({type: "index", value: 0})
+            }
+            else {
+                Alert.alert(
+                    "Error !",
+                    "Please retry to create an account !",
+                );
+            }
+        }
+        else {
+            Alert.alert(
+                "Please enter all the information !",
+            );
+        }
     }
 
     render() {
@@ -49,7 +94,7 @@ class Register extends Component{
                         onChangeText={(value) => {this.setState({password: value})}}
                     ></TextInput>
                 </View>
-                <TouchableOpacity style={styles.btn_login} onPress={() => {}}>
+                <TouchableOpacity style={styles.btn_login} onPress={(e) => {this.checkRegister(e)}}>
                     <Text style={styles.txt_login}>Register</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {this.props.dispatch({type: 'index', value: 0})}}>
@@ -119,6 +164,7 @@ const mapStateToProps = (state) => {
     return {
     index: state.index,
     name: state.name,
+    ip: state.ip,
     }
 }
 export default connect(mapStateToProps)(Register) 

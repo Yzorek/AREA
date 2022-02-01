@@ -4,10 +4,6 @@ import { connect } from 'react-redux'
 import colors from '../../charte/colors';
 import axios from 'axios';
 
-const Account = [
-    {id: 1, email: "Area@gmail.com", password: "1234"},
-]
-
 class Login extends Component{
     constructor(props) {
     super(props);
@@ -19,47 +15,27 @@ class Login extends Component{
 
     async onSubmit(e) {
         e.preventDefault();
+        const IP = this.props.ip
 
         try {
             let body = {
                 email: this.state.email,
                 password: this.state.password
             }
-            const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/login`, body);
-            localStorage.setItem('JWT', response.accessToken);
-            console.log("yes")
-            // navigate('/App')
-        }
-        catch (err) {
-            if (err.response) {
-                this.setState({isError: true})
-            }
-        }
+            const response = await axios.post(
+                'http://'+IP+':8080/auth/login', body
+            );
+            this.props.dispatch({type: "accessToken", value: response.data.accessToken})
+            this.setState({isError: false})
+          } catch (error) {
+            this.setState({isError: true})
+          }
     }
 
-    checkEmail = () => {
-        const user = Account.find(user => user.email === this.state.email);
-        if (user && (this.state.email!=="" || this.state.password!=="")) return user;
-        else {
-            Alert.alert(
-                "The email or password is incorrect !",
-                "retry or create an account",
-            );
-        }
-    };
-
-    _conditionToGoHome() {
-        const result = this.checkEmail()
-        if (result) {
-            if (this.state.email===result.email && this.state.password===result.password) {
-                this.props.dispatch({type: 'index', value: 2});
-            }
-            else {
-                Alert.alert(
-                    "The email or password is incorrect !",
-                    "retry or create an account",
-                );
-            }
+    _conditionToGoHome(e) {
+        this.onSubmit(e)
+        if (this.props.accessToken!=="") {
+            this.props.dispatch({type: 'index', value: 2});
         }
         else {
             Alert.alert(
@@ -90,7 +66,7 @@ class Login extends Component{
                         onChangeText={(value) => {this.setState({password: value})}}
                     ></TextInput>
                 </View>
-                <TouchableOpacity style={styles.btn_login} onPress={(e) => {this.onSubmit(e)}}>
+                <TouchableOpacity style={styles.btn_login} onPress={(e) => {this._conditionToGoHome(e)}}>
                     <Text style={styles.txt_login}>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.social_media}>
@@ -177,6 +153,8 @@ const mapStateToProps = (state) => {
     return {
     index: state.index,
     name: state.name,
+    ip: state.ip,
+    accessToken: state.accessToken
     }
 }
 export default connect(mapStateToProps)(Login) 

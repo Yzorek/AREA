@@ -1,6 +1,6 @@
 // store/reducer/reducer.js
 
-const initialState = { index: 2, name: ""}
+const initialState = { index: 0, name: "", ip: '10.26.111.79', accessToken: ""}
 
 function Store(state = initialState, action) {
     let nextState
@@ -15,6 +15,18 @@ function Store(state = initialState, action) {
             nextState = {
                 ...state,
                 name: action.value
+            }
+        return nextState || state
+        case 'ip':
+            nextState = {
+                ...state,
+                ip: action.value
+            }
+        return nextState || state
+        case 'accessToken':
+            nextState = {
+                ...state,
+                accessToken: action.value
             }
         return nextState || state
         default:
