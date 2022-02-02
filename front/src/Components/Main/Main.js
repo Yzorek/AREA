@@ -34,6 +34,7 @@ export default function Main() {
     const [user, setUser] = useState(null);
     const [isFirstLoading, setIsFirstLoading] = useState(true);
     const isMounted = useRef(null);
+    const [tutorial, setTutorial] = useState({isActive: true})
     const [idSelectedDrawerButton, setIdSelectedDrawerButton] = useState(DEFAULT_PAGE);
     let navigate = useNavigate();
 
@@ -55,6 +56,7 @@ export default function Main() {
                     let themeTarget = dataTheme.find(item => item.id === response.data.idTheme)
                     if (themeTarget)
                         setTheme(createTheme(themeTarget.color))
+                    setTutorial({isActive: response.data.isTutorialMode})
                     setIsLoading(false);
                     setIsFirstLoading(false);
                 }
@@ -72,12 +74,16 @@ export default function Main() {
         }
     }, [navigate, isFirstLoading])
 
+    const handleTutorialChange = () => {
+        setTutorial({isActive: !tutorial.isActive})
+    }
+
     return <ThemeProvider theme={theme}>
         <SocketContextProvider>
             <UserContextProvider user={user}>
-                <TutorialContextProvider value={!!user ? {isActive: user.isTutorialMode} : {isActive: true}}>
+                <TutorialContextProvider value={tutorial}>
                     <Grid container item xs={12}>
-                        <AppBarArea isLoading={isLoading}/>
+                        <AppBarArea isLoading={isLoading} handleTutorialChange={handleTutorialChange}/>
                         <DrawerArea isLoading={isLoading} idSelected={idSelectedDrawerButton}/>
                         <Box component="main"
                              sx={{bgcolor: 'grey.100'}} style={{

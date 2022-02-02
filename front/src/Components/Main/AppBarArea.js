@@ -27,7 +27,7 @@ import {
     Settings,
     Palette,
     Power,
-    PowerOff, Circle, KeyboardArrowDown, KeyboardArrowUp
+    PowerOff, Circle, KeyboardArrowDown, KeyboardArrowUp, MenuBook
 } from "@mui/icons-material";
 import {drawWith} from "./config";
 import {useNavigate} from "react-router-dom";
@@ -54,7 +54,7 @@ let statusData = [
     }
 ]
 
-export default function AppBarArea({isLoading}) {
+export default function AppBarArea({isLoading, handleTutorialChange}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openStatus, setOpenStatus] = useState(false);
     let userContext = useContext(UserContext);
@@ -114,6 +114,7 @@ export default function AppBarArea({isLoading}) {
                 {
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                 });
+            handleTutorialChange()
             setIsTutorialMode(prevState => !prevState);
             setIsLoadingTutorial(false);
         } catch (err) {
@@ -248,6 +249,9 @@ export default function AppBarArea({isLoading}) {
                 </Collapse>
                 <Divider/>
                 <ListItem button style={{paddingTop: 0, paddingBottom: 0}} secondaryAction={isLoadingTutorial ? <CircularProgress style={{width: 15, height: 15}}/> : <Switch checked={isTutorialMode} size={'small'}/>} onClick={handleIsTutorialModeChange}>
+                    <ListItemIcon>
+                        <MenuBook/>
+                    </ListItemIcon>
                     <ListItemText primary={'Tutorial Mode'}/>
                 </ListItem>
                 <Divider/>
