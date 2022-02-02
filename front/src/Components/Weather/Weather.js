@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Alert, Button, Grid, Paper, Typography} from "@mui/material";
+import React, {useContext, useEffect, useRef, useState} from "react";
+import {Alert, Button, Grid, Typography} from "@mui/material";
 import TemplateWeather from "./TemplateWeather";
 import {Add} from "@mui/icons-material";
 import DialogNewSettingsWeather from "./Dialog/DialogNewSettingsWeather";
@@ -7,6 +7,7 @@ import axios from "axios";
 import AlertError from "../Tools/AlertError";
 import MainLoader from "../Tools/MainLoader";
 import DialogConfirmationDelete from "./Dialog/DialogConfirmationDelete";
+import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 
 export default function Weather() {
     const [openNewWeatherSettings, setOpenWeatherSettings] = useState(false);
@@ -17,6 +18,7 @@ export default function Weather() {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const isMounted = useRef(null);
+    let tutorialMode = useContext(TutorialContext);
 
     useEffect(() => {
         if (!isReload)
@@ -78,14 +80,15 @@ export default function Weather() {
                 Add new weather config
             </Button>
         </Grid>
-        <Grid item xs={12}>
+        {tutorialMode.isActive && <Grid item xs={12}>
             <Alert severity="info" style={{width: '100%'}}>Create your weather profile.</Alert>
-        </Grid>
+        </Grid>}
         {isLoading ? <Grid container item xs={12} style={{height: 500}} alignItems={'center'} justifyContent={'center'}>
                 <MainLoader/>
             </Grid> :
             data.map(item => <Grid key={`${item.id} - weather all settings`} item xs={3}>
-                <TemplateWeather countryCode={item.countryCode} city={item.city} units={'metric'} id={item.id} handleOpenDelete={handleOpenDelete}/>
+                <TemplateWeather countryCode={item.countryCode} city={item.city} units={'metric'} id={item.id}
+                                 handleOpenDelete={handleOpenDelete}/>
             </Grid>)}
         <DialogNewSettingsWeather open={openNewWeatherSettings} handleClose={handleClose}/>
         <AlertError isError={isError} setIsError={setIsError}/>

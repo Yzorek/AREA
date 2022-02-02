@@ -15,7 +15,7 @@ import {
     ListItemIcon,
     ListItemText,
     CircularProgress,
-    ListItem, Divider, ListItemAvatar, Collapse, Badge
+    ListItem, Divider, ListItemAvatar, Collapse, Badge, Switch
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import {
@@ -27,7 +27,7 @@ import {
     Settings,
     Palette,
     Power,
-    PowerOff, Circle, KeyboardArrowDown, KeyboardArrowUp
+    PowerOff, Circle, KeyboardArrowDown, KeyboardArrowUp, MenuBook
 } from "@mui/icons-material";
 import {drawWith} from "./config";
 import {useNavigate} from "react-router-dom";
@@ -54,19 +54,23 @@ let statusData = [
     }
 ]
 
-export default function AppBarArea({isLoading}) {
+export default function AppBarArea({isLoading, handleTutorialChange}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openStatus, setOpenStatus] = useState(false);
     let userContext = useContext(UserContext);
     const [status, setStatus] = useState(1);
     const [isError, setIsError] = useState(true);
     const [isLoadingStatus, setIsLoadingStatus] = useState(false);
+    const [isTutorialMode, setIsTutorialMode] = useState(false);
+    const [isLoadingTutorial, setIsLoadingTutorial] = useState(false);
     let navigate = useNavigate();
     let socket = useContext(socketContext)
 
     useEffect(() => {
-        if (userContext)
+        if (userContext) {
             setStatus(userContext.idStatus || 1)
+            setIsTutorialMode(userContext.isTutorialMode);
+        }
     }, [userContext])
 
     const handleClick = (event) => {
@@ -99,6 +103,24 @@ export default function AppBarArea({isLoading}) {
             if (err.response) {
                 setIsError(true);
                 setIsLoadingStatus(false);
+            }
+        }
+    }
+
+    const handleIsTutorialModeChange = async () => {
+        try {
+            setIsLoadingTutorial(true);
+            await axios.put(`${process.env.REACT_APP_DASHBOARD_API}/users/tutorialMode`, {isTutorialMode: !isTutorialMode},
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+            handleTutorialChange()
+            setIsTutorialMode(prevState => !prevState);
+            setIsLoadingTutorial(false);
+        } catch (err) {
+            if (err.response) {
+                setIsError(true);
+                setIsLoadingTutorial(false);
             }
         }
     }
@@ -225,6 +247,13 @@ export default function AppBarArea({isLoading}) {
                         </List>
                     </ListItem>
                 </Collapse>
+                <Divider/>
+                <ListItem button style={{paddingTop: 0, paddingBottom: 0}} secondaryAction={isLoadingTutorial ? <CircularProgress style={{width: 15, height: 15}}/> : <Switch checked={isTutorialMode} size={'small'}/>} onClick={handleIsTutorialModeChange}>
+                    <ListItemIcon>
+                        <MenuBook/>
+                    </ListItemIcon>
+                    <ListItemText primary={'Tutorial Mode'}/>
+                </ListItem>
                 <Divider/>
                 <ListItemButton onClick={() => {
                     handleClose();

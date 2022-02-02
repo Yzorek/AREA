@@ -5,17 +5,19 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import { ReactComponent as DiscordIcon } from '../../assets/discord.svg'
 import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg'
-import { useEffect, useRef, useState } from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import axios from "axios";
 import SkeletonServices from "./SkeletonServices";
 import React from "react";
 import AlertError from "../Tools/AlertError";
+import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 
 export default function Services() {
     const [isLoading, setIsLoading] = useState(true);
     const [services, setServices] = useState([]);
     const [isError, setIsError] = useState(false);
     const isMounted = useRef(null);
+    let tutorialMode = useContext(TutorialContext);
 
     useEffect(() => {
         isMounted.current = true
@@ -100,9 +102,9 @@ export default function Services() {
                     SERVICES
                 </Typography>
             </Grid>
-            <Grid container item xs={12}>
+            {tutorialMode.isActive && <Grid container item xs={12}>
                 <Alert severity="info" style={{width: '100%'}}>Select your service below.</Alert>
-            </Grid>
+            </Grid>}
             {isLoading ? <SkeletonServices/> :
                     <Grid container item xs={12} spacing={2}>
                         {services.map((item, index) => <Grid item xs={2} key={`${item.name}-${index}-card-service`}>
