@@ -13,6 +13,7 @@ const usersRoute = require('./routes/users/users');
 const servicesRouter = require('./routes/services/services');
 const apiWeatherRouter = require('./routes/api/weather/weather');
 const apiLocationRouter = require('./routes/api/location/location');
+const weatherRouter = require('./routes/weather/weather');
 
 const app = express();
 const server = http.createServer(app);
@@ -36,6 +37,7 @@ app.use('/users', usersRoute);
 app.use('/services', servicesRouter);
 app.use('/api/weather', apiWeatherRouter);
 app.use('/api/location', apiLocationRouter);
+app.use('/weather', weatherRouter);
 
 require('./socket/socket')(io);
 

@@ -5,10 +5,14 @@ import {LoadingButton} from "@mui/lab";
 import AutocompleteCountry from "../../Tools/Input/AutocompleteCountry";
 import AutocompleteCities from "../../Tools/Input/AutocompleteCities";
 import TemplateWeather from "../TemplateWeather";
+import axios from "axios";
+import AlertError from "../../Tools/AlertError";
 
 export default function DialogNewSettingsWeather({open, handleClose}) {
     const [country, setCountry] = useState(null);
     const [cities, setCities] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
 
     const handleCloseDialog = (isToReload) => {
         handleClose(isToReload);
@@ -16,9 +20,26 @@ export default function DialogNewSettingsWeather({open, handleClose}) {
         setCities(null);
     }
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        handleCloseDialog(true);
+        try {
+            setIsLoading(true);
+            let body = {
+                countryCode: country.iso2,
+                city: cities
+            }
+            await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/weather`, body,
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+            setIsLoading(false);
+            handleCloseDialog(true);
+        } catch (err) {
+            if (err.response) {
+                setIsError(true);
+                setIsLoading(false);
+            }
+        }
     }
 
     return <Dialog fullWidth maxWidth={"md"} open={open} onClose={() => handleCloseDialog(false)} onSubmit={onSubmit} component={'form'}>
@@ -30,7 +51,10 @@ export default function DialogNewSettingsWeather({open, handleClose}) {
             <Grid container item xs={12} style={{marginTop: 7}} justifyContent={'space-around'} alignItems={'center'}>
                 <Grid container item xs={4} spacing={2}>
                     <Grid item xs={12}>
-                        <AutocompleteCountry value={country} setValue={setCountry} isRequired={true}/>
+                        <AutocompleteCountry value={country} setValue={(value) => {
+                            setCountry(value)
+                            setCities(null);
+                        }} isRequired={true}/>
                     </Grid>
                     <Grid item xs={12}>
                         <AutocompleteCities value={cities} setValue={setCities} isRequired={true} iso={!!country ? country.iso2 : null}/>
@@ -46,10 +70,11 @@ export default function DialogNewSettingsWeather({open, handleClose}) {
             <Button startIcon={<Cancel/>} variant={'contained'} color={'secondary'} onClick={() => handleCloseDialog(false)}>
                 CANCEL
             </Button>
-            <LoadingButton startIcon={<Save/>} variant={'contained'} color={'primary'} type={'submit'}>
+            <LoadingButton loading={isLoading} startIcon={<Save/>} variant={'contained'} color={'primary'} type={'submit'}>
                 SAVE
             </LoadingButton>
         </DialogActions>
+        <AlertError isError={isError} setIsError={setIsError}/>
     </Dialog>
 
 }

@@ -6,9 +6,9 @@ const fctOpenWeatherApi = require('./openWeatherApi')
 const fctUnits = require('./units')
 
 /* GET current weather data */
-router.get('/currentWeather', fctOpenWeatherApi.currentWeatherData);
+router.get('/currentWeather', fctToken.auth, fctOpenWeatherApi.currentWeatherData);
 
 /* GET units */
-router.get('/units', fctUnits.unitsData);
+router.get('/units', fctToken.auth, fctUnits.unitsData);
 
 module.exports = router;
