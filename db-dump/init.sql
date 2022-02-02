@@ -41,3 +41,12 @@ CREATE TABLE link_service (
     id_user         INT,
     id_service      varchar(255) not null
 );
+
+--Weather--
+CREATE TABLE weather (
+    id              SERIAL,
+    id_user         INT,
+    countryCode     varchar(255) not null,
+    city            varchar(255) not null,
+    primary key(id)
+);
