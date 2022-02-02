@@ -55,6 +55,7 @@ async function getUserData(req, res, next) {
                 auth: data.rows[0].auth,
                 idTheme: data.rows[0].id_theme,
                 idStatus: data.rows[0].id_status,
+                isTutorialMode: data.rows[0].is_tutorial_mode
             }
             next()
         }

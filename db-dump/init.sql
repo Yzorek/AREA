@@ -11,6 +11,7 @@ CREATE TABLE clients (
     auth            varchar(255),
     id_theme        INT,
     id_status       INT,
+    is_tutorial_mode bool,
     primary key(id)
 );
 

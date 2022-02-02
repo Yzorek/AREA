@@ -62,8 +62,8 @@ async function insertIntoClients(req, res, next) {
                     reject(err);
                 }
                 try {
-                    await fctDataBase.request("INSERT INTO clients(username, first_name, last_name, email, password, is_identified, avatar, auth, id_theme, id_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);",
-                        [req.body.username, req.body.firstName, req.body.lastName, req.body.email, hash, false, req.body.avatar ? req.body.avatar : null, req.body.auth, 1, 1]);
+                    await fctDataBase.request("INSERT INTO clients(username, first_name, last_name, email, password, is_identified, avatar, auth, id_theme, id_status, is_tutorial_mode) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);",
+                        [req.body.username, req.body.firstName, req.body.lastName, req.body.email, hash, false, req.body.avatar ? req.body.avatar : null, req.body.auth, 1, 1, true]);
                     next();
                     resolve();
                 } catch (err) {
