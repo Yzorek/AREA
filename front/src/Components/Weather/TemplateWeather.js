@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Grid, Icon, Paper, Typography} from "@mui/material";
 import {Cloud} from "@mui/icons-material";
 
-export default function TemplateWeather() {
+export default function TemplateWeather({city, countryCode, units}) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+
     return <Paper style={{width: '100%', height: 150, cursor: 'pointer'}} sx={{
         transition: '0.5s',
         '&:hover': {boxShadow: 8}
