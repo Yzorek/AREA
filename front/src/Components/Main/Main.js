@@ -21,6 +21,7 @@ import {SocketContextProvider} from "../Tools/SocketContext/SocketContext";
 import Dashboard from "../Dashboard/Dashboard";
 import WrongPageRouter from "../Tools/WrongPageRouter";
 import Weather from "../Weather/Weather";
+import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext";
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -74,36 +75,46 @@ export default function Main() {
     return <ThemeProvider theme={theme}>
         <SocketContextProvider>
             <UserContextProvider user={user}>
-                <Grid container item xs={12}>
-                    <AppBarArea isLoading={isLoading}/>
-                    <DrawerArea isLoading={isLoading} idSelected={idSelectedDrawerButton}/>
-                    <Box component="main"
-                         sx={{bgcolor: 'grey.100'}} style={{
-                        flexGrow: 1,
-                        overflow: 'auto',
-                        height: 'calc(100vh - 68px)',
-                        width: `calc(100% - ${drawWith}px)`
-                    }}>
-                        {isLoading ? <Grid item container xs={12} style={{height: '100%'}} alignItems={'center'}
-                                           justifyContent={'center'}>
-                            <MainLoader/>
-                        </Grid> : <Routes>
-                            <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
-                            <Route path={`Service/*`} element={<SelectedRouter app={<ServiceSettings/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
-                            <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
-                            <Route path={`Profile/*`} element={<SelectedRouter app={<Profile/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
-                            <Route path={`Weather/*`} element={<SelectedRouter app={<Weather/>} idRoute={API_WEATHER} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
-                            <Route
-                                path="*"
-                                element={
-                                    <main style={{padding: "1rem"}}>
-                                        <WrongPageRouter redirect={'/App/'}/>
-                                    </main>
-                                }
-                            />
-                        </Routes>}
-                    </Box>
-                </Grid>
+                <TutorialContextProvider value={!!user ? {isActive: user.isTutorialMode} : {isActive: true}}>
+                    <Grid container item xs={12}>
+                        <AppBarArea isLoading={isLoading}/>
+                        <DrawerArea isLoading={isLoading} idSelected={idSelectedDrawerButton}/>
+                        <Box component="main"
+                             sx={{bgcolor: 'grey.100'}} style={{
+                            flexGrow: 1,
+                            overflow: 'auto',
+                            height: 'calc(100vh - 68px)',
+                            width: `calc(100% - ${drawWith}px)`
+                        }}>
+                            {isLoading ? <Grid item container xs={12} style={{height: '100%'}} alignItems={'center'}
+                                               justifyContent={'center'}>
+                                <MainLoader/>
+                            </Grid> : <Routes>
+                                <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
+                                <Route path={`Service/*`}
+                                       element={<SelectedRouter app={<ServiceSettings/>} idRoute={SERVICE_SETTINGS}
+                                                                setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route path={`Dashboard`}
+                                       element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD}
+                                                                setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route path={`Profile/*`}
+                                       element={<SelectedRouter app={<Profile/>} idRoute={GENERAL_PROFILE}
+                                                                setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route path={`Weather/*`}
+                                       element={<SelectedRouter app={<Weather/>} idRoute={API_WEATHER}
+                                                                setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route
+                                    path="*"
+                                    element={
+                                        <main style={{padding: "1rem"}}>
+                                            <WrongPageRouter redirect={'/App/'}/>
+                                        </main>
+                                    }
+                                />
+                            </Routes>}
+                        </Box>
+                    </Grid>
+                </TutorialContextProvider>
             </UserContextProvider>
         </SocketContextProvider>
     </ThemeProvider>
