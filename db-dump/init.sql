@@ -51,3 +51,11 @@ CREATE TABLE weather (
     city            varchar(255) not null,
     primary key(id)
 );
+
+--Widget--
+CREATE TABLE widget (
+    id              SERIAL,
+    id_user         INT,
+    id_widget       INT,
+    primary key(id)
+);
