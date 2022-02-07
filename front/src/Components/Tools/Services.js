@@ -5,22 +5,23 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import { ReactComponent as DiscordIcon } from '../../assets/discord.svg'
 import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg'
 import SvgIcon from '@mui/icons-material/Twitter';
+import { TWITTER, INSTAGRAM, DISCORD, TWITCH, YOUTUBE, TELEGRAM } from "../Main/config";
 
-export default function IconFromName(name) {
+export default function PropFromName(name) {
     switch (name) {
         case ('Twitter'):
-            return (<TwitterIcon/>);
+            return ({icon: <TwitterIcon/>, pageId: TWITTER});
         case ('Instagram'):
-            return (<InstagramIcon/>);
+            return ({icon: <InstagramIcon/>, pageId: INSTAGRAM});
         case ('Telegram'):
-            return (<TelegramIcon/>);
+            return ({icon: <TelegramIcon/>, pageId: TELEGRAM});
         case ('Twitch'):
-            return (<SvgIcon component={TwitchIcon} inheritViewBox/>);
+            return ({icon: <SvgIcon component={TwitchIcon} inheritViewBox/>, pageId: TWITCH});
         case ('Discord'):
-            return (<SvgIcon component={DiscordIcon} inheritViewBox/>);
+            return ({icon: <SvgIcon component={DiscordIcon} inheritViewBox/>, pageId: DISCORD});
         case ('Youtube'):
-            return (<YouTubeIcon/>);
+            return ({icon: <YouTubeIcon/>, pageId: YOUTUBE});
         default:
-            return (<TwitterIcon/>);
+            return ({icon: <TwitterIcon/>, pageId: TWITTER});
     }
 }

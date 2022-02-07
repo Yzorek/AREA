@@ -11,7 +11,6 @@ import {
     GENERAL_DASHBOARD,
     GENERAL_PROFILE,
     SERVICE_SETTINGS,
-    SERVICE,
     API_WEATHER
 } from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
@@ -25,6 +24,7 @@ import WrongPageRouter from "../Tools/WrongPageRouter";
 import ServicePage from '../Services/Services';
 import Weather from "../Weather/Weather";
 import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext";
+import PropFromName from '../Tools/Services';
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -39,6 +39,7 @@ export default function Main() {
     const isMounted = useRef(null);
     const [tutorial, setTutorial] = useState({isActive: true})
     const [idSelectedDrawerButton, setIdSelectedDrawerButton] = useState(DEFAULT_PAGE);
+    const [services, setServices] = useState([]);
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -60,6 +61,7 @@ export default function Main() {
                     if (themeTarget)
                         setTheme(createTheme(themeTarget.color))
                     setTutorial({isActive: response.data.isTutorialMode})
+                    setServicesData(response.data.services);
                     setIsLoading(false);
                     setIsFirstLoading(false);
                 }
@@ -81,13 +83,35 @@ export default function Main() {
         setTutorial({isActive: !tutorial.isActive})
     }
 
+    const handleServicesSub = (childServices) => {
+        let newServices = services;
+        childServices.forEach((item, index) => {
+            let { isActive } = childServices[index];
+            newServices[index].isActive = isActive;
+        });
+        setServices([...newServices]);
+    }
+
+    const setServicesData = (data) => {
+        let newServices = data;
+        newServices.forEach((item, index) => {
+            let {icon, pageId} = PropFromName(item.name);
+            newServices[index] = {
+                icon,
+                pageId,
+                ...item
+            }
+        });
+        setServices(newServices);
+    }
+
     return <ThemeProvider theme={theme}>
         <SocketContextProvider>
             <UserContextProvider user={user}>
                 <TutorialContextProvider value={tutorial}>
                     <Grid container item xs={12}>
                         <AppBarArea isLoading={isLoading} handleTutorialChange={handleTutorialChange}/>
-                        <DrawerArea isLoading={isLoading} idSelected={idSelectedDrawerButton}/>
+                        <DrawerArea isLoading={isLoading} idSelected={idSelectedDrawerButton} services={services}/>
                         <Box component="main"
                             sx={{bgcolor: 'grey.100'}} style={{
                             flexGrow: 1,
@@ -100,8 +124,8 @@ export default function Main() {
                                 <MainLoader/>
                             </Grid> : <Routes>
                                 <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
-                                {user.services.map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.name} element={<SelectedRouter app={<ServicePage title={item.name} areas={{}} widgets={{}}/>} idRoute={SERVICE + index} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
-                                <Route path={`Service/`} element={<SelectedRouter app={<ServiceSettings/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
+                                {services.filter((item) => item.isActive === true).map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.name} element={<SelectedRouter app={<ServicePage title={item.name} areas={{}} widgets={{}}/>} idRoute={item.pageId} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
+                                <Route path={`Service/`} element={<SelectedRouter app={<ServiceSettings onServicesSub={handleServicesSub}/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Profile/*`} element={<SelectedRouter app={<Profile/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Weather/*`}

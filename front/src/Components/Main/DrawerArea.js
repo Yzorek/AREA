@@ -15,7 +15,7 @@ import {Cloud, Dashboard, Person} from "@mui/icons-material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
-import IconFromName from "../Tools/Services"
+import PropFromName from "../Tools/Services"
 
 function ClassicListItemButtonNav({idSelected, id, label, icon, redirectTo, isLoading}) {
     let navigate = useNavigate();
@@ -42,7 +42,7 @@ function ClassicListItemButtonNav({idSelected, id, label, icon, redirectTo, isLo
     </ListItemButton>
 }
 
-export default function DrawerArea({isLoading, idSelected}) {
+export default function DrawerArea({isLoading, idSelected, services}) {
     let userContext = useContext(UserContext);
 
     return <Drawer
@@ -97,11 +97,14 @@ export default function DrawerArea({isLoading, idSelected}) {
                 }
             >
                 {!userContext ? <Skeleton variant="rectangular" width={'100%'} height={'100%'} style={{borderRadius: 5}}/>
-                 : userContext.services.map((item, index) => {
+                 : services.map((item, index) => {
+                     if (!item.isActive)
+                        return;
+                     else
                      return (
-                        <ClassicListItemButtonNav icon={IconFromName(item.name)}
+                        <ClassicListItemButtonNav icon={item.icon}
                         redirectTo={item.name}
-                        id={SERVICE + index}
+                        id={item.pageId}
                         label={item.name}
                         key={`${item.id} - service bar - ${index}`}
                         idSelected={idSelected}

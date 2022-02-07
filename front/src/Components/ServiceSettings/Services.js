@@ -12,7 +12,7 @@ import React from "react";
 import AlertError from "../Tools/AlertError";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 
-export default function Services() {
+export default function Services({onServiceSub}) {
     const [isLoading, setIsLoading] = useState(true);
     const [services, setServices] = useState([]);
     const [isError, setIsError] = useState(false);
@@ -77,6 +77,7 @@ export default function Services() {
         // OAuth step
         services[index].isActive = !services[index].isActive;
         setServices([...services]);
+        onServiceSub([...services]);
         const source = axios.CancelToken.source();
         try {
             let body = {
