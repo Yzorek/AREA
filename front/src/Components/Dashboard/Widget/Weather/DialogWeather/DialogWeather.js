@@ -29,7 +29,7 @@ export default function DialogWeather({open, handleClose, idBDD}) {
         (async () => {
             try {
                 setIsLoading(true)
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/test/${idBDD}`,
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/weather/config/${idBDD}`,
                     {
                         cancelToken: source.token,
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
@@ -58,9 +58,15 @@ export default function DialogWeather({open, handleClose, idBDD}) {
         try {
             setIsLoading(true);
             if (isOnBase)
-                await axios.put
+                await axios.put(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/weather/config/${idBDD}`, {id: idSelected},
+                    {
+                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                    })
             else
-                await axios.post
+                await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/weather/config/${idBDD}`, {id: idSelected},
+                    {
+                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                    })
             setIsLoading(false);
             handleCloseDialog(true)
         } catch (err) {
@@ -73,6 +79,7 @@ export default function DialogWeather({open, handleClose, idBDD}) {
 
     const handleCloseDialog = (isToReload) => {
         handleClose(isToReload);
+        setIsOnBase(false)
     }
 
     return <Dialog component={'form'} open={open} onClose={() => handleCloseDialog(false)} fullWidth maxWidth={'sm'} onSubmit={onSubmit}>

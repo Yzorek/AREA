@@ -55,7 +55,8 @@ export default function DrawerArea({isLoading, idSelected, services}) {
         }}
     >
         <Toolbar>
-            <Grid container item xs={12} justifyContent={'center'}>
+            <Grid container item xs={12} justifyContent={'space-between'} alignItems={'center'}>
+                <img aly={'Ulys-Logo'} src={'/Ulys-5.png'} style={{width: 60, height: 'auto'}}/>
                 <Typography color={"white"} variant={'h3'} style={{fontWeight: 'bold'}}>
                     ULYS
                 </Typography>
