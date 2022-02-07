@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Responsive as ResponsiveGridLayout} from "react-grid-layout";
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import {withSize} from "react-sizeme";
 import {Grid, Alert} from "@mui/material";
 import Widget from "./Widget/Widget";
+import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 
 function getFromLS(key) {
     let ls = {};
@@ -18,6 +19,7 @@ function getFromLS(key) {
 }
 
 function CardLayout({size, isEdit, widget, setWidget}) {
+    let tutorialMode = useContext(TutorialContext);
     const [layouts, setLayouts] = useState(
         getFromLS("layouts")
     );
@@ -31,7 +33,7 @@ function CardLayout({size, isEdit, widget, setWidget}) {
     };
 
     return <Grid container item xs={12} style={{marginTop: 20}}>
-        {widget.length === 0 && <Alert severity="info" style={{width: '100%'}}>Any widget, has selected !</Alert>}
+        {tutorialMode.isActive && <Alert severity="info" style={{width: '100%'}}>Any widget, has selected !</Alert>}
         <ResponsiveGridLayout
             className="layout"
             layouts={layouts}

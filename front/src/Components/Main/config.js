@@ -5,7 +5,7 @@ export const GENERAL_DASHBOARD = 1
 export const GENERAL_PROFILE = 2
 export const SERVICE_SETTINGS = 3
 export const SERVICE = 4
-
+export const API_WEATHER = 5
 
 export const theme_default = {
     palette: {

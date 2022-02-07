@@ -11,7 +11,6 @@ async function getServiceActive(req, res, next) {
     try {
 
         let data = await fctDataBase.request('SELECT * FROM link_service WHERE id_user=$1;', [parseInt(dataToken.id)]);
-        let response = []
 
         res.locals.services.forEach(elem => {
             let target = data.rows.find(item => {
@@ -20,11 +19,10 @@ async function getServiceActive(req, res, next) {
 
             if (!!target) {
                 elem.isActive = true
-                response.push(elem)
             }
         })
 
-        res.locals.body.services = response
+        res.locals.body.services = res.locals.services
         next()
     } catch (err) {
         res.status(500).send({
@@ -55,6 +53,7 @@ async function getUserData(req, res, next) {
                 auth: data.rows[0].auth,
                 idTheme: data.rows[0].id_theme,
                 idStatus: data.rows[0].id_status,
+                isTutorialMode: data.rows[0].is_tutorial_mode
             }
             next()
         }

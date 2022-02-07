@@ -1,21 +1,12 @@
 import React from "react";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
-
 import Icon from "react-native-vector-icons/Ionicons";
-
 import HomeScreen from "./HomeScreen";
 import NotificationsScreen from "./NotificationsScreen";
 import SettingsScreen from "./SettingsScreen";
-import ProfileScreen from "./ProfileScreen";
+import ProfileScreen from "./Profile/ProfileScreen";
 import colors from "../../../../charte/colors";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-
-const HomeStack = createStackNavigator();
-const NotificationsStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
-const SettingsStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -25,15 +16,16 @@ const MainTabScreen = () => (
     tabBarOptions={{
       activeTintColor: "black",
     }}
+    activeColor={colors.secondary}
   >
     <Tab.Screen
       name="Home"
       component={HomeScreen}
       options={{
         tabBarLabel: "Home",
-        tabBarColor: colors.secondary,
+        tabBarColor: colors.primary,
         tabBarIcon: ({ color, size }) => (
-          <Icon name="ios-home" color={"white"} size={20} />
+          <Icon name="ios-home" color={colors.secondary} size={20} />
         ),
       }}
     />
@@ -42,9 +34,9 @@ const MainTabScreen = () => (
       component={NotificationsScreen}
       options={{
         tabBarLabel: "Notifications",
-        tabBarColor: colors.secondary,
+        tabBarColor: colors.primary,
         tabBarIcon: ({ color, size }) => (
-          <Icon name="ios-notifications" color={"white"} size={20} />
+          <Icon name="ios-notifications" color={colors.secondary} size={20} />
         ),
         tabBarBadge: 0,
       }}
@@ -54,9 +46,9 @@ const MainTabScreen = () => (
       component={ProfileScreen}
       options={{
         tabBarLabel: "Profile",
-        tabBarColor: colors.secondary,
+        tabBarColor: colors.primary,
         tabBarIcon: ({ color, size }) => (
-          <Icon name="ios-person" color={"white"} size={20} />
+          <Icon name="ios-person" color={colors.secondary} size={20} />
         ),
       }}
     />
@@ -65,9 +57,9 @@ const MainTabScreen = () => (
       component={SettingsScreen}
       options={{
         tabBarLabel: "Settings",
-        tabBarColor: colors.secondary,
+        tabBarColor: colors.primary,
         tabBarIcon: ({ color, size }) => (
-          <Icon name="ios-settings" color={"white"} size={20} />
+          <Icon name="ios-settings" color={colors.secondary} size={20} />
         ),
       }}
     />
