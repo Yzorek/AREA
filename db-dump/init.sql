@@ -11,6 +11,7 @@ CREATE TABLE clients (
     auth            varchar(255),
     id_theme        INT,
     id_status       INT,
+    is_tutorial_mode bool,
     primary key(id)
 );
 
@@ -40,4 +41,13 @@ INSERT INTO services(name, color) VALUES ('Telegram', '#26A2E1');
 CREATE TABLE link_service (
     id_user         INT,
     id_service      varchar(255) not null
+);
+
+--Weather--
+CREATE TABLE weather (
+    id              SERIAL,
+    id_user         INT,
+    countryCode     varchar(255) not null,
+    city            varchar(255) not null,
+    primary key(id)
 );

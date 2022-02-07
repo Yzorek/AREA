@@ -1,7 +1,39 @@
 const fctToken = require('../../tools/fctToken');
 const fctDataBase = require("../../tools/fctDBRequest");
 
-async function getUserData(req, res) {
+function sendMe(req, res) {
+    res.status(200).send(res.locals.body);
+}
+
+async function getServiceActive(req, res, next) {
+    let dataToken = fctToken.getTokenData(req);
+
+    try {
+
+        let data = await fctDataBase.request('SELECT * FROM link_service WHERE id_user=$1;', [parseInt(dataToken.id)]);
+        let response = []
+
+        res.locals.services.forEach(elem => {
+            let target = data.rows.find(item => {
+                return parseInt(item.id_service) === parseInt(elem.id)
+            });
+
+            if (!!target) {
+                elem.isActive = true
+                response.push(elem)
+            }
+        })
+
+        res.locals.body.services = response
+        next()
+    } catch (err) {
+        res.status(500).send({
+            message: 'BDD error',
+        });
+    }
+}
+
+async function getUserData(req, res, next) {
     let dataToken = fctToken.getTokenData(req);
 
     try {
@@ -12,7 +44,7 @@ async function getUserData(req, res) {
                 message: "This user doesn't exist"
             });
         } else {
-            res.status(200).send({
+            res.locals.body = {
                 id: data.rows[0].id,
                 username: data.rows[0].username,
                 firstName: data.rows[0].first_name,
@@ -23,7 +55,9 @@ async function getUserData(req, res) {
                 auth: data.rows[0].auth,
                 idTheme: data.rows[0].id_theme,
                 idStatus: data.rows[0].id_status,
-            })
+                isTutorialMode: data.rows[0].is_tutorial_mode
+            }
+            next()
         }
     } catch (err) {
         res.status(500).send({
@@ -47,5 +81,7 @@ async function editUser(req, res) {
 
 module.exports = {
     getUserData,
-    editUser
+    editUser,
+    getServiceActive,
+    sendMe
 }

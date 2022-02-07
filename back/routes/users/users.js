@@ -11,15 +11,20 @@ const fctHistoryCommunication = require('./historyConnection');
 const fctTheme = require('./theme');
 const fctStatus = require('./status');
 const fctDeleteAccount = require('./deleteAccount');
+const fctService = require('../services/all');
+const fctTutorialMode = require('./tutorialMode');
 
 /* GET my user data */
-router.get('/me', fctToken.auth, fctMe.getUserData);
+router.get('/me', fctToken.auth, fctMe.getUserData, fctService.getServiceDataAll, fctMe.getServiceActive, fctMe.sendMe);
 
 /* GET Theme user */
 router.get('/theme', fctToken.auth, fctTheme.getTheme);
 
 /* PUT Theme user */
 router.put('/theme', fctToken.auth, fctTheme.editTheme);
+
+/* PUT Edit tutorial mode */
+router.put('/tutorialMode', fctToken.auth, fctTutorialMode.editTutorialMode);
 
 /* Delete Theme user */
 router.delete('/deleteAccount', fctToken.auth, fctDeleteAccount.deleteAccount);

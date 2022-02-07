@@ -9,10 +9,13 @@ async function getLinkService(req, res) {
         let data = await fctDataBase.request('SELECT * FROM link_service WHERE id_user=$1;', [parseInt(dataToken.id)]);
 
         res.locals.services.forEach(elem => {
-            let target = data.rows.find(item => item.id_service === elem.id);
+            let target = data.rows.find(item => {
+                return parseInt(item.id_service) === parseInt(elem.id)
+            });
 
-            if (target)
+            if (!!target) {
                 elem.isActive = true
+            }
         })
 
         res.status(200).send(res.locals.services);

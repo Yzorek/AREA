@@ -1,0 +1,8 @@
+{
+  "weather": {
+    "apiKey": "cbc94ccfd754f2354563d1c1fda83aa8"
+  },
+  "google": {
+    "clientId": "25301534648-0fuhhp3vrn7fc1s98kll9oppje91rquk.apps.googleusercontent.com"
+  }
+}
