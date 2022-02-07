@@ -9,6 +9,7 @@ import Main from "./Components/Main/Main";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import WrongPageRouter from "./Components/Tools/WrongPageRouter";
+import Identification from "./Components/Identification/Identification";
 
 function App() {
     const [isConnected, setIsConnected] = useState(false);
@@ -35,6 +36,7 @@ function App() {
             <Route path="Login" element={<Login/>}/>
             <Route path="Register" element={<Register/>}/>
             <Route path="App/*" element={<Main/>}/>
+            <Route path={"/identification/:idUser"} element={<Identification/>}/>
             <Route
                 path="*"
                 element={
