@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Grid, Alert} from "@mui/material";
-import DialogWeather from "./DialogWeather";
+import DialogWeather from "./DialogWeather/DialogWeather";
 import axios from "axios";
 import MainLoader from "../../../Tools/MainLoader";
 import Template from "./Template";
