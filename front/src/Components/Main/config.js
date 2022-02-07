@@ -5,6 +5,12 @@ export const GENERAL_DASHBOARD = 1
 export const GENERAL_PROFILE = 2
 export const SERVICE_SETTINGS = 3
 export const API_WEATHER = 4
+export const TWITTER = 5
+export const INSTAGRAM = 6
+export const DISCORD = 7
+export const TWITCH = 8
+export const YOUTUBE = 9
+export const TELEGRAM = 10
 
 export const theme_default = {
     palette: {
