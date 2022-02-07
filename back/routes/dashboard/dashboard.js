@@ -8,6 +8,6 @@ router.get('/widget', fctToken.auth, fctWidget.getWidget);
 
 router.post('/widget', fctToken.auth, fctWidget.newWidgetByUser);
 
-router.delete('/widget', fctToken.auth, fctWidget.deleteWidget);
+router.delete('/widget/:id', fctToken.auth, fctWidget.deleteWidget);
 
 module.exports = router;

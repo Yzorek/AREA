@@ -14,7 +14,7 @@ async function newWidgetByUser(req, res) {
                 value += `(${dataToken.id}, ${item.id}), `
             }
         })
-        await fctDataBase.request('INSERT INTO widget(id_user, id_widget) VALUES ${value};', []);
+        await fctDataBase.request('INSERT INTO widget(id_user, id_widget) VALUES ' + value + ';', []);
         res.status(200).send({
             message: 'done!',
         });
@@ -27,7 +27,7 @@ async function newWidgetByUser(req, res) {
 
 async function deleteWidget(req, res) {
     try {
-        await fctDataBase.request('DELETE FROM widget WHERE id=$1;', [req.body.idWidget]);
+        await fctDataBase.request('DELETE FROM widget WHERE id=$1;', [parseInt(req.params.id)]);
         res.status(200).send({
             message: 'done!',
         });

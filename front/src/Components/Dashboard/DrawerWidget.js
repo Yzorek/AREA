@@ -24,9 +24,16 @@ function reducer(state, action) {
     }
 }
 
+function init(initial) {
+    initial.forEach(item => {
+        item.save = 0
+    })
+    return [...initial];
+}
+
 export default function DrawerWidget({open, handleClose}) {
     const [search, setSearch] = useState('');
-    const [state, dispatch] = useReducer(reducer, widgetData);
+    const [state, dispatch] = useReducer(reducer, widgetData, init);
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -76,7 +83,7 @@ export default function DrawerWidget({open, handleClose}) {
                     <ArrowForwardIos/>
                 </IconButton>
             </Grid>
-            <Grid item xs={12} style={{height: 'calc(100% - 110px)'}} spacing={1}>
+            <Grid item xs={12} style={{height: 'calc(100% - 110px)'}}>
                 <Grid item xs={12} sx={{p: 1}}>
                     <TextField label={'Search'} type={'search'} fullWidth value={search} onChange={(e) => setSearch(e.target.value)} variant={'outlined'}
                                InputProps={{
