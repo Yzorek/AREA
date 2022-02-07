@@ -8,13 +8,14 @@ import {
     List,
     ListSubheader,
     ListItemButton,
-    ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert
+    ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert, Button
 } from "@mui/material";
-import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
+import {drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS, SERVICE} from "./config";
 import {Dashboard, Person} from "@mui/icons-material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
+import IconFromName from "../Tools/Services"
 
 function ClassicListItemButtonNav({idSelected, id, label, icon, redirectTo, isLoading}) {
     let navigate = useNavigate();
@@ -34,7 +35,7 @@ function ClassicListItemButtonNav({idSelected, id, label, icon, redirectTo, isLo
             marginRight: '5px'
         },
     }}>
-        <ListItemIcon sx={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}}>
+        <ListItemIcon sx={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}} style={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}}>
             {icon}
         </ListItemIcon>
         <ListItemText primary={label} sx={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}}/>
@@ -84,6 +85,18 @@ export default function DrawerArea({isLoading, idSelected}) {
                     </ListSubheader>
                 }
             >
+                {!userContext ? <Skeleton variant="rectangular" width={'100%'} height={'100%'} style={{borderRadius: 5}}/>
+                 : userContext.services.map((item, index) => {
+                     return (
+                        <ClassicListItemButtonNav icon={IconFromName(item.name)}
+                        redirectTo={item.name}
+                        id={SERVICE + index}
+                        label={item.name}
+                        key={`${item.id} - service bar - ${index}`}
+                        idSelected={idSelected}
+                        />
+                    )
+                })}
                 <ClassicListItemButtonNav redirectTo={'Service'} icon={<SettingsIcon/>} id={SERVICE_SETTINGS}
                                           label={'Service settings'} idSelected={idSelected} isLoading={isLoading}/>
             </List>

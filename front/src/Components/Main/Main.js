@@ -10,7 +10,8 @@ import {
     DEFAULT_PAGE,
     GENERAL_DASHBOARD,
     GENERAL_PROFILE,
-    SERVICE_SETTINGS
+    SERVICE_SETTINGS,
+    SERVICE
 } from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
@@ -20,6 +21,7 @@ import ServiceSettings from '../ServiceSettings/ServiceSettings';
 import {SocketContextProvider} from "../Tools/SocketContext/SocketContext";
 import Dashboard from "../Dashboard/Dashboard";
 import WrongPageRouter from "../Tools/WrongPageRouter";
+import ServicePage from '../Services/Services';
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -88,7 +90,8 @@ export default function Main() {
                             <MainLoader/>
                         </Grid> : <Routes>
                             <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
-                            <Route path={`Service/*`} element={<SelectedRouter app={<ServiceSettings/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
+                            {user.services.map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.name} element={<SelectedRouter app={<ServicePage title={item.name} areas={{}} widgets={{}}/>} idRoute={SERVICE + index} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
+                            <Route path={`Service/`} element={<SelectedRouter app={<ServiceSettings/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                             <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                             <Route path={`Profile/*`} element={<SelectedRouter app={<Profile/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                             <Route
