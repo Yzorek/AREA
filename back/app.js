@@ -15,10 +15,12 @@ const apiWeatherRouter = require('./routes/api/weather/weather');
 const apiLocationRouter = require('./routes/api/location/location');
 const weatherRouter = require('./routes/weather/weather');
 const dashboardRouter = require('./routes/dashboard/dashboard');
+const downloadRouter = require('./routes/download/download');
 
 const app = express();
 const server = http.createServer(app);
 const io = Server(server, {origins: '*:*'});
+
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -40,6 +42,7 @@ app.use('/api/weather', apiWeatherRouter);
 app.use('/api/location', apiLocationRouter);
 app.use('/weather', weatherRouter);
 app.use('/dashboard', dashboardRouter);
+app.use('/download', downloadRouter);
 
 require('./socket/socket')(io);
 

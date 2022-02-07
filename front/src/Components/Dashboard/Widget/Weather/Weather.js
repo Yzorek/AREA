@@ -6,7 +6,7 @@ import MainLoader from "../../../Tools/MainLoader";
 import Template from "./Template";
 import AlertError from "../../../Tools/AlertError";
 
-export default function Weather({openSettings, setOpenSettings}) {
+export default function Weather({openSettings, setOpenSettings, idWidget}) {
     const [isLoading, setIsLoading] = useState(true);
     const [settings, setSettings] = useState(null);
     const [isError, setIsError] = useState(false);
@@ -21,7 +21,7 @@ export default function Weather({openSettings, setOpenSettings}) {
         (async () => {
             try {
                 setIsLoading(true)
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/test`,
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/test/${idWidget}`,
                     {
                         cancelToken: source.token,
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}

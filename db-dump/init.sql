@@ -59,3 +59,12 @@ CREATE TABLE widget (
     id_widget       INT,
     primary key(id)
 );
+
+--Widget Config Weather--
+CREATE TABLE widget_config_weather (
+    id                  SERIAL,
+    id_user             INT,
+    id_widget           INT,
+    id_weather_config   INT,
+    primary key(id)
+);
