@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, Alert, FlatList } from 'react-native';
 import { connect } from 'react-redux'
-import axios from 'axios';
 import colors from '../../charte/colors';
+import axios from 'axios';
 
-class Login extends Component{
+class Register extends Component{
     constructor(props) {
     super(props);
         this.state = {
-            email: "", password: "",
-            isError: false,
+            first: "", last: "", email: "", password: "", isError: false,
+            _isMounted: false,
         };
+    }
+
+    componentWillUnmount() {
+        this.setState({isError: false})
     }
 
     async onSubmit(e) {
@@ -20,27 +24,39 @@ class Login extends Component{
         try {
             let body = {
                 email: this.state.email,
-                password: this.state.password
+                password: this.state.password,
+                username: this.state.first + ' ' + this.state.last,
+                firstName: this.state.first,
+                lastName: this.state.last,
+                avatar: '',
+                auth: 'local',
             }
             const response = await axios.post(
-                'http://'+IP+':8080/auth/login', body
+                'http://'+IP+':8080/auth/register', body
             );
-            this.props.dispatch({type: "accessToken", value: response.data.accessToken})
             this.setState({isError: false})
-          } catch (error) {
+        } catch (error) {
             this.setState({isError: true})
-          }
+        }
     }
 
-    _conditionToGoHome(e) {
+    checkRegister(e) {
         this.onSubmit(e)
-        if (this.props.accessToken!=="") {
-            this.props.dispatch({type: 'index', value: 2});
+
+        if (this.state.email!=="" && this.state.password!=="" && this.state.first!=="" && this.state.last!=="") {
+            if (this.state.isError===false) {
+                this.props.dispatch({type: "index", value: 0})
+            }
+            else {
+                Alert.alert(
+                    "Error !",
+                    "Please retry to create an account !",
+                );
+            }
         }
         else {
             Alert.alert(
-                "The email or password is incorrect !",
-                "retry or create an account",
+                "Please enter all the information !",
             );
         }
     }
@@ -49,6 +65,22 @@ class Login extends Component{
         return (
             <View style={styles.container}>
                 <Text style={styles.txt_logo}>ULYS</Text>
+                <Text style={styles.txt_input}>FIRST NAME</Text>
+                <View style={styles.input}>
+                    <TextInput
+                        placeholder="Thomas"
+                        onChangeText={(value) => {this.setState({first: value})}}
+                    ></TextInput>
+                </View>
+
+                <Text style={styles.txt_input}>LAST NAME</Text>
+                <View style={styles.input}>
+                    <TextInput
+                        placeholder="Labro"
+                        onChangeText={(value) => {this.setState({last: value})}}
+                    ></TextInput>
+                </View>
+
                 <Text style={styles.txt_input}>EMAIL</Text>
                 <View style={styles.input}>
                     <TextInput
@@ -57,6 +89,7 @@ class Login extends Component{
                         onChangeText={(value) => {this.setState({email: value})}}
                     ></TextInput>
                 </View>
+
                 <Text style={styles.txt_input}>PASSWORD</Text>
                 <View style={styles.input}>
                     <TextInput
@@ -66,15 +99,11 @@ class Login extends Component{
                         onChangeText={(value) => {this.setState({password: value})}}
                     ></TextInput>
                 </View>
-                <TouchableOpacity style={styles.btn_login} onPress={(e) => {this._conditionToGoHome(e)}}>
-                    <Text style={styles.txt_login}>Login</Text>
+                <TouchableOpacity style={styles.btn_login} onPress={(e) => {this.checkRegister(e)}}>
+                    <Text style={styles.txt_login}>Register</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.social_media}>
-                    <Image style={styles.img_google} source={{uri:"https://icones.pro/wp-content/uploads/2021/02/google-icone-symbole-logo-png.png"}} />
-                    <Text style={{textAlign: 'center', textAlignVertical: 'center'}}>Login with Google</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {this.props.dispatch({type: 'index', value: 1})}}>
-                    <Text style={styles.txt_register}>Register</Text>
+                <TouchableOpacity onPress={() => {this.props.dispatch({type: 'index', value: 0})}}>
+                    <Text style={styles.txt_register}>Sign in</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -83,11 +112,11 @@ class Login extends Component{
 
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+        flex: 1,
+        width: "100%",
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     txt_logo: {
         fontSize: 44,
@@ -115,7 +144,7 @@ const styles = StyleSheet.create({
         marginBottom: "5%",
     },
     btn_login: {
-        width: "40%",
+        width: "35%",
         height: "6%",
         borderRadius: 10,
         backgroundColor: colors.secondary,
@@ -129,19 +158,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textDecorationLine: "underline"
     },
-    social_media: {
-        flexDirection: "row",
-        width: "45%",
-        marginBottom: "6%",
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderRadius: 10,
-    },
-    img_google: {
-        width: 40,
-        height:40,
-    },
     txt_register: {
         color: colors.secondary,
         fontSize: 20,
@@ -154,7 +170,6 @@ const mapStateToProps = (state) => {
     index: state.index,
     name: state.name,
     ip: state.ip,
-    accessToken: state.accessToken
     }
 }
-export default connect(mapStateToProps)(Login) 
+export default connect(mapStateToProps)(Register) 
