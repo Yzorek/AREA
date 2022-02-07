@@ -38,7 +38,7 @@ async function sendToken(req, res) {
 
 function identificationMail(req, res, next) {
     try {
-        fctMail.createMail(req.body.email, "Welcome to Ulys! Please confirme your email! to Ulys application!", `http://localhost:8082/users/identification/${res.locals.id}?code=${makeCode(6)}`,
+        fctMail.createMail(req.body.email, "Welcome to Ulys! Please confirme your email! to Ulys application!", `http://localhost:8082/identification/${res.locals.id}?code=${makeCode(6)}`,
             '<div>' +
             '<p>Welcome to Ulys!</p>' +
             '<p>Please click on this link for confirme your email!</p>' +
