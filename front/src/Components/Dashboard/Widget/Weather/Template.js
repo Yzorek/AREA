@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from "axios";
-import {Button, Grid, Paper, Skeleton, Typography} from "@mui/material";
+import {Button, Grid, Skeleton, Typography} from "@mui/material";
 import AlertError from "../../../Tools/AlertError";
 
 export default function Template({city, countryCode, units}) {

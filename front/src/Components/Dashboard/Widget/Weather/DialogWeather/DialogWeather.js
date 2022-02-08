@@ -15,13 +15,15 @@ import {Add} from "@mui/icons-material";
 import ListConfigWeather from "./ListConfigWeather";
 import axios from "axios";
 import AlertError from "../../../../Tools/AlertError";
+import {useNavigate} from "react-router";
 
 export default function DialogWeather({open, handleClose, idBDD}) {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [idSelected, setIdSelected] = useState(0);
-    const [isOnBase, setIsOnBase] = useState(false);
+    const [idOnBase, setIdOnBase] = useState(-1);
     const isMounted = useRef(null);
+    let navigate = useNavigate();
 
     useEffect(() => {
         isMounted.current = true
@@ -35,9 +37,11 @@ export default function DialogWeather({open, handleClose, idBDD}) {
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     });
                 if (isMounted && isMounted.current) {
-                    setIdSelected(response.data.id);
-                    if (response.data.id > 0)
-                        setIsOnBase(true)
+                    setIdSelected(response.data.idWeatherConfig);
+                    if (response.data.idWeatherConfig > 0) {
+                        console.log(response.data.id)
+                        setIdOnBase(response.data.id)
+                    }
                     setIsLoading(false);
                 }
             } catch (err) {
@@ -51,19 +55,19 @@ export default function DialogWeather({open, handleClose, idBDD}) {
             isMounted.current = false;
             source.cancel("Component DialogWeather got unmounted");
         }
-    }, []);
+    }, [idBDD]);
 
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
             setIsLoading(true);
-            if (isOnBase)
-                await axios.put(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/weather/config/${idBDD}`, {id: idSelected},
+            if (idOnBase >= 0)
+                await axios.put(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/weather/config/${idOnBase}`, {idConfig: idSelected},
                     {
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     })
             else
-                await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/weather/config/${idBDD}`, {id: idSelected},
+                await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/weather/config`, {idConfig: idSelected, idWidget: idBDD},
                     {
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     })
@@ -79,7 +83,7 @@ export default function DialogWeather({open, handleClose, idBDD}) {
 
     const handleCloseDialog = (isToReload) => {
         handleClose(isToReload);
-        setIsOnBase(false)
+        setIdOnBase(-1)
     }
 
     return <Dialog component={'form'} open={open} onClose={() => handleCloseDialog(false)} fullWidth maxWidth={'sm'} onSubmit={onSubmit}>
@@ -96,7 +100,7 @@ export default function DialogWeather({open, handleClose, idBDD}) {
                 </Grid>
                 <Grid container item xs={6} justifyContent={'flex-end'}>
                     <Tooltip title={'Add new weather config'}>
-                        <Fab size={'small'} color={'primary'}>
+                        <Fab size={'small'} color={'primary'} onClick={() => navigate('/App/Weather')}>
                             <Add/>
                         </Fab>
                     </Tooltip>

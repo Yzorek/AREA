@@ -11,6 +11,6 @@ export default function Widget({isEdit, handleRemoveItem, model}) {
 
     return <Paper style={{height: '100%', width: "100%"}}>
         {isEdit && <WidgetAction handleRemoveItem={handleRemoveItem} handleOpenSettings={handleOpenSettings} modelID={model.idBDD}/>}
-        {model.component(openSettings, setOpenSettings)}
+        {model.component(openSettings, setOpenSettings, model.idBDD)}
     </Paper>
 }

@@ -21,7 +21,7 @@ export default function Weather({openSettings, setOpenSettings, idWidget}) {
         (async () => {
             try {
                 setIsLoading(true)
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/test/${idWidget}`,
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/weather/${idWidget}`,
                     {
                         cancelToken: source.token,
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
@@ -33,6 +33,7 @@ export default function Weather({openSettings, setOpenSettings, idWidget}) {
                 }
             } catch (err) {
                 if (err.response) {
+                    console.log(err);
                     setIsError(true);
                     setIsReload(false);
                     setIsLoading(false);
@@ -43,10 +44,11 @@ export default function Weather({openSettings, setOpenSettings, idWidget}) {
             isMounted.current = false;
             source.cancel("Component Weather got unmounted");
         }
-    }, [isReload]);
+    }, [isReload, idWidget]);
 
-    const handleCloseSettings = () => {
+    const handleCloseSettings = (isToReload) => {
         setOpenSettings(false)
+        setIsReload(isToReload)
     }
 
     if (isLoading) {
@@ -58,7 +60,7 @@ export default function Weather({openSettings, setOpenSettings, idWidget}) {
     return <Grid container item xs={12} justifyContent={'center'} alignItems={'center'} style={{height: '100%'}}>
         {!!settings ? <Template units={'metric'} city={settings.city} countryCode={settings.countryCode}/> :
             <Alert severity={'warning'}>No settings set</Alert>}
-        <DialogWeather open={openSettings} handleClose={handleCloseSettings}/>
+        <DialogWeather open={openSettings} handleClose={handleCloseSettings} idBDD={idWidget}/>
         <AlertError isError={isError} setIsError={setIsError}/>
     </Grid>
 }
