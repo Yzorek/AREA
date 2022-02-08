@@ -16,6 +16,7 @@ const apiLocationRouter = require('./routes/api/location/location');
 const weatherRouter = require('./routes/weather/weather');
 const dashboardRouter = require('./routes/dashboard/dashboard');
 const downloadRouter = require('./routes/download/download');
+const ARRouter = require('./routes/actionReaction/actionReaction')
 
 const app = express();
 const server = http.createServer(app);
@@ -43,6 +44,7 @@ app.use('/api/location', apiLocationRouter);
 app.use('/weather', weatherRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/download', downloadRouter);
+app.use('/AR', ARRouter);
 
 require('./socket/socket')(io);
 
