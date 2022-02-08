@@ -9,12 +9,7 @@ class Register extends Component{
     super(props);
         this.state = {
             first: "", last: "", email: "", password: "", isError: false,
-            _isMounted: false,
         };
-    }
-
-    componentWillUnmount() {
-        this.setState({isError: false})
     }
 
     async onSubmit(e) {
