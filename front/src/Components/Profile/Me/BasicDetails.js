@@ -4,6 +4,7 @@ import {Badge, Cancel, Edit, Email, Person, Save} from "@mui/icons-material";
 import {LoadingButton, Skeleton} from "@mui/lab";
 import AlertError from "../../Tools/AlertError";
 import axios from "axios";
+import AvatarUpload from "../../Tools/AvatarUpload/AvatarUpload";
 
 const TYPE_LOCAL = 'local'
 
@@ -44,6 +45,8 @@ export default function BasicDetails({hotReload, data, isLoading}) {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [avatar, setAvatar] = useState("");
+    const [avatarPath, setAvatarPath] = useState("");
 
     const handleCancelEdit = () => {
         setIsEdit(false);
@@ -85,6 +88,22 @@ export default function BasicDetails({hotReload, data, isLoading}) {
         }
     }
 
+    async function saveAvatar(croppedImg) {
+        try {
+            const data = croppedImg ? {logo: croppedImg} : {}
+            if (croppedImg) {
+                setAvatar("")
+                setAvatarPath("")
+            } else {
+                setAvatar("")
+                setAvatarPath("")
+            }
+
+        } catch (err) {
+            setIsError(true)
+        }
+    }
+
     if (isLoading || !data)
         return <SkeletonBasicDetails/>
 
@@ -97,7 +116,7 @@ export default function BasicDetails({hotReload, data, isLoading}) {
             </Grid>
             <Grid container item xs={8} spacing={2} component={'form'} onSubmit={onSubmit}>
                 <Grid item xs={2}>
-                    <Avatar sx={{width: 60, height: 60}} alt={data.username} src={data.avatar}/>
+                    {isEdit ? <AvatarUpload logoUrl={data.avatar} handleSave={saveAvatar}/> : <Avatar sx={{width: 60, height: 60}} alt={data.username} src={data.avatar}/>}
                 </Grid>
                 {!isEdit && <Grid container item xs={4} alignItems={'center'}>
                     <Tooltip title={'Edit your basic information'}>

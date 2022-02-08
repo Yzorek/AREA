@@ -6,6 +6,8 @@ import {withSize} from "react-sizeme";
 import {Grid, Alert} from "@mui/material";
 import Widget from "./Widget/Widget";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
+import AlertError from "../Tools/AlertError";
+import axios from "axios";
 
 function getFromLS(key) {
     let ls = {};
@@ -20,6 +22,7 @@ function getFromLS(key) {
 
 function CardLayout({size, isEdit, widget, setWidget}) {
     let tutorialMode = useContext(TutorialContext);
+    const [isError, setIsError] = useState(false);
     const [layouts, setLayouts] = useState(
         getFromLS("layouts")
     );
@@ -28,8 +31,18 @@ function CardLayout({size, isEdit, widget, setWidget}) {
         setLayouts(allLayouts);
     };
 
-    const handleRemoveItem = (itemId) => {
-        setWidget(widget.filter((i) => i !== itemId));
+    const handleRemoveItem = async (itemId) => {
+        try {
+            await axios.delete(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget/${itemId}`,
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+            setWidget(widget.filter((i) => i.idBDD !== itemId));
+        } catch (err) {
+            if (err.response) {
+                setIsError(true);
+            }
+        }
     };
 
     return <Grid container item xs={12} style={{marginTop: 20}}>
@@ -47,9 +60,10 @@ function CardLayout({size, isEdit, widget, setWidget}) {
             {widget.map((item, index) => <div
                 key={`${item.id} - Widget - ${index}`}
                 data-grid={item.size}>
-                <Widget isEdit={isEdit} handleRemoveItem={handleRemoveItem} idWidget={item.id}/>
+                <Widget isEdit={isEdit} handleRemoveItem={handleRemoveItem} model={item}/>
             </div>)}
         </ResponsiveGridLayout>
+        <AlertError isError={isError} setIsError={setIsError}/>
     </Grid>
 
 }

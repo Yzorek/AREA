@@ -1,5 +1,6 @@
 const fctToken = require('../../tools/fctToken');
 const fctDataBase = require("../../tools/fctDBRequest");
+const dataCountry = require("../api/location/data/country.json").country
 
 async function getAllDataWeather(req, res) {
     let dataToken = fctToken.getTokenData(req);
@@ -10,6 +11,7 @@ async function getAllDataWeather(req, res) {
         target.rows.forEach(elem => response.push({
             id: elem.id,
             countryCode: elem.countrycode,
+            country: dataCountry.find(item => item.iso2 === elem.countrycode).country,
             city: elem.city,
         }))
 

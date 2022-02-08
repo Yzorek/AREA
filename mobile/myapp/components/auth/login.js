@@ -13,10 +13,6 @@ class Login extends Component{
         };
     }
 
-    componentWillUnmount() {
-        this.setState({isError: false})
-    }
-
     async onSubmit(e) {
         e.preventDefault();
         const IP = this.props.ip
@@ -38,20 +34,13 @@ class Login extends Component{
 
     _conditionToGoHome(e) {
         this.onSubmit(e)
-        if (this.state.email!=="" && this.state.password!=="") {
-            if (this.props.accessToken!=="") {
-                this.props.dispatch({type: 'index', value: 2});
-            }
-            else {
-                Alert.alert(
-                    "The email or password is incorrect !",
-                    "retry or create an account",
-                );
-            }
+        if (this.props.accessToken!=="") {
+            this.props.dispatch({type: 'index', value: 2});
         }
         else {
             Alert.alert(
-                "Please enter your email and password !",
+                "The email or password is incorrect !",
+                "retry or create an account",
             );
         }
     }

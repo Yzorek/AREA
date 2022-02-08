@@ -5,7 +5,7 @@ import DisplayTheme from "./DisplayTheme";
 import AlertError from "../../Tools/AlertError";
 import axios from "axios";
 
-export default function Theme() {
+export default function Theme({handleThemeChangeParent}) {
     const [selectedId, setSelectedId] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -53,6 +53,7 @@ export default function Theme() {
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                 })
             setSelectedId(id);
+            handleThemeChangeParent(id);
         } catch (err) {
             if (err.response) {
                 setIsError(true);
