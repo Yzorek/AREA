@@ -89,7 +89,7 @@ export default function AvatarUpload({logoUrl, handleSave, handleDelete, label =
                     setImage(null)
                 }
             } catch (err) {
-                //TODO: isEroor
+                //TODO: isError
             }
         })()
         return () => {
