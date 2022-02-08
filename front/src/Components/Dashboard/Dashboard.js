@@ -6,33 +6,50 @@ import CardLayout from "./CardLayout";
 import SkeletonDashboard from "./SkeletonDashboard";
 import AlertError from "../Tools/AlertError";
 import axios from "axios";
+import widgetData from "./Widget/config";
 
 export default function Dashboard() {
     const [drawerWidgetOpen, setDrawerWidgetOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [widget, setWidget] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isReload, setIsReload] = useState(true);
     const [isError, setIsError] = useState(false);
     const isMounted = useRef(null);
 
     useEffect(() => {
+        if (!isReload)
+            return;
         isMounted.current = true
         const source = axios.CancelToken.source();
         (async () => {
             try {
                 setIsLoading(true)
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/test`,
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/dashboard/widget`,
                     {
                         cancelToken: source.token,
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     });
                 if (isMounted && isMounted.current) {
-                    setWidget(response.data);
+                    let target = []
+
+                    response.data.forEach(item => {
+                        let model = widgetData.find(elem => elem.id === item.idWidget);
+
+                        if (model) {
+                            let newPush = {...model}
+                            newPush.idBDD = item.id
+                            target.push(newPush)
+                        }
+                    })
+                    setWidget(target);
                     setIsLoading(false);
+                    setIsReload(false);
                 }
             } catch (err) {
                 if (err.response) {
                     setIsError(true);
+                    setIsReload(false);
                     setIsLoading(false);
                 }
             }
@@ -41,18 +58,15 @@ export default function Dashboard() {
             isMounted.current = false;
             source.cancel("Component Dashboard got unmounted");
         }
-    }, []);
+    }, [isReload]);
 
-    const handleCloseDrawerWidget = () => {
+    const handleCloseDrawerWidget = (isToReload) => {
         setDrawerWidgetOpen(false);
-    }
-
-    const addNewWidget = (allId) => {
-        //setWidget([...allId, widget]);
+        setIsReload(isToReload);
     }
 
     return <Grid container item xs={12} sx={{p: 4}}>
-        <DrawerWidget handleClose={handleCloseDrawerWidget} open={drawerWidgetOpen} addNewWidget={addNewWidget}/>
+        <DrawerWidget handleClose={handleCloseDrawerWidget} open={drawerWidgetOpen}/>
         <Grid item xs={6}>
             <Typography style={{fontWeight: 'bold'}} variant={'h3'}>
                 Welcome
