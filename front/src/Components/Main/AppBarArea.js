@@ -59,7 +59,7 @@ export default function AppBarArea({isLoading, handleTutorialChange}) {
     const [openStatus, setOpenStatus] = useState(false);
     let userContext = useContext(UserContext);
     const [status, setStatus] = useState(1);
-    const [isError, setIsError] = useState(true);
+    const [isError, setIsError] = useState(false);
     const [isLoadingStatus, setIsLoadingStatus] = useState(false);
     const [isTutorialMode, setIsTutorialMode] = useState(false);
     const [isLoadingTutorial, setIsLoadingTutorial] = useState(false);
