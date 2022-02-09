@@ -14,6 +14,16 @@ services:
     ports:
       - "5432:5432"
 
+  bot:
+    restart: unless-stopped
+    build:
+      context: ./bot-discord
+      target: prod
+    depends_on:
+      - db
+    volumes:
+      - ./bot-discord/server.js:/app/server.js
+
   back:
     restart: unless-stopped
     build:
