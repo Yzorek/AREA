@@ -24,6 +24,8 @@ services:
       - db
     volumes:
       - ./bot-discord/server.js:/app/server.js
+      - ./bot-discord/config.js:/app/config.js
+      - ./bot-discord/commands:/app/commands
 
   back:
     restart: unless-stopped
