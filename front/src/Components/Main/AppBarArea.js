@@ -45,7 +45,7 @@ let statusData = [
     {
         id: 2,
         label: 'Inactive',
-        color: 'yellow',
+        color: 'orange',
     },
     {
         id: 3,

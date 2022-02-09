@@ -73,8 +73,8 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard/>} id={GENERAL_DASHBOARD}
-                                          label={'Dashboard'} idSelected={idSelected} isLoading={isLoading}/>
-                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
+                                          label={<Typography variant={"subtitle1"}> Dashboard </Typography>} idSelected={idSelected} isLoading={isLoading}/>
+                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={<Typography variant={"subtitle1"}> Profile </Typography>}
                                           idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
@@ -86,7 +86,7 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Weather'} icon={<Cloud/>} id={API_WEATHER}
-                                          label={'Weather'} idSelected={idSelected} isLoading={isLoading}/>
+                                          label={<Typography variant={"subtitle1"}> Weather </Typography>} idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
                 dense
@@ -112,7 +112,7 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                     )
                 })}
                 <ClassicListItemButtonNav redirectTo={'Service'} icon={<SettingsIcon/>} id={SERVICE_SETTINGS}
-                                          label={'Service settings'} idSelected={idSelected} isLoading={isLoading}/>
+                                          label={<Typography variant={"subtitle1"}> Service settings </Typography>} idSelected={idSelected} isLoading={isLoading}/>
             </List>
         </Box>
 
