@@ -112,7 +112,7 @@ export default function Services({onServiceSub}) {
                                     <Paper style={{height: 140, background: item.isActive ? item.color : 'gray', cursor: 'pointer'}} sx={{
                                         transition: '0.5s',
                                         '&:hover': {boxShadow: 12}
-                                    }} elevation={5} onClick={() => handleServiceActivation(index)}>
+                                    }} elevation={0} onClick={() => handleServiceActivation(index)}>
                                         <Grid container item xs={12} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}} style={{height: '100%'}}>
                                             {item.icon}
                                             <Typography color={'white'} style={{fontWeight: 'bold'}}>

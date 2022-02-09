@@ -64,7 +64,7 @@ export default function Theme({handleThemeChangeParent}) {
 
 
     return <Grid item xs={12} sm={10} md={7} style={{marginTop: 25}}>
-        <Paper elevation={1} sx={{p: 4}}>
+        <Paper elevation={0} style={{borderRadius: 5}} sx={{p: 4}}>
             <Grid container item xs={12}>
                 <Grid item xs={12}>
                     <Typography style={{fontWeight: 'bold', fontSize: 20}}>
