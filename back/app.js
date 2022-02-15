@@ -48,6 +48,15 @@ app.use('/AR', ARRouter);
 
 require('./socket/socket')(io);
 
+function logEvery2Seconds(i) {
+    setTimeout(() => {
+        console.log('Infinite Loop Test n:', i);
+        logEvery2Seconds(++i);
+    }, 2000)
+}
+
+//logEvery2Seconds(0);
+
 server.listen(8080, () => {
     console.log('listening on *:8080');
 });
