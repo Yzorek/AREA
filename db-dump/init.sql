@@ -72,23 +72,23 @@ CREATE TABLE widget_config_weather (
 --Actions--
 CREATE TABLE actions (
     id                  SERIAL,
-    name                varchar(255) NOT NULL,
     description         varchar(255) NOT NULL,
+    id_service          INT,
     primary key(id)
 );
 
-INSERT INTO actions(name, description) VALUES ("toto", "toto");
+INSERT INTO actions(description, id_service) VALUES ("toto", 0);
 
 
 --Reactions--
 CREATE TABLE reactions (
     id                  SERIAL,
-    name                varchar(255) NOT NULL,
     description         varchar(255) NOT NULL,
+    id_service          INT,
     primary key(id)
 );
 
-INSERT INTO reactions(name, description) VALUES ("tutu", "tutu");
+INSERT INTO reactions(description, id_service) VALUES ("toto", 0);
 
 
 --Link Actions Reactions--
