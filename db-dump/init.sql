@@ -51,3 +51,51 @@ CREATE TABLE weather (
     city            varchar(255) not null,
     primary key(id)
 );
+
+--Widget--
+CREATE TABLE widget (
+    id              SERIAL,
+    id_user         INT,
+    id_widget       INT,
+    primary key(id)
+);
+
+--Widget Config Weather--
+CREATE TABLE widget_config_weather (
+    id                  SERIAL,
+    id_user             INT,
+    id_widget           INT,
+    id_weather_config   INT,
+    primary key(id)
+);
+
+--Actions--
+CREATE TABLE actions (
+    id                  SERIAL,
+    description         varchar(255) NOT NULL,
+    id_service          INT,
+    primary key(id)
+);
+
+INSERT INTO actions(description, id_service) VALUES ("toto", 0);
+
+
+--Reactions--
+CREATE TABLE reactions (
+    id                  SERIAL,
+    description         varchar(255) NOT NULL,
+    id_service          INT,
+    primary key(id)
+);
+
+INSERT INTO reactions(description, id_service) VALUES ("toto", 0);
+
+
+--Link Actions Reactions--
+CREATE TABLE link_actions_reactions (
+    id                  SERIAL,
+    id_user             INT,
+    id_actions          INT,
+    id_reactions        INT,
+    primary key(id)
+);

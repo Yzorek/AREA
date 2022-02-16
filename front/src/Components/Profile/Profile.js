@@ -5,42 +5,43 @@ import Me from "./Me/Me";
 import Security from "./Security/Security";
 import Theme from "./Theme/Theme";
 import {Badge, Palette, GppGood, Settings} from "@mui/icons-material";
-
-const pages = [
-    {
-        label: 'Me',
-        value: 'Me',
-        component: <Me/>,
-        icon: <Badge/>
-    },
-    {
-        label: 'Theme',
-        value: 'Theme',
-        component: <Theme/>,
-        icon: <Palette/>
-    },
-    {
-        label: 'Security',
-        value: 'Security',
-        component: <Security/>,
-        icon: <GppGood/>
-    },
-    {
-        label: 'Settings',
-        value: 'Settings',
-        component: <Grid container item xs={7}>Settings</Grid>,
-        icon: <Settings/>
-    },
-]
+import SettingsProfile from "./Settings/Settings";
 
 function SelectedRouter({setTabs, app, value}) {
     setTabs(value)
     return app
 }
 
-export default function Profile() {
+export default function Profile({handleThemeChange}) {
     const [tabs, setTabs] = useState("Me");
     let navigate = useNavigate();
+
+    const pages = [
+        {
+            label: 'Me',
+            value: 'Me',
+            component: <Me/>,
+            icon: <Badge/>
+        },
+        {
+            label: 'Theme',
+            value: 'Theme',
+            component: <Theme handleThemeChangeParent={handleThemeChange}/>,
+            icon: <Palette/>
+        },
+        {
+            label: 'Security',
+            value: 'Security',
+            component: <Security/>,
+            icon: <GppGood/>
+        },
+        {
+            label: 'Settings',
+            value: 'Settings',
+            component: <SettingsProfile/>,
+            icon: <Settings/>
+        },
+    ]
 
     const handleTabsChange = (event, newValue) => {
         navigate(newValue);

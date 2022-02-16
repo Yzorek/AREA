@@ -5,7 +5,7 @@ import DisplayTheme from "./DisplayTheme";
 import AlertError from "../../Tools/AlertError";
 import axios from "axios";
 
-export default function Theme() {
+export default function Theme({handleThemeChangeParent}) {
     const [selectedId, setSelectedId] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -53,6 +53,7 @@ export default function Theme() {
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                 })
             setSelectedId(id);
+            handleThemeChangeParent(id);
         } catch (err) {
             if (err.response) {
                 setIsError(true);
@@ -63,7 +64,7 @@ export default function Theme() {
 
 
     return <Grid item xs={12} sm={10} md={7} style={{marginTop: 25}}>
-        <Paper elevation={1} sx={{p: 4}}>
+        <Paper elevation={0} style={{borderRadius: 5}} sx={{p: 4}}>
             <Grid container item xs={12}>
                 <Grid item xs={12}>
                     <Typography style={{fontWeight: 'bold', fontSize: 20}}>

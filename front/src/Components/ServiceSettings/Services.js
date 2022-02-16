@@ -12,7 +12,7 @@ import React from "react";
 import AlertError from "../Tools/AlertError";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 
-export default function Services() {
+export default function Services({onServiceSub}) {
     const [isLoading, setIsLoading] = useState(true);
     const [services, setServices] = useState([]);
     const [isError, setIsError] = useState(false);
@@ -77,6 +77,7 @@ export default function Services() {
         // OAuth step
         services[index].isActive = !services[index].isActive;
         setServices([...services]);
+        onServiceSub([...services]);
         const source = axios.CancelToken.source();
         try {
             let body = {
@@ -111,7 +112,7 @@ export default function Services() {
                                     <Paper style={{height: 140, background: item.isActive ? item.color : 'gray', cursor: 'pointer'}} sx={{
                                         transition: '0.5s',
                                         '&:hover': {boxShadow: 12}
-                                    }} elevation={5} onClick={() => handleServiceActivation(index)}>
+                                    }} elevation={0} onClick={() => handleServiceActivation(index)}>
                                         <Grid container item xs={12} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}} style={{height: '100%'}}>
                                             {item.icon}
                                             <Typography color={'white'} style={{fontWeight: 'bold'}}>

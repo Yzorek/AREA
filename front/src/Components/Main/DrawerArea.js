@@ -34,14 +34,14 @@ function ClassicListItemButtonNav({idSelected, id, label, icon, redirectTo, isLo
             marginRight: '5px'
         },
     }}>
-        <ListItemIcon sx={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}}>
+        <ListItemIcon sx={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}} style={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}}>
             {icon}
         </ListItemIcon>
         <ListItemText primary={label} sx={{color: idSelected === id ? 'dashboard.drawer.buttonSelected' : 'dashboard.drawer.button'}}/>
     </ListItemButton>
 }
 
-export default function DrawerArea({isLoading, idSelected}) {
+export default function DrawerArea({isLoading, idSelected, services}) {
     let userContext = useContext(UserContext);
 
     return <Drawer
@@ -54,7 +54,8 @@ export default function DrawerArea({isLoading, idSelected}) {
         }}
     >
         <Toolbar>
-            <Grid container item xs={12} justifyContent={'center'}>
+            <Grid container item xs={12} justifyContent={'space-between'} alignItems={'center'}>
+                <img aly={'Ulys-Logo'} src={'/Ulys-5.png'} style={{width: 60, height: 'auto'}} alt="logo"/>
                 <Typography color={"white"} variant={'h3'} style={{fontWeight: 'bold'}}>
                     ULYS
                 </Typography>
@@ -72,8 +73,8 @@ export default function DrawerArea({isLoading, idSelected}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard/>} id={GENERAL_DASHBOARD}
-                                          label={'Dashboard'} idSelected={idSelected} isLoading={isLoading}/>
-                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
+                                          label={<Typography variant={"subtitle1"}> Dashboard </Typography>} idSelected={idSelected} isLoading={isLoading}/>
+                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={<Typography variant={"subtitle1"}> Profile </Typography>}
                                           idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
@@ -85,7 +86,7 @@ export default function DrawerArea({isLoading, idSelected}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Weather'} icon={<Cloud/>} id={API_WEATHER}
-                                          label={'Weather'} idSelected={idSelected} isLoading={isLoading}/>
+                                          label={<Typography variant={"subtitle1"}> Weather </Typography>} idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
                 dense
@@ -95,8 +96,23 @@ export default function DrawerArea({isLoading, idSelected}) {
                     </ListSubheader>
                 }
             >
+                {!userContext ? <Skeleton variant="rectangular" width={'100%'} height={'100%'} style={{borderRadius: 5}}/>
+                 : services.map((item, index) => {
+                     if (!item.isActive)
+                        return (<div/>);
+                     else
+                     return (
+                        <ClassicListItemButtonNav icon={item.icon}
+                        redirectTo={item.name}
+                        id={item.pageId}
+                        label={item.name}
+                        key={`${item.id} - service bar - ${index}`}
+                        idSelected={idSelected}
+                        />
+                    )
+                })}
                 <ClassicListItemButtonNav redirectTo={'Service'} icon={<SettingsIcon/>} id={SERVICE_SETTINGS}
-                                          label={'Service settings'} idSelected={idSelected} isLoading={isLoading}/>
+                                          label={<Typography variant={"subtitle1"}> Service settings </Typography>} idSelected={idSelected} isLoading={isLoading}/>
             </List>
         </Box>
 
