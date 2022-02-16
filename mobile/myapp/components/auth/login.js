@@ -10,50 +10,38 @@ class Login extends Component{
         this.state = {
             email: "", password: "",
             isError: false,
+            isMount: false,
+            ErrorMe: false,
         };
     }
 
-    componentWillUnmount() {
-        this.setState({isError: false})
+    componentDidMount() {
+        this.setState({isMount: true})
     }
 
-    async onSubmit(e) {
-        e.preventDefault();
+    _conditionToGoHome = async (e) => {
         const IP = this.props.ip
 
-        try {
-            let body = {
-                email: this.state.email,
-                password: this.state.password
-            }
-            const response = await axios.post(
-                'http://'+IP+':8080/auth/login', body
-            );
-            this.props.dispatch({type: "accessToken", value: response.data.accessToken})
-            this.setState({isError: false})
-          } catch (error) {
-            this.setState({isError: true})
-          }
-    }
-
-    _conditionToGoHome(e) {
-        this.onSubmit(e)
-        if (this.state.email!=="" && this.state.password!=="") {
-            if (this.props.accessToken!=="") {
+        if (this.state.isMount===true) {
+            try {
+                let body = {
+                    email: this.state.email,
+                    password: this.state.password
+                }
+                const response = await axios.post(
+                    'http://'+IP+':8080/auth/login', body
+                );
+                this.props.dispatch({type: "accessToken", value: response.data.accessToken})
                 this.props.dispatch({type: 'index', value: 2});
-            }
-            else {
+                this.setState({isError: false})
+            } catch (error) {
+                this.setState({isError: true})
                 Alert.alert(
-                    "The email or password is incorrect !",
-                    "retry or create an account",
+                    "Please enter your email and password !",
                 );
             }
         }
-        else {
-            Alert.alert(
-                "Please enter your email and password !",
-            );
-        }
+        this.setState({isMount: false})
     }
 
     render() {
@@ -168,4 +156,4 @@ const mapStateToProps = (state) => {
     accessToken: state.accessToken
     }
 }
-export default connect(mapStateToProps)(Login) 
+export default connect(mapStateToProps)(Login)
