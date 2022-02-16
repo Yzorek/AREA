@@ -35,13 +35,6 @@ class UpdateProfile extends Component {
         cancelToken: source.token,
         'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
       });
-      if (response.status!==200) {
-        Alert.alert(
-            "Can't update your password !",
-            "Your last password is incorrect !",
-        );
-      }
-      console.log(response.status)
     } catch (err) {
         if (err.response) {
             this.props.parent.setState({isError: true})
@@ -76,6 +69,7 @@ class UpdateProfile extends Component {
             this.props.parent.setState({isSaving: false})
         }
     }
+    this.props.dispatch({type: "name", value: this.state.username})
     this.props.parent.setState({hide: true})
     this.props.parent.setState({username: this.state.username})
     this.props.parent.setState({firstName: this.state.firstName})
@@ -195,7 +189,8 @@ const mapStateToProps = (state) => {
   return {
   index: state.index,
   accessToken: state.accessToken,
-  ip: state.ip
+  ip: state.ip,
+  name: state.name,
   }
 }
 export default connect(mapStateToProps)(UpdateProfile) 
