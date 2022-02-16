@@ -1,15 +1,8 @@
-<<<<<<< HEAD
-import {ButtonBase, Card, Grid, Switch, Typography} from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import AreaDialog from "./AreaDialog";
-import {useState} from "react";
-=======
 import { Alert, ButtonBase, Card, Grid, Paper, Switch, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import AreaDialog from "./AreaDialog";
 import { useContext, useState } from "react";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
->>>>>>> 3fcfcd6c... refactor(area dialog): design of area dialog in web front
 
 export default function ActionsReactions() {
     const [isAddOpen, setIsAddOpen] = useState(false)
