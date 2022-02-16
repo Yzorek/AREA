@@ -11,6 +11,7 @@ import {
   Switch,
 } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import { connect, useSelector, useDispatch } from 'react-redux'
 import colors from "../../../../charte/colors";
 
 import { AuthContext } from "./../context";
@@ -18,14 +19,21 @@ import { AuthContext } from "./../context";
 //import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/Ionicons";
 
-export function DrawerContent(props) {
+function DrawerContent(props) {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
-  const { signOut } = 0;
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch({ type: "index", value: 0 })
+    dispatch({ type: "accessToken", value: "" })
+  }
 
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
+
+  const name = useSelector((state) => state.name)
 
   return (
     <View style={{ flex: 1 }}>
@@ -40,7 +48,7 @@ export function DrawerContent(props) {
                 size={50}
               />
               <View style={{ marginLeft: 20, flexDirection: "column" }}>
-                <Title style={styles.title}>Ulys</Title>
+                <Title style={styles.title}>{name}</Title>
               </View>
             </View>
           </View>
@@ -122,15 +130,13 @@ export function DrawerContent(props) {
           )}
           label="Sign Out"
           onPress={() => {
-            signOut();
+            logOut();
           }}
         />
       </Drawer.Section>
     </View>
   );
 }
-
-export default DrawerContent;
 
 const styles = StyleSheet.create({
   drawerContent: {
@@ -177,3 +183,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    name: state.name,
+    index: state.index,
+    accessToken: state.accessToken,
+  }
+}
+export default connect(mapStateToProps)(DrawerContent) 
