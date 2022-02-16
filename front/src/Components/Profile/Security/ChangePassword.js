@@ -56,7 +56,7 @@ export default function ChangePassword() {
         setSeverity('warning');
     }
 
-    return <Paper elevation={1} sx={{p: 4}}>
+    return <Paper elevation={0} style={{borderRadius: 5}} sx={{p: 4}}>
         <Grid container item xs={12}>
             <Grid item xs={4}>
                 <Typography style={{fontWeight: 'bold', fontSize: 20}}>
