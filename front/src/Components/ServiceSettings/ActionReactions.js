@@ -1,5 +1,4 @@
-import { Alert, ButtonBase, Card, Collapse, Grid, Icon, IconButton, Paper, Typography } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import { Alert, Button, Collapse, Grid, Icon, IconButton, Paper, Skeleton, Typography } from "@mui/material";
 import AreaDialog from "./AreaDialog";
 import React, { useContext, useState } from "react";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
@@ -12,10 +11,12 @@ import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg';
 import SvgIcon from '@mui/icons-material/Twitter';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { Add } from "@mui/icons-material";
 
 export default function ActionsReactions() {
     const [isAddOpen, setIsAddOpen] = useState(false)
     const [areas, setAreas] = useState([])
+    const [isLoading, setIsLoading] = useState(false);
     let tutorialMode = useContext(TutorialContext);
 
     const handleAddClose = (value) => {
@@ -74,9 +75,18 @@ export default function ActionsReactions() {
     return (
         <Grid container item xs={12} style={{ padding: 20 }} spacing={2}>
             <Grid container item xs={12}>
-                <Typography variant={'h5'} style={{fontWeight: 'bold'}}>
-                    ACTIONS-REACTIONS
-                </Typography>
+                <Grid item xs={6}>
+                    <Typography variant={'h5'} style={{fontWeight: 'bold'}}>
+                        ACTIONS-REACTIONS
+                    </Typography>
+                </Grid>
+                <Grid container item xs={6} alignItems={'center'} justifyContent={'flex-end'} spacing={2}>
+                    <Grid item>
+                        {isLoading ? <Skeleton variant="rectangular" width={150} height={50} /> : <Button variant={'outlined'} startIcon={<Add/>} onClick={() => setIsAddOpen(true)}>
+                            Add Action-Reaction
+                        </Button>}
+                    </Grid>
+                </Grid>
             </Grid>
             {tutorialMode.isActive && <Grid container item xs={12}>
                 <Alert severity="info" style={{width: '100%'}}>Now link your actions and reactions available with your services.</Alert>
@@ -145,12 +155,6 @@ export default function ActionsReactions() {
                         </Paper>
                     </Grid>
                 )}
-                <Card style={{marginLeft: 20, marginTop: 15, background: '#ffffff', width: 150, height: 150}}>
-                    <ButtonBase style={{width: '100%', height: '100%', paddingTop: 8, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', position: 'relative'}}
-                    onClick={() => setIsAddOpen(true)}>
-                    <AddIcon style={{width: '12vw', height: '12vh', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}/>
-                    </ButtonBase>
-                </Card>
                 <AreaDialog
                     isAddOpen={isAddOpen}
                     onClose={handleAddClose}
