@@ -1,16 +1,16 @@
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, ListItemIcon, ListItemText, MenuItem, Select, Snackbar, TextField } from "@mui/material";
 import { useState } from "react";
-import { Actions, Reactions } from "./ActionsList";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Cancel, Save } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 
-export default function AreaDialog({isAddOpen, onClose}) {
+export default function AreaDialog({isAddOpen, onClose, isLoading, actions, reactions}) {
     const [action, setAction] = useState('')
     const [reAction, setReAction] = useState('')
     const [isActionNeeded, setIsActionNeeded] = useState(false);
     const [isReActionNeeded, setIsReActionNeeded] = useState(false);
     const [isParamError, setIsParamError] = useState(false);
+
     const handleClose = () => {
         onClose({});                // TODO pass requests
     }
@@ -79,15 +79,15 @@ export default function AreaDialog({isAddOpen, onClose}) {
                                 value={action}
                                 label="Action"
                                 onChange={handleActChange}
-                                renderValue={(value) => value.text}
+                                renderValue={(value) => value.description}
                                 style={{width: '100%'}}>
-                                    {Actions.map((element, index) => {
+                                    {actions.map((element, index) => {
                                         return (
                                             <MenuItem value={element} key={`${element.id}-${index}-menuitems-action`}>
                                                 <ListItemIcon>
                                                     {element.icon}
                                                 </ListItemIcon>
-                                                <ListItemText>{element.text}</ListItemText>
+                                                <ListItemText>{element.description}</ListItemText>
                                             </MenuItem>
                                         )
                                     })}
@@ -104,15 +104,15 @@ export default function AreaDialog({isAddOpen, onClose}) {
                                 value={reAction}
                                 label="ReAction"
                                 onChange={handleReActChange}
-                                renderValue={(value) => value.text}
+                                renderValue={(value) => value.description}
                                 style={{width: '100%'}}>
-                                    {Reactions.map((element, index) => {
+                                    {reactions.map((element, index) => {
                                         return (
                                             <MenuItem value={element} key={`${element.id}-${index}-menuitems-reaction`}>
                                                 <ListItemIcon>
                                                     {element.icon}
                                                 </ListItemIcon>
-                                                <ListItemText>{element.text}</ListItemText>
+                                                <ListItemText>{element.description}</ListItemText>
                                             </MenuItem>
                                         )
                                     })}
