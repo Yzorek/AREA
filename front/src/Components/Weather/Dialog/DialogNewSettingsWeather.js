@@ -46,7 +46,7 @@ export default function DialogNewSettingsWeather({open, handleClose}) {
         <DialogTitle>New Weather Setting</DialogTitle>
         <DialogContent>
             <Grid container item xs={12}>
-                <Alert severity="info" style={{width: '100%'}}>Please country and cities for registering your new settings weather for your widget.</Alert>
+                <Alert severity="info" style={{width: '100%'}}>Please select country and cities for registering your new settings weather for your widget.</Alert>
             </Grid>
             <Grid container item xs={12} style={{marginTop: 7}} justifyContent={'space-around'} alignItems={'center'}>
                 <Grid container item xs={4} spacing={2}>

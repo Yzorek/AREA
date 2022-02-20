@@ -77,7 +77,17 @@ CREATE TABLE actions (
     primary key(id)
 );
 
-INSERT INTO actions(description, id_service) VALUES ("toto", 0);
+INSERT INTO actions(description, id_service) VALUES ('A new tweet from specific user is posted', 1);
+INSERT INTO actions(description, id_service) VALUES ('Make a new post on instagram', 2);
+INSERT INTO actions(description, id_service) VALUES ('Like a video', 5);
+INSERT INTO actions(description, id_service) VALUES ('You start a stream', 4);
+INSERT INTO actions(description, id_service) VALUES ('When you are mentionned', 1);
+INSERT INTO actions(description, id_service) VALUES ('Share a new video', 5);
+INSERT INTO actions(description, id_service) VALUES ('You post a new video', 5);
+INSERT INTO actions(description, id_service) VALUES ('The new top video of the week on twitch is released', 4);
+INSERT INTO actions(description, id_service) VALUES ('A selected streamer starts a new stream', 4);
+INSERT INTO actions(description, id_service) VALUES ('Make a new instagram reel', 2);
+INSERT INTO actions(description, id_service) VALUES ('Post a tweet', 1);
 
 
 --Reactions--
@@ -88,7 +98,11 @@ CREATE TABLE reactions (
     primary key(id)
 );
 
-INSERT INTO reactions(description, id_service) VALUES ("toto", 0);
+INSERT INTO reactions(description, id_service) VALUES ('Message a specific user on discord', 3);
+INSERT INTO reactions(description, id_service) VALUES ('Send message to group chat', 6);
+INSERT INTO reactions(description, id_service) VALUES ('Message on discord server', 3);
+INSERT INTO reactions(description, id_service) VALUES ('Post a tweet', 1);
+INSERT INTO reactions(description, id_service) VALUES ('Send message at a specific user', 6);
 
 
 --Link Actions Reactions--

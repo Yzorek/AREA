@@ -109,7 +109,7 @@ export default function Services({onServiceSub}) {
             {isLoading ? <SkeletonServices/> :
                     <Grid container item xs={12} spacing={2}>
                         {services.map((item, index) => <Grid item xs={2} key={`${item.name}-${index}-card-service`}>
-                                    <Paper style={{height: 140, background: item.isActive ? item.color : 'gray', cursor: 'pointer'}} sx={{
+                                    <Paper style={{height: 140, background: item.isActive ? item.color : 'gray', cursor: 'pointer', borderRadius: 10}} sx={{
                                         transition: '0.5s',
                                         '&:hover': {boxShadow: 12}
                                     }} elevation={0} onClick={() => handleServiceActivation(index)}>

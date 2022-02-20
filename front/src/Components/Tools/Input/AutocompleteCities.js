@@ -71,7 +71,7 @@ export default function AutocompleteCities({value, setValue, isDisabled = false,
                 required={isRequired}
                 onChange={(e) => setSearch(e.target.value)}
                 {...params}
-                label="Choose a cities"
+                label="Choose a city"
                 inputProps={{
                     ...params.inputProps,
                     autoComplete: 'new-password',
