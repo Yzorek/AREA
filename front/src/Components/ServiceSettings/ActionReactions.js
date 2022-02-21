@@ -1,154 +1,35 @@
-import { Alert, Button, Collapse, Grid, Icon, IconButton, Paper, Skeleton, Typography } from "@mui/material";
+import { Alert, Button, Grid, Skeleton, Typography } from "@mui/material";
 import AreaDialog from "./AreaDialog";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import { ReactComponent as DiscordIcon } from '../../assets/discord.svg';
-import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg';
-import SvgIcon from '@mui/icons-material/Twitter';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Add } from "@mui/icons-material";
-import axios from "axios";
-import AlertError from "../Tools/AlertError";
-import PropFromId from '../Tools/Services';
+import AreaComponent from "../Tools/AreaComponent";
 
-export default function ActionsReactions() {
+export default function ActionsReactions({isLoading, actions, reactions}) {
     const [isAddOpen, setIsAddOpen] = useState(false)
     const [areas, setAreas] = useState([])
-    const [isLoading, setIsLoading] = useState(false);
-    const [isDialogLoading, setIsDialogLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [actions, setActions] = useState([]);
-    const [reactions, setReactions] = useState([]);
-    const isMounted = useRef(null);
     let tutorialMode = useContext(TutorialContext);
 
-    useEffect(() => {
-        isMounted.current = true
-        const source = axios.CancelToken.source();
-        return () => {
-            isMounted.current = false;
-            source.cancel("Component Services GET user data got unmounted");
-        }
-    }, [])
-
     const handleAddClose = (value) => {
-        console.log(value);
         if (Object.keys(value).length !== 0) {              // TODO pass by request
             let newArray = areas;
             newArray.push({
                 action: value.action,
                 reaction: value.reaction,
-                color: value.action.color,
                 isActive: true,
-                isExpanded: false
             });
             setAreas(newArray);
         }
-        setIsError(false);
         setIsAddOpen(false);
     }
 
-    const handleAreActivation = (item, index) => {
-        areas[index].isActive = !areas[index].isActive;
+    const handleAreaActivation = (item) => {
+        item.isActive = !item.isActive;
         setAreas([...areas]);
-    }
-
-    const isMoreToDisplay = (index) => {
-        let actionNbChar = 0;
-        let reactionNbChar = 0;
-
-        areas[index].action.params.forEach((param) => {
-            actionNbChar += param.name.length + param.value.length;
-        });
-        areas[index].reaction.params.forEach((param) => {
-            reactionNbChar += param.name.length + param.value.length;
-        });
-
-        return (actionNbChar < reactionNbChar);
-    }
-
-    const iconFromName = (name) => {
-        switch (name) {
-            case ('Twitter'):
-                return (<TwitterIcon sx={{ fontSize: 40, color: 'white' }}/>);
-            case ('Instagram'):
-                return (<InstagramIcon sx={{ fontSize: 40, color: 'white' }}/>);
-            case ('Telegram'):
-                return (<TelegramIcon sx={{ fontSize: 40, color: 'white' }}/>);
-            case ('Twitch'):
-                return (<SvgIcon component={TwitchIcon} sx={{ fontSize: 40, color: 'white' }} inheritViewBox/>);
-            case ('Discord'):
-                return (<SvgIcon component={DiscordIcon} sx={{ fontSize: 40, color: 'white' }} inheritViewBox/>);
-            case ('Youtube'):
-                return (<YouTubeIcon sx={{ fontSize: 40, color: 'white' }}/>);
-            default:
-                return (<TwitterIcon sx={{ fontSize: 40, color: 'white' }}/>);
-        }
     }
 
     const handleAddOpen = async () => {
         setIsAddOpen(true);
-        await (async () => {
-            try {
-                setIsDialogLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/actions`,
-                    {
-                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                    });
-                if (isMounted && isMounted.current) {
-                    let actionsFetched = response.data;
-                    actionsFetched.forEach((element, index) => {
-                        actionsFetched[index] = {
-                            icon: PropFromId(element.id_service)['icon'],
-                            color: PropFromId(element.id_service)['color'],
-                            params: [{name: 'user @', value: ''}],      // TEMP mocked params
-                            ...element
-                        }
-                    })
-                    setActions(actionsFetched);
-                    setIsDialogLoading(false);
-                }
-            } catch (err) {
-                if (err.response) {
-                    setIsError(true);
-                    setIsDialogLoading(false);
-                }
-            }
-        })()
-
-        await (async () => {
-            try {
-                setIsDialogLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/reactions`,
-                    {
-                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                    });
-                if (isMounted && isMounted.current) {
-                    let reactionsFetched = response.data;
-                    reactionsFetched.forEach((element, index) => {
-                        console.log(PropFromId(element.id_service)['icon'])
-                        reactionsFetched[index] = {
-                            icon: PropFromId(element.id_service)['icon'],
-                            color: PropFromId(element.id_service)['color'],
-                            params: [{name: 'server name', value: ''}, {name: 'channel name', value: ''}],      // TEMP mocked params
-                            ...element
-                        }
-                    })
-                    setReactions(reactionsFetched);
-                    setIsDialogLoading(false);
-                }
-            } catch (err) {
-                if (err.response) {
-                    setIsError(true);
-                    setIsDialogLoading(false);
-                }
-            }
-        })()
     }
 
     return (
@@ -172,77 +53,19 @@ export default function ActionsReactions() {
             </Grid>}
             <Grid container item xs={12} spacing={2}>
                 {areas.map((item, index) =>
-                    <Grid item xs={4} key={`${item.action.service}-${index}-cards-service`}>
-                        <Paper style={{cursor: 'pointer', background: item.isActive ?
-                            (isMoreToDisplay(index) ? item.action.color : item.reaction.color) : 'gray',
-                            position: 'relative'}}
-                                sx={{ transition: '0.5s',
-                                    '&:hover': {boxShadow: 12},
-                                    }} elevation={5} onClick={() => handleAreActivation(item, index)}>
-                            <Grid container item xs={12} style={{height: '200px'}}>
-                                <Grid container item xs={6} alignItems={'center'} justifyContent={'center'} sx={{p: 2}}
-                                style={{height: '100%', background: item.isActive ? item.action.color : 'gray', transition: '0.5s'}}>
-                                    <Icon sx={{color: 'white', minHeight: '50px', width: '100%'}}>
-                                        {iconFromName(PropFromId(item.action.id_service)['name'])}
-                                    </Icon>
-                                    <Typography color={'white'} style={{fontWeight: 'bold'}} align={'center'}>
-                                        {item.action.description}
-                                    </Typography>
-                                </Grid>
-                                <Grid container item xs={6} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}}
-                                style={{height: '100%', background: item.isActive ? item.reaction.color : 'gray', transition: '0.5s'}}>
-                                    <Icon sx={{color: 'white', minHeight: '50px', width: '100%'}}>
-                                        {iconFromName(PropFromId(item.reaction.id_service)['name'])}
-                                    </Icon>
-                                    <Typography color={'white'} style={{fontWeight: 'bold', paddingTop: '20px'}} align={'center'}>
-                                        {item.reaction.description}
-                                    </Typography>
-                                </Grid>
-                                <IconButton style={{position: 'absolute', left: '50%', top: '100%', transform: 'translate(-50%, -50%)', background: 'rgba(114, 114, 114, 0.8)'}}
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        areas[index].isExpanded = !areas[index].isExpanded;
-                                        setAreas([...areas]);
-                                    }}>
-                                    {item.isExpanded ? <ExpandLessIcon sx={{color: 'white'}}/> : <ExpandMoreIcon sx={{color: 'white'}}/>}
-                                </IconButton>
-                            </Grid>
-                            <Collapse in={item.isExpanded} timeout="auto" unmountOnExit>
-                                <Grid container item xs={12}>
-                                    <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}
-                                    style={{height: '100%', background: item.isActive ? item.action.color : 'gray', transition: '0.5s'}}>
-                                        {item.action.params.map((item, index) => {
-                                            return (
-                                                <Typography align={'center'} style={{color: 'white'}} key={`${item.name}-${index}-action-params`}>
-                                                    {item.name + ' : ' + item.value}
-                                                </Typography>
-                                            )
-                                        })}
-                                    </Grid>
-                                    <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}
-                                    style={{height: '100%', background: item.isActive ? item.reaction.color : 'gray', transition: '0.5s'}}>
-                                        {item.reaction.params.map((item, index) => {
-                                            return (
-                                                <Typography align={'center'} style={{color: 'white'}} key={`${item.name}-${index}-reaction-params`}>
-                                                    {item.name + ' : ' + item.value}
-                                                </Typography>
-                                            )
-                                        })}
-                                    </Grid>
-                                </Grid>
-                            </Collapse>
-                        </Paper>
-                    </Grid>
+                    <AreaComponent
+                    key={`${item.action.service}-${index}-cards-service`}
+                    area={item}
+                    onActivation={handleAreaActivation}
+                    />
                 )}
                 <AreaDialog
                     isAddOpen={isAddOpen}
                     onClose={handleAddClose}
-                    isLoading={isDialogLoading}
                     actions={actions}
                     reactions={reactions}
                 />
             </Grid>
-            <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>
     )
 
