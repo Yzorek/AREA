@@ -16,6 +16,8 @@ router.get('/reactions', fctToken.auth, fctGetAR.getServices, fctGetAR.getLinkSe
 
 router.get('/link', fctToken.auth, fctLink.getLink)
 
+router.get('service/link' /*?idService=*/, fctToken.auth, fctLink.getReactions, fctLink.getActions, fctLink.getLinkByService)
+
 router.post('/link', fctToken.auth, fctLink.newLink)
 
 router.put('/link/:id', fctToken.auth, fctLink.updateLink)
