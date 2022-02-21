@@ -79,21 +79,23 @@ export default function Services({onServiceSub}) {
         setServices([...services]);
         onServiceSub([...services]);
         const source = axios.CancelToken.source();
-        try {
-            let body = {
-                action: services[index].isActive ? 'sub' : 'unsub',
-                serviceId: services[index].id
-            };
-            await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/services/subscribe`, body,
-                {
-                    cancelToken: source.token,
-                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                });
-        } catch (err) {
-            if (err.response) {
-                setIsError(true);
+        await (async () => {
+            try {
+                let body = {
+                    action: services[index].isActive ? 'sub' : 'unsub',
+                    serviceId: services[index].id
+                };
+                await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/services/subscribe`, body,
+                    {
+                        cancelToken: source.token,
+                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                    });
+            } catch (err) {
+                if (err.response) {
+                    setIsError(true);
+                }
             }
-        }
+        })()
     }
 
     return (
