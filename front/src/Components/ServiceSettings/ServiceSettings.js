@@ -39,7 +39,7 @@ export default function ServicesSettings({onServicesSub}) {
                     //         ...element
                     //     }
                     // })
-                    console.log(areasFetched);
+                    //console.log(areasFetched);
                     //setMyAreas(areasFetched);
                     setIsLoading(false);
                 }
@@ -71,7 +71,6 @@ export default function ServicesSettings({onServicesSub}) {
                             ...element
                         }
                     })
-                    console.log(actionsFetched);
                     setActions(actionsFetched);
                     setIsLoading(false);
                 }
@@ -101,7 +100,6 @@ export default function ServicesSettings({onServicesSub}) {
                             ...element
                         }
                     })
-                    console.log(reactionsFetched);
                     setReactions(reactionsFetched);
                     setIsLoading(false);
                 }
