@@ -10,30 +10,34 @@ export const Actions = [
     {
         id: 1,
         text: 'A new tweet from specific user is posted',
-        service: 'twitter',
+        service: 'Twitter',
         color: '#1C9CEB',
-        icon: <TwitterIcon sx={{ fontSize: '12' }}/>
+        icon: <TwitterIcon/>,
+        params: [{name: 'user @', value: ''}]
     },
     {
         id: 2,
         text: 'Post a new video on instagram',
-        service: 'instagram',
+        service: 'Instagram',
         color: '#CC0063',
-        icon: <InstagramIcon sx={{ fontSize: '12' }}/>
+        icon: <InstagramIcon/>,
+        params: []
     },
     {
         id: 3,
         text: 'Like a video',
-        service: 'youtube',
+        service: 'Youtube',
         color: '#F70000',
-        icon: <YouTubeIcon sx={{ fontSize: '12' }}/>
+        icon: <YouTubeIcon/>,
+        params: []
     },
     {
         id: 4,
         text: 'Start a stream on twitch',
-        service: 'twitch',
+        service: 'Twitch',
         color: '#8C45F7',
-        icon: <SvgIcon component={TwitchIcon} sx={{ fontSize: '12' }} inheritViewBox/>
+        icon: <SvgIcon component={TwitchIcon} inheritViewBox/>,
+        params: []
     },
   ];
 
@@ -41,15 +45,17 @@ export const Actions = [
     {
         id: 5,
         text: 'Message a specific user on discord',
-        service: 'discord',
+        service: 'Discord',
         color: '#5562EA',
-        icon: <SvgIcon component={DiscordIcon} sx={{ fontSize: '12' }} inheritViewBox/>
+        icon: <SvgIcon component={DiscordIcon} inheritViewBox/>,
+        params: [{name: 'server name', value: ''}, {name: 'channel name', value: ''}]
     },
     {
         id: 6,
         text: 'Send message to group chat',
-        service: 'telegram',
+        service: 'Telegram',
         color: '#26A2E1',
-        icon: <TelegramIcon sx={{ fontSize: '12' }}/>
+        icon: <TelegramIcon/>,
+        params: [{name: 'group name', value: ''}]
     }
   ];

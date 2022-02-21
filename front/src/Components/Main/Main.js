@@ -24,7 +24,7 @@ import WrongPageRouter from "../Tools/WrongPageRouter";
 import ServicePage from '../Services/Services';
 import Weather from "../Weather/Weather";
 import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext";
-import PropFromName from '../Tools/Services';
+import PropFromId from '../Tools/Services';
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -101,7 +101,7 @@ export default function Main() {
     const setServicesData = (data) => {
         let newServices = data;
         newServices.forEach((item, index) => {
-            let {icon, pageId} = PropFromName(item.name);
+            let {icon, pageId} = PropFromId(item.id);
             newServices[index] = {
                 icon,
                 pageId,
