@@ -1,0 +1,67 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: area
+    volumes:
+      - db-data:/var/lib/data/postgres
+      - ./db-dump:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+
+  #bot:
+  #  restart: unless-stopped
+  #  build:
+  #    context: ./bot-discord
+  #    dockerfile: Dockerfile.dev
+  #    target: dev
+  #  depends_on:
+  #    - db
+  #  volumes:
+  #    - ./bot-discord/server.js:/app/server.js
+  #    - ./bot-discord/config.js:/app/config.js
+  #    - ./bot-discord/commands:/app/commands
+
+  back:
+    restart: unless-stopped
+    build:
+      context: ./back
+      dockerfile: Dockerfile.dev
+      target: dev
+    ports:
+      - "8080:8080"
+    env_file:
+      - .back.env
+    depends_on:
+      - db
+    volumes:
+      - ./back/app.js:/app/app.js
+      - ./back/routes:/app/routes
+      - ./back/socket:/app/socket
+      - ./back/tools:/app/tools
+      - ./back/bot_discord:/app/bot_discord
+      - ./back/twitch:/app/twitch
+
+  front:
+    restart: unless-stopped
+    build:
+      context: ./front
+      dockerfile: Dockerfile.dev
+      target: dev
+    ports:
+      - "8082:8082"
+    env_file:
+      - .front.env
+    depends_on:
+      - back
+    volumes:
+      - ./front/src:/app/src
+      - ./front/public:/app/public
+
+volumes:
+  db-data:
