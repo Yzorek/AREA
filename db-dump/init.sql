@@ -115,5 +115,6 @@ CREATE TABLE link_actions_reactions (
     id_reactions        INT NOT NULL,
     params_action       text,
     params_reaction     text,
+    is_active           bool,
     primary key(id)
 );
