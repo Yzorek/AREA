@@ -5,7 +5,7 @@ async function newLink(req, res) {
     let dataToken = fctToken.getTokenData(req);
 
     try {
-        await fctDataBase.request("INSERT INTO link_actions_reactions(id_user, id_actions, id_reactions, params_action, params_reactions, is_active) VALUES ($1, $2, $3, $4, $5, true);", [parseInt(dataToken.id), req.body.idAction, req.body.idReaction, JSON.stringify(req.body.paramsAction), JSON.stringify(req.body.paramsReaction)]);
+        await fctDataBase.request("INSERT INTO link_actions_reactions(id_user, id_actions, id_reactions, params_action, params_reaction, is_active) VALUES ($1, $2, $3, $4, $5, true);", [parseInt(dataToken.id), req.body.idAction, req.body.idReaction, JSON.stringify(req.body.paramsAction), JSON.stringify(req.body.paramsReaction)]);
         res.status(200).send({
             message: 'OK!'
         })
@@ -18,7 +18,7 @@ async function newLink(req, res) {
 
 async function deleteLink(req, res) {
     try {
-        await fctDataBase.request("DELETE FROM link_action_reactions WHERE id=$1", [parseInt(res.params.id)]);
+        await fctDataBase.request("DELETE FROM link_actions_reactions WHERE id=$1", [parseInt(req.params.id)]);
         res.status(200).send({
             message: 'OK!'
         })

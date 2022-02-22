@@ -4,28 +4,31 @@ import React, { useContext, useState } from "react";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 import { Add } from "@mui/icons-material";
 import AreaComponent from "../Tools/AreaComponent";
+import SkeletonArea from "./SkeletonArea";
 
-export default function ActionsReactions({isLoading, actions, reactions}) {
+export default function ActionsReactions({isLoading, actions, reactions, canAddArea, areas, onDialogClose}) {
     const [isAddOpen, setIsAddOpen] = useState(false)
-    const [areas, setAreas] = useState([])
     let tutorialMode = useContext(TutorialContext);
 
     const handleAddClose = (value) => {
-        if (Object.keys(value).length !== 0) {              // TODO pass by request
-            let newArray = areas;
-            newArray.push({
-                action: value.action,
-                reaction: value.reaction,
-                isActive: true,
-            });
-            setAreas(newArray);
+        // if (Object.keys(value).length !== 0) {              // TODO pass by request
+        //     let newArray = areas;
+        //     newArray.push({
+        //         action: value.action,
+        //         reaction: value.reaction,
+        //         isActive: true,
+        //     });
+        //     setAreas(newArray);
+        // }
+        if (value === true) {
+            onDialogClose();
         }
         setIsAddOpen(false);
     }
 
     const handleAreaActivation = (item) => {
-        item.isActive = !item.isActive;
-        setAreas([...areas]);
+        // item.isActive = !item.isActive;
+        // setAreas([...areas]);
     }
 
     const handleAddOpen = async () => {
@@ -42,7 +45,7 @@ export default function ActionsReactions({isLoading, actions, reactions}) {
                 </Grid>
                 <Grid container item xs={6} alignItems={'center'} justifyContent={'flex-end'} spacing={2}>
                     <Grid item>
-                        {isLoading ? <Skeleton variant="rectangular" width={150} height={50} /> : <Button variant={'outlined'} startIcon={<Add/>} onClick={() => handleAddOpen()}>
+                        {isLoading ? <Skeleton variant="rectangular" width={180} height={40} /> : <Button disabled={!canAddArea} variant={'outlined'} startIcon={<Add/>} onClick={() => handleAddOpen()}>
                             Add Action-Reaction
                         </Button>}
                     </Grid>
@@ -51,7 +54,8 @@ export default function ActionsReactions({isLoading, actions, reactions}) {
             {tutorialMode.isActive && <Grid container item xs={12}>
                 <Alert severity="info" style={{width: '100%'}}>Now link your actions and reactions available with your services.</Alert>
             </Grid>}
-            <Grid container item xs={12} spacing={2}>
+            {isLoading ? <SkeletonArea/> :
+            <Grid container item xs={12} spacing={3}>
                 {areas.map((item, index) =>
                     <AreaComponent
                     key={`${item.action.service}-${index}-cards-service`}
@@ -65,7 +69,7 @@ export default function ActionsReactions({isLoading, actions, reactions}) {
                     actions={actions}
                     reactions={reactions}
                 />
-            </Grid>
+            </Grid>}
         </Grid>
     )
 
