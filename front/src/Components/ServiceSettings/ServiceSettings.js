@@ -15,6 +15,19 @@ export default function ServicesSettings({onServicesSub}) {
     const [isLoading, setIsLoading] = useState(false);
     const isMounted = useRef(null);
 
+    const rawData = {
+        actions: actions,
+        reactions: reactions
+    }
+
+    const onDialogClose = () => {
+        getMyAreas(
+            {
+                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+            }
+        );
+    }
+
     const handleServicesSub = async (services) => {
         await onServicesSub(services);
         services.filter((e) => e.isActive === true).length !== 0 ? setCanAddArea(true) : setCanAddArea(false);
@@ -23,34 +36,33 @@ export default function ServicesSettings({onServicesSub}) {
     }
 
     const checkIfCanAdd = async (nbService) => {
-        console.log(nbService);
         nbService !== 0 ? setCanAddArea(true) : setCanAddArea(false);
     }
 
-    const getMyAreas = async (currSource) => {
+    const getMyAreas = async (header) => {
         await (async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`,
-                    {
-                        cancelToken: currSource.token,
-                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                    });
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`, header);
                 if (isMounted && isMounted.current) {
                     let areasFetched = response.data;
-                    // actionsFetched.forEach((element, index) => {
-                    //     actionsFetched[index] = {
-                    //         icon: PropFromId(element.id_service)['icon'],
-                    //         color: PropFromId(element.id_service)['color'],
-                    //         params: [{name: 'user @', value: ''}],      // TEMP mocked params
-                    //         ...element
-                    //     }
-                    // })
-                    //console.log(areasFetched);
-                    //setMyAreas(areasFetched);
+                    areasFetched.forEach((element, index) => {
+                        areasFetched[index] = {
+                            action: rawData.actions.find((e) => e.id === element.idActions),
+                            reaction: rawData.reactions.find((e) => e.id === element.idReactions),
+                            isActive: true,             // TEMP
+                            ...element
+                        }
+                        areasFetched[index].action.params = areasFetched[index].paramsAction;
+                        areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
+                    })
+                    console.log(areasFetched);
+                    setMyAreas(areasFetched);
                     setIsLoading(false);
                 }
             } catch (err) {
+                console.log(err);
+                console.log('test')
                 if (err.response) {
                     setIsError(true);
                     setIsLoading(false);
@@ -84,6 +96,7 @@ export default function ServicesSettings({onServicesSub}) {
                             params: params
                         }
                     })
+                    rawData.actions = actionsFetched;
                     setActions(actionsFetched);
                     setIsLoading(false);
                 }
@@ -119,6 +132,7 @@ export default function ServicesSettings({onServicesSub}) {
                             params: params
                         }
                     })
+                    rawData.reactions = reactionsFetched;
                     setReactions(reactionsFetched);
                     setIsLoading(false);
                 }
@@ -135,7 +149,12 @@ export default function ServicesSettings({onServicesSub}) {
         isMounted.current = true
         const source = axios.CancelToken.source();
         await getActionsAndReactions(source);
-        //getMyAreas(source);
+        await getMyAreas(
+            {
+                cancelToken: source.token,
+                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+            }
+        );
         return () => {
             isMounted.current = false;
             source.cancel("Component Services GET user data got unmounted");
@@ -149,8 +168,10 @@ export default function ServicesSettings({onServicesSub}) {
             <ActionsReactions
             actions={actions}
             reactions={reactions}
+            areas={myAreas}
             isLoading={isLoading}
             canAddArea={canAddArea}
+            onDialogClose={onDialogClose}
             />
             <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>

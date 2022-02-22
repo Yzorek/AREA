@@ -5,6 +5,7 @@ import { Cancel, Save } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 import axios from "axios";
+import AlertError from "../Tools/AlertError";
 
 export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
     const [action, setAction] = useState('')
@@ -17,7 +18,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
     const [isLoading, setIsLoading] = useState(false);
 
     async function saveArea() {
-        try {                            //WIP
+        try {
             setIsLoading(true)
             let body = {
                 idAction: action.id,
@@ -25,7 +26,11 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                 paramsAction: action.params,
                 paramsReaction: reAction.params
             }
-            await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`, body);
+            console.log(body);
+            await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`, body,
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
             setIsLoading(false)
         } catch (err) {
             if (err.response) {
@@ -33,10 +38,11 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                 setIsLoading(false)
             }
         }
+        onClose(true);
     }
 
     const handleClose = () => {
-        onClose({});                // TODO pass requests
+        onClose(false);                // TODO pass requests
     }
 
     const handleSave = async () => {
@@ -185,6 +191,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                     Please set the params
                 </Alert>
             </Snackbar>
+            <AlertError isError={isError} setIsError={setIsError}/>
         </Dialog>
     )
 }
