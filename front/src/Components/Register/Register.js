@@ -67,7 +67,6 @@ export default function Register() {
     }
 
     const onSuccessGoogle = (response) => {
-        console.log(response);
         (async () => {
             try {
                 await registerInServer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
