@@ -10,14 +10,21 @@ export default function ServicesSettings({onServicesSub}) {
     const [actions, setActions] = useState([]);
     const [reactions, setReactions] = useState([]);
     const [myAreas, setMyAreas] = useState([]);
+    const [canAddArea, setCanAddArea] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const isMounted = useRef(null);
 
     const handleServicesSub = async (services) => {
         await onServicesSub(services);
+        services.filter((e) => e.isActive === true).length !== 0 ? setCanAddArea(true) : setCanAddArea(false);
         const source = axios.CancelToken.source();
         await getActionsAndReactions(source);
+    }
+
+    const checkIfCanAdd = async (nbService) => {
+        console.log(nbService);
+        nbService !== 0 ? setCanAddArea(true) : setCanAddArea(false);
     }
 
     const getMyAreas = async (currSource) => {
@@ -64,11 +71,17 @@ export default function ServicesSettings({onServicesSub}) {
                 if (isMounted && isMounted.current) {
                     let actionsFetched = response.data;
                     actionsFetched.forEach((element, index) => {
+                        let params = [];
+                        if (element.params) {
+                            element?.params.forEach((param) => {
+                                params.push({name: param, value: ''});
+                            });
+                        }
                         actionsFetched[index] = {
                             icon: PropFromId(element.id_service)['icon'],
                             color: PropFromId(element.id_service)['color'],
-                            params: [{name: 'user @', value: ''}],      // TEMP mocked params
-                            ...element
+                            ...element,
+                            params: params
                         }
                     })
                     setActions(actionsFetched);
@@ -93,11 +106,17 @@ export default function ServicesSettings({onServicesSub}) {
                 if (isMounted && isMounted.current) {
                     let reactionsFetched = response.data;
                     reactionsFetched.forEach((element, index) => {
+                        let params = [];
+                        if (element.params) {
+                            element.params.forEach((param) => {
+                                params.push({name: param, value: ''});
+                            });
+                        }
                         reactionsFetched[index] = {
                             icon: PropFromId(element.id_service)['icon'],
                             color: PropFromId(element.id_service)['color'],
-                            params: [{name: 'server name', value: ''}, {name: 'channel name', value: ''}],      // TEMP mocked params
-                            ...element
+                            ...element,
+                            params: params
                         }
                     })
                     setReactions(reactionsFetched);
@@ -125,12 +144,13 @@ export default function ServicesSettings({onServicesSub}) {
 
     return (
         <Grid container item xs={12}>
-            <Services onServiceSub={handleServicesSub}/>
+            <Services onServiceSub={handleServicesSub} onGetService={checkIfCanAdd}/>
             <Divider/>
             <ActionsReactions
             actions={actions}
             reactions={reactions}
             isLoading={isLoading}
+            canAddArea={canAddArea}
             />
             <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>

@@ -5,7 +5,7 @@ import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 import { Add } from "@mui/icons-material";
 import AreaComponent from "../Tools/AreaComponent";
 
-export default function ActionsReactions({isLoading, actions, reactions}) {
+export default function ActionsReactions({isLoading, actions, reactions, canAddArea}) {
     const [isAddOpen, setIsAddOpen] = useState(false)
     const [areas, setAreas] = useState([])
     let tutorialMode = useContext(TutorialContext);
@@ -42,7 +42,7 @@ export default function ActionsReactions({isLoading, actions, reactions}) {
                 </Grid>
                 <Grid container item xs={6} alignItems={'center'} justifyContent={'flex-end'} spacing={2}>
                     <Grid item>
-                        {isLoading ? <Skeleton variant="rectangular" width={150} height={50} /> : <Button variant={'outlined'} startIcon={<Add/>} onClick={() => handleAddOpen()}>
+                        {isLoading ? <Skeleton variant="rectangular" width={180} height={40} /> : <Button disabled={!canAddArea} variant={'outlined'} startIcon={<Add/>} onClick={() => handleAddOpen()}>
                             Add Action-Reaction
                         </Button>}
                     </Grid>

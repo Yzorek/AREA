@@ -12,7 +12,7 @@ import React from "react";
 import AlertError from "../Tools/AlertError";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 
-export default function Services({onServiceSub}) {
+export default function Services({onServiceSub, onGetService}) {
     const [isLoading, setIsLoading] = useState(true);
     const [services, setServices] = useState([]);
     const [isError, setIsError] = useState(false);
@@ -39,6 +39,7 @@ export default function Services({onServiceSub}) {
                         }
                     })
                     setServices(servicesFetched);
+                    onGetService(servicesFetched.filter((e) => e.isActive === true).length);
                     setIsLoading(false);
                 }
             } catch (err) {

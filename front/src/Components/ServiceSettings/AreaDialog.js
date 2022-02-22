@@ -4,46 +4,42 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Cancel, Save } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
+import axios from "axios";
 
 export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
     const [action, setAction] = useState('')
     const [reAction, setReAction] = useState('')
     const [isActionNeeded, setIsActionNeeded] = useState(false);
     const [isReActionNeeded, setIsReActionNeeded] = useState(false);
+    const [isError, setIsError] = useState(false);
     const [isParamError, setIsParamError] = useState(false);
     let tutorialMode = useContext(TutorialContext);
     const [isLoading, setIsLoading] = useState(false);
 
     async function saveArea() {
-        // try {                            //WIP
-        //     setIsLoading(true)
-        //     let body = {
-        //         email: mail,
-        //         password: pass,
-        //         username: FName + ' ' + lName,
-        //         firstName: FName,
-        //         lastName: lName,
-        //         avatar: avatar,
-        //         auth: type,
-        //     }
-        //     const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/register`, body);
-
-        //     localStorage.setItem('JWT', response.data.accessToken);
-        //     navigate('/App')
-        //     setIsLoading(false)
-        // } catch (err) {
-        //     if (err.response) {
-        //         setIsError(true)
-        //         setIsLoading(false)
-        //     }
-        // }
+        try {                            //WIP
+            setIsLoading(true)
+            let body = {
+                idAction: action.id,
+                idReaction: reAction.id,
+                paramsAction: action.params,
+                paramsReaction: reAction.params
+            }
+            await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`, body);
+            setIsLoading(false)
+        } catch (err) {
+            if (err.response) {
+                setIsError(true)
+                setIsLoading(false)
+            }
+        }
     }
 
     const handleClose = () => {
         onClose({});                // TODO pass requests
     }
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (action === '') {
             setIsActionNeeded(true);
             return;
@@ -61,6 +57,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
             return;
         }
 
+        await saveArea();
         onClose({
             action: action,
             reaction: reAction
