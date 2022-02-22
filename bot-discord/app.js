@@ -9,6 +9,9 @@ client.on('ready', () => {
 });
 
 client.on("message", msg => {
+    const channel = client.channels;
+
+    console.log(channel);
     if (msg.author.bot)
         return
     require("./config").commands.forEach(item => {
