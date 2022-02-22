@@ -24,22 +24,62 @@ export default function ServicesSettings({onServicesSub}) {
         getMyAreas(
             {
                 'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-            }
+            },
+            true
         );
     }
 
-    const handleServicesSub = async (services) => {
+    const deleteAR = async (arId) => {
+        try {
+            setIsLoading(true);
+            await axios.delete(`${process.env.REACT_APP_DASHBOARD_API}/AR/link/${arId}`,
+            {
+                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+            });
+            setIsLoading(false);
+        } catch (err) {
+            if (err.response) {
+                setIsError(true);
+                setIsLoading(false);
+            }
+        }
+    }
+
+    const handleServicesSub = async (services, serviceToDel) => {
+        if (serviceToDel !== undefined) {
+            await myAreas.forEach(async (area) => {
+                if (area.action.id_service === serviceToDel.id || area.reaction.id_service === serviceToDel.id) {
+                    console.log(area);
+                    await deleteAR(area.id);
+                }
+            });
+        }
         await onServicesSub(services);
         services.filter((e) => e.isActive === true).length !== 0 ? setCanAddArea(true) : setCanAddArea(false);
-        const source = axios.CancelToken.source();
-        await getActionsAndReactions(source);
+        await getMyAreas(
+            {
+                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+            },
+            false
+        );
+        await getActionsAndReactions(
+            {
+                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+            },
+            true
+        );
     }
 
     const checkIfCanAdd = async (nbService) => {
         nbService !== 0 ? setCanAddArea(true) : setCanAddArea(false);
     }
 
-    const getMyAreas = async (header) => {
+    const checkIfAR = (service) => {
+        let value = myAreas.some((e) => e.action.id_service === service.id || e.reaction.id_service === service.id);
+        return (value);
+    }
+
+    const getMyAreas = async (header, isLoadingOver) => {
         await (async () => {
             try {
                 setIsLoading(true);
@@ -56,30 +96,23 @@ export default function ServicesSettings({onServicesSub}) {
                         areasFetched[index].action.params = areasFetched[index].paramsAction;
                         areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
                     })
-                    console.log(areasFetched);
                     setMyAreas(areasFetched);
-                    setIsLoading(false);
+                    setIsLoading(!isLoadingOver);
                 }
             } catch (err) {
-                console.log(err);
-                console.log('test')
                 if (err.response) {
                     setIsError(true);
-                    setIsLoading(false);
+                    setIsLoading(!isLoadingOver);
                 }
             }
         })()
     }
 
-    const getActionsAndReactions = async (currSource) => {
+    const getActionsAndReactions = async (header, isLoadingOver) => {
         await (async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/actions`,
-                    {
-                        cancelToken: currSource.token,
-                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                    });
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/actions`, header);
                 if (isMounted && isMounted.current) {
                     let actionsFetched = response.data;
                     actionsFetched.forEach((element, index) => {
@@ -98,12 +131,12 @@ export default function ServicesSettings({onServicesSub}) {
                     })
                     rawData.actions = actionsFetched;
                     setActions(actionsFetched);
-                    setIsLoading(false);
+                    setIsLoading(!isLoadingOver);
                 }
             } catch (err) {
                 if (err.response) {
                     setIsError(true);
-                    setIsLoading(false);
+                    setIsLoading(!isLoadingOver);
                 }
             }
         })()
@@ -111,11 +144,7 @@ export default function ServicesSettings({onServicesSub}) {
         await (async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/reactions`,
-                    {
-                        cancelToken: currSource.token,
-                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                    });
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/reactions`, header);
                 if (isMounted && isMounted.current) {
                     let reactionsFetched = response.data;
                     reactionsFetched.forEach((element, index) => {
@@ -148,12 +177,17 @@ export default function ServicesSettings({onServicesSub}) {
     useEffect(async () => {
         isMounted.current = true
         const source = axios.CancelToken.source();
-        await getActionsAndReactions(source);
+        await getActionsAndReactions(
+            {
+                cancelToken: source.token,
+                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+            }, false
+        );
         await getMyAreas(
             {
                 cancelToken: source.token,
                 'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-            }
+            }, true
         );
         return () => {
             isMounted.current = false;
@@ -163,7 +197,7 @@ export default function ServicesSettings({onServicesSub}) {
 
     return (
         <Grid container item xs={12}>
-            <Services onServiceSub={handleServicesSub} onGetService={checkIfCanAdd}/>
+            <Services onServiceSub={handleServicesSub} onGetService={checkIfCanAdd} checkIfAR={checkIfAR}/>
             <Divider/>
             <ActionsReactions
             actions={actions}

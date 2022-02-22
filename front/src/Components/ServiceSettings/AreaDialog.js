@@ -26,7 +26,6 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                 paramsAction: action.params,
                 paramsReaction: reAction.params
             }
-            console.log(body);
             await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`, body,
                 {
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
@@ -42,7 +41,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
     }
 
     const handleClose = () => {
-        onClose(false);                // TODO pass requests
+        onClose(false);
     }
 
     const handleSave = async () => {

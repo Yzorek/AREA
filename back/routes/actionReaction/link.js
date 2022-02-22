@@ -18,7 +18,7 @@ async function newLink(req, res) {
 
 async function deleteLink(req, res) {
     try {
-        await fctDataBase.request("DELETE FROM link_action_reactions WHERE id=$1", [parseInt(res.params.id)]);
+        await fctDataBase.request("DELETE FROM link_actions_reactions WHERE id=$1", [parseInt(req.params.id)]);
         res.status(200).send({
             message: 'OK!'
         })

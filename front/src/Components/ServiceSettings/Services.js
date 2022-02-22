@@ -11,13 +11,27 @@ import SkeletonServices from "./SkeletonServices";
 import React from "react";
 import AlertError from "../Tools/AlertError";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
+import DialogConfirmationUnsub from "./UnsubDialog";
 
-export default function Services({onServiceSub, onGetService}) {
+export default function Services({onServiceSub, onGetService, checkIfAR}) {
     const [isLoading, setIsLoading] = useState(true);
     const [services, setServices] = useState([]);
+    const [serviceToDel, setServiceToDel] = useState('');
     const [isError, setIsError] = useState(false);
     const isMounted = useRef(null);
+    const [isAddOpen, setIsAddOpen] = useState(false);
     let tutorialMode = useContext(TutorialContext);
+
+    const handleServiceUnsubClose = (isUnsub) => {
+        if (isUnsub) {
+            subUnsubToService(serviceToDel, true);
+        }
+        setIsAddOpen(false);
+    }
+
+    const handleAddOpen = () => {
+        setIsAddOpen(true);
+    }
 
     useEffect(() => {
         isMounted.current = true
@@ -74,17 +88,16 @@ export default function Services({onServiceSub, onGetService}) {
         }
     }
 
-    const handleServiceActivation = async (index) => {
-        // OAuth step
-        services[index].isActive = !services[index].isActive;
+    const subUnsubToService = async (service, shouldDeleteAR) => {
+        service.isActive = !service.isActive;
         setServices([...services]);
-        onServiceSub([...services]);
+        onServiceSub([...services], shouldDeleteAR ? serviceToDel : undefined);
         const source = axios.CancelToken.source();
         await (async () => {
             try {
                 let body = {
-                    action: services[index].isActive ? 'sub' : 'unsub',
-                    serviceId: services[index].id
+                    action: service.isActive ? 'sub' : 'unsub',
+                    serviceId: service.id
                 };
                 await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/services/subscribe`, body,
                     {
@@ -97,6 +110,22 @@ export default function Services({onServiceSub, onGetService}) {
                 }
             }
         })()
+    }
+
+    const handleServiceActivation = async (service) => {
+        if (service.isActive) {
+            if (checkIfAR(service)) {
+                setServiceToDel(service);
+                handleAddOpen();
+            }
+            else {
+                subUnsubToService(service, false);
+            }
+        }
+        else {
+            // OAuth step
+            subUnsubToService(service, false);
+        }
     }
 
     return (
@@ -115,7 +144,7 @@ export default function Services({onServiceSub, onGetService}) {
                                     <Paper style={{height: 140, background: item.isActive ? item.color : 'gray', cursor: 'pointer', borderRadius: 10}} sx={{
                                         transition: '0.5s',
                                         '&:hover': {boxShadow: 12}
-                                    }} elevation={0} onClick={() => handleServiceActivation(index)}>
+                                    }} elevation={0} onClick={() => handleServiceActivation(item)}>
                                         <Grid container item xs={12} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}} style={{height: '100%'}}>
                                             {item.icon}
                                             <Typography color={'white'} style={{fontWeight: 'bold'}}>
@@ -126,6 +155,7 @@ export default function Services({onServiceSub, onGetService}) {
                                 </Grid>)}
                     </Grid>
             }
+            <DialogConfirmationUnsub service={serviceToDel} open={isAddOpen} handleClose={handleServiceUnsubClose}/>
             <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>
     )

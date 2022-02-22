@@ -85,7 +85,7 @@ INSERT INTO actions(description, id_service, params) VALUES ('You start a stream
 INSERT INTO actions(description, id_service, params) VALUES ('When you are mentionned', 1, null);
 INSERT INTO actions(description, id_service, params) VALUES ('Share a new video', 5, null);
 INSERT INTO actions(description, id_service, params) VALUES ('You post a new video', 5, null);
-INSERT INTO actions(description, id_service, params) VALUES ('The new top video of the week on twitch is released', 4, null);
+INSERT INTO actions(description, id_service, params) VALUES ('A streamer exceed an amount of viewer', 4, ARRAY['Streamer name', 'Amount']);
 INSERT INTO actions(description, id_service, params) VALUES ('A selected streamer starts a new stream', 4, ARRAY['Streamer name']);
 INSERT INTO actions(description, id_service, params) VALUES ('Make a new instagram reel', 2, null);
 INSERT INTO actions(description, id_service, params) VALUES ('Post a tweet', 1, null);
