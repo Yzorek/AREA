@@ -67,7 +67,7 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
             isMounted.current = false;
             source.cancel("Component Services GET user data got unmounted");
         }
-    }, [])
+    }, [onGetService])
 
     const iconFromName = (name) => {
         switch (name) {

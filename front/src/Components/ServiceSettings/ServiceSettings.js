@@ -177,23 +177,25 @@ export default function ServicesSettings({onServicesSub}) {
     useEffect(async () => {
         isMounted.current = true
         const source = axios.CancelToken.source();
-        await getActionsAndReactions(
-            {
-                cancelToken: source.token,
-                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-            }, false
-        );
-        await getMyAreas(
-            {
-                cancelToken: source.token,
-                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-            }, true
-        );
+        await (async () => {
+            await getActionsAndReactions(
+                {
+                    cancelToken: source.token,
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                }, false
+            );
+            await getMyAreas(
+                {
+                    cancelToken: source.token,
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                }, true
+            );
+        })
         return () => {
             isMounted.current = false;
             source.cancel("Component Services GET user data got unmounted");
         }
-    }, [])
+    }, [getActionsAndReactions, getMyAreas])
 
     return (
         <Grid container item xs={12}>
