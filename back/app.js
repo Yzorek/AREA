@@ -46,7 +46,9 @@ app.use('/dashboard', dashboardRouter);
 app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 
+require('./bot_discord/app');
 require('./socket/socket')(io);
+require('./twitch/twitch').getStream().then(r => console.log("END !"));
 
 server.listen(8080, () => {
     console.log('listening on *:8080');
