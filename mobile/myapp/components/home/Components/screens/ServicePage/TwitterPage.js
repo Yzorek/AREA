@@ -16,8 +16,8 @@ const TwitterPage = () => {
         style={{ height: 50, width: 150 }}
         onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
       >
-        <Picker.Item label="test1" value="1" />
-        <Picker.Item label="test2" value="2" />
+        <Picker.Item label="A tweet from a specific user is posted" value="1" />
+        <Picker.Item label="Specific mention on twitter" value="2" />
       </Picker>
       <View style={{ height: 100, borderWidth: 1 }}></View>
 
@@ -25,7 +25,12 @@ const TwitterPage = () => {
         selectedValue={selectedValue}
         styles={{ height: 50, width: 150 }}
         onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      ></Picker>
+      >
+        <Picker.Item label="Message a specific user on discord" value="1" />
+        <Picker.Item label="Send message on a group chat" value="2" />
+        <Picker.Item label="Message by bot discord" value="3" />
+        <Picker.Item label="Post a tweet" value="4" />
+      </Picker>
     </View>
   );
 };
