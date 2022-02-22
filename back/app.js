@@ -50,16 +50,16 @@ app.use('/api/twitch', apiTwitchRouter);
 
 require('./bot_discord/app');
 require('./socket/socket')(io);
-require('./twitch/twitch').getStream().then(r => console.log("END !"));
+//require('./twitch/twitch').getStream().then(r => console.log("END !"));
 
 function logEvery2Seconds(i) {
     setTimeout(() => {
-        console.log('Infinite Loop Test n:', i);
+        console.log('AR reload loop n:', i);
         logEvery2Seconds(++i);
-    }, 2000)
+    }, 20000)
 }
 
-//logEvery2Seconds(0);
+logEvery2Seconds(0);
 
 server.listen(8080, () => {
     console.log('listening on *:8080');
