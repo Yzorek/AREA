@@ -45,6 +45,7 @@ services:
       - ./back/socket:/app/socket
       - ./back/tools:/app/tools
       - ./back/bot_discord:/app/bot_discord
+      - ./back/twitch:/app/twitch
 
   front:
     restart: unless-stopped
