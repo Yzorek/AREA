@@ -8,7 +8,11 @@ import SettingsScreen from "./SettingsScreen";
 import ProfileScreen from "./Profile/ProfileScreen";
 import colors from "../../../../charte/colors";
 
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createStackNavigator;
 
 const MainTabScreen = () => (
   <Tab.Navigator

@@ -13,19 +13,29 @@ import {
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import colors from "../../../../charte/colors";
 
-import { AuthContext } from "./../context";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-//import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { AuthContext } from "./../context";
+import TwitterPage from "./ServicePage/TwitterPage";
+import InstagramPage from "./ServicePage/InstagramPage";
+
 import Icon from "react-native-vector-icons/Ionicons";
 
-export function DrawerContent(props) {
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+export function DrawerContent(props) {
   const { signOut } = 0;
 
-  const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
-  };
+  const Stack = createStackNavigator();
+
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="TwitterPage" component={TwitterPage} />
+      <Stack.Screen name="InstagramPage" component={InstagramPage} />
+    </Stack.Navigator>
+  </NavigationContainer>;
 
   return (
     <View style={{ flex: 1 }}>
@@ -35,7 +45,7 @@ export function DrawerContent(props) {
             <View style={{ flexDirection: "row", marginTop: 15 }}>
               <Avatar.Image
                 source={{
-                  uri: "https://media.istockphoto.com/photos/businessman-silhouette-as-avatar-or-default-profile-picture-picture-id476085198?b=1&k=20&m=476085198&s=170667a&w=0&h=Ct4e1kIOdCOrEgvsQg4A1qeuQv944pPFORUQcaGw4oI=",
+                  uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                 }}
                 size={50}
               />
@@ -45,73 +55,65 @@ export function DrawerContent(props) {
             </View>
           </View>
 
-          <Drawer.Section title="Account" style={styles.drawerSection}>
+          <Drawer.Section title="Services" style={styles.drawerSection}>
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon
-                  name="radio-button-on-outline"
-                  color={color}
-                  size={size}
-                />
+                <Icon name="logo-twitter" color={color} size={size} />
               )}
-              label="Service 1"
+              label="Twitter"
               onPress={() => {
-                props.navigation.navigate("Home");
+                props.navigation.navigate("TwitterPage");
               }}
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon
-                  name="radio-button-off-outline"
-                  color={color}
-                  size={size}
-                />
+                <Icon name="logo-instagram" color={color} size={size} />
               )}
-              label="Service 2"
+              label="Instagram"
               onPress={() => {
-                props.navigation.navigate("Notifications");
+                props.navigation.navigate("InstagramPage");
               }}
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon
-                  name="radio-button-off-outline"
+                <MaterialCommunityIcons
+                  name="discord"
                   color={color}
                   size={size}
                 />
               )}
-              label="Service 3"
+              label="Discord"
               onPress={() => {
-                props.navigation.navigate("Profile");
+                props.navigation.navigate("DiscordPage");
               }}
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon
-                  name="radio-button-off-outline"
-                  color={color}
-                  size={size}
-                />
+                <Icon name="logo-twitch" color={color} size={size} />
               )}
-              label="Service 4"
+              label="Twitch"
               onPress={() => {
-                props.navigation.navigate("Settings");
+                props.navigation.navigate("TwitchPage");
               }}
             />
-          </Drawer.Section>
-          <Drawer.Section title="Preferences">
-            <TouchableRipple
+            <DrawerItem
+              icon={({ color, size }) => (
+                <Icon name="logo-youtube" color={color} size={size} />
+              )}
+              label="Youtube"
               onPress={() => {
-                toggleTheme();
+                props.navigation.navigate("YoutubePage");
               }}
-            >
-              <View style={styles.preference}>
-                <Text>Dark Theme</Text>
-                <View pointerEvents="none">
-                  <Switch value={isDarkTheme} />
-                </View>
-              </View>
-            </TouchableRipple>
+            />
+            <DrawerItem
+              icon={({ color, size }) => (
+                <FontAwesome name="telegram" color={color} size={size} />
+              )}
+              label="Telegram"
+              onPress={() => {
+                props.navigation.navigate("TelegramPage");
+              }}
+            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
