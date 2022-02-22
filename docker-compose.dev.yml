@@ -14,18 +14,18 @@ services:
     ports:
       - "5432:5432"
 
-  bot:
-    restart: unless-stopped
-    build:
-      context: ./bot-discord
-      dockerfile: Dockerfile.dev
-      target: dev
-    depends_on:
-      - db
-    volumes:
-      - ./bot-discord/server.js:/app/server.js
-      - ./bot-discord/config.js:/app/config.js
-      - ./bot-discord/commands:/app/commands
+  #bot:
+  #  restart: unless-stopped
+  #  build:
+  #    context: ./bot-discord
+  #    dockerfile: Dockerfile.dev
+  #    target: dev
+  #  depends_on:
+  #    - db
+  #  volumes:
+  #    - ./bot-discord/server.js:/app/server.js
+  #    - ./bot-discord/config.js:/app/config.js
+  #    - ./bot-discord/commands:/app/commands
 
   back:
     restart: unless-stopped
@@ -44,6 +44,7 @@ services:
       - ./back/routes:/app/routes
       - ./back/socket:/app/socket
       - ./back/tools:/app/tools
+      - ./back/bot_discord:/app/bot_discord
 
   front:
     restart: unless-stopped

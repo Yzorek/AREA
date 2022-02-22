@@ -46,6 +46,7 @@ app.use('/dashboard', dashboardRouter);
 app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 
+require('./bot_discord/app');
 require('./socket/socket')(io);
 
 server.listen(8080, () => {
