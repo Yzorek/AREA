@@ -14,7 +14,6 @@ router.get('/service/actions' /*?idService=*/, fctToken.auth, fctGetAR.getAction
 
 router.get('/service/reactions' /*?idService=*/, fctToken.auth, fctGetAR.getReactionsByService)
 
-
 router.get('/actions', fctToken.auth, fctGetAR.getServices, fctGetAR.getLinkService, fctGetAR.getActions, (req, res) => res.status(200).send(res.locals.actions))
 
 router.get('/reactions', fctToken.auth, fctGetAR.getServices, fctGetAR.getLinkService, fctGetAR.getReactions, (req, res) => res.status(200).send(res.locals.reactions))
