@@ -89,9 +89,35 @@ async function getReactions(req, res, next) {
     }
 }
 
+async function getActionsByService(req, res) {
+    try {
+        const data = await fctDataBase.request("SELECT * FROM actions WHERE id_service=$1;", [parseInt(req.query.idService)]);
+
+        res.status(200).send(data.rows);
+    } catch (err) {
+        res.status(500).send({
+            message: 'err'
+        })
+    }
+}
+
+async function getReactionsByService(req, res) {
+    try {
+        const data = await fctDataBase.request("SELECT * FROM reactions WHERE id_service=$1;", [parseInt(req.query.idService)]);
+
+        res.status(200).send(data.rows);
+    } catch (err) {
+        res.status(500).send({
+            message: 'err'
+        })
+    }
+}
+
 module.exports = {
     getActions,
     getReactions,
     getServices,
-    getLinkService
+    getLinkService,
+    getActionsByService,
+    getReactionsByService
 }

@@ -9,7 +9,8 @@ import SvgIcon from '@mui/icons-material/Twitter';
 export const Actions = [
     {
         id: 1,
-        text: 'A new tweet from specific user is posted',
+        id_service: 1,
+        description: 'A new tweet from specific user is posted',
         service: 'Twitter',
         color: '#1C9CEB',
         icon: <TwitterIcon/>,
@@ -17,7 +18,8 @@ export const Actions = [
     },
     {
         id: 2,
-        text: 'Post a new video on instagram',
+        id_service: 2,
+        description: 'Post a new video on instagram',
         service: 'Instagram',
         color: '#CC0063',
         icon: <InstagramIcon/>,
@@ -25,7 +27,8 @@ export const Actions = [
     },
     {
         id: 3,
-        text: 'Like a video',
+        id_service: 5,
+        description: 'Like a video',
         service: 'Youtube',
         color: '#F70000',
         icon: <YouTubeIcon/>,
@@ -33,7 +36,8 @@ export const Actions = [
     },
     {
         id: 4,
-        text: 'Start a stream on twitch',
+        id_service: 4,
+        description: 'Start a stream on twitch',
         service: 'Twitch',
         color: '#8C45F7',
         icon: <SvgIcon component={TwitchIcon} inheritViewBox/>,
@@ -44,7 +48,8 @@ export const Actions = [
   export const Reactions = [
     {
         id: 5,
-        text: 'Message a specific user on discord',
+        id_service: 3,
+        description: 'Message a specific user on discord',
         service: 'Discord',
         color: '#5562EA',
         icon: <SvgIcon component={DiscordIcon} inheritViewBox/>,
@@ -52,7 +57,8 @@ export const Actions = [
     },
     {
         id: 6,
-        text: 'Send message to group chat',
+        id_service: 6,
+        description: 'Send message to group chat',
         service: 'Telegram',
         color: '#26A2E1',
         icon: <TelegramIcon/>,

@@ -9,8 +9,13 @@ client.on('ready', () => {
 });
 
 client.on("message", msg => {
+    console.log("----------- CHANNELS -----------")
     client.channels.cache.forEach(item => console.log(item.name))
+    console.log("----------- GUILDS -----------")
     client.guilds.cache.forEach(item => console.log(item.name))
+    console.log("----------- USERS -----------")
+    client.users.cache.forEach(item => console.log(item.username))
+
     if (msg.author.bot)
         return
     require("./config").commands.forEach(item => {

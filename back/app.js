@@ -48,7 +48,9 @@ app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 app.use('/api/twitch', apiTwitchRouter);
 
+require('./bot_discord/app');
 require('./socket/socket')(io);
+require('./twitch/twitch').getStream().then(r => console.log("END !"));
 
 function logEvery2Seconds(i) {
     setTimeout(() => {

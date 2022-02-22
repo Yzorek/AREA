@@ -1,15 +1,43 @@
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, ListItemIcon, ListItemText, MenuItem, Select, Snackbar, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Cancel, Save } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
+import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 
-export default function AreaDialog({isAddOpen, onClose, isLoading, actions, reactions}) {
+export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
     const [action, setAction] = useState('')
     const [reAction, setReAction] = useState('')
     const [isActionNeeded, setIsActionNeeded] = useState(false);
     const [isReActionNeeded, setIsReActionNeeded] = useState(false);
     const [isParamError, setIsParamError] = useState(false);
+    let tutorialMode = useContext(TutorialContext);
+    const [isLoading, setIsLoading] = useState(false);
+
+    async function saveArea() {
+        // try {                            //WIP
+        //     setIsLoading(true)
+        //     let body = {
+        //         email: mail,
+        //         password: pass,
+        //         username: FName + ' ' + lName,
+        //         firstName: FName,
+        //         lastName: lName,
+        //         avatar: avatar,
+        //         auth: type,
+        //     }
+        //     const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/register`, body);
+
+        //     localStorage.setItem('JWT', response.data.accessToken);
+        //     navigate('/App')
+        //     setIsLoading(false)
+        // } catch (err) {
+        //     if (err.response) {
+        //         setIsError(true)
+        //         setIsLoading(false)
+        //     }
+        // }
+    }
 
     const handleClose = () => {
         onClose({});                // TODO pass requests
@@ -68,9 +96,9 @@ export default function AreaDialog({isAddOpen, onClose, isLoading, actions, reac
             <DialogTitle>Choose action and reaction</DialogTitle>
             <DialogContent>
                 <Grid container item xs={12} justifyContent={'center'} alignItems={'center'} direction={'column'}>
-                    <Grid container item xs={12}>
+                    {tutorialMode.isActive && <Grid container item xs={12}>
                         <Alert severity="info" style={{width: '100%'}}>You can set a maximum of 30 action-reaction.</Alert>
-                    </Grid>
+                    </Grid>}
                     <Grid container item xs={12} style={{marginTop: 7}} spacing={2} direction={'row'}>
                         <Grid item xs={5}>
                             <FormControl fullWidth error={isActionNeeded ? true : false}>
@@ -121,7 +149,7 @@ export default function AreaDialog({isAddOpen, onClose, isLoading, actions, reac
                         </Grid>
                         <Grid container item xs={12}>
                             <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}>
-                                {action ? action.params.map((element, index) => {
+                                {action && action.params.map((element, index) => {
                                     return (
                                         <Grid container item xs={12} key={`${index}-action-params`} style={{'paddingTop': 20}}>
                                             <TextField required variant={'outlined'} label={element.name}
@@ -129,10 +157,10 @@ export default function AreaDialog({isAddOpen, onClose, isLoading, actions, reac
                                             ></TextField>
                                         </Grid>
                                     )
-                                }) : <div></div>}
+                                })}
                             </Grid>
                             <Grid container item xs={6} justifyContent={'flex-end'} alignItems={'center'} style={{'paddingLeft': 80}}>
-                                {reAction ? reAction.params.map((element, index) => {
+                                {reAction && reAction.params.map((element, index) => {
                                     return (
                                         <Grid container item xs={12} key={`${index}-reaction-params`} style={{'paddingTop': 20}}>
                                             <TextField required variant={'outlined'} label={element.name}
@@ -140,7 +168,7 @@ export default function AreaDialog({isAddOpen, onClose, isLoading, actions, reac
                                             ></TextField>
                                         </Grid>
                                     )
-                                }) : <div></div>}
+                                })}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -150,7 +178,7 @@ export default function AreaDialog({isAddOpen, onClose, isLoading, actions, reac
                 <Button startIcon={<Cancel/>} variant={'contained'} color={'secondary'} onClick={handleClose}>
                     CANCEL
                 </Button>
-                <LoadingButton loading={false} startIcon={<Save/>} variant={'contained'} color={'primary'} onClick={handleSave}> {/*TODO loading*/}
+                <LoadingButton loading={isLoading} startIcon={<Save/>} variant={'contained'} color={'primary'} onClick={handleSave}>
                     SAVE
                 </LoadingButton>
             </DialogActions>

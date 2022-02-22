@@ -74,20 +74,21 @@ CREATE TABLE actions (
     id                  SERIAL,
     description         varchar(255) NOT NULL,
     id_service          INT,
+    params              text[],
     primary key(id)
 );
 
-INSERT INTO actions(description, id_service) VALUES ('A new tweet from specific user is posted', 1);
-INSERT INTO actions(description, id_service) VALUES ('Make a new post on instagram', 2);
-INSERT INTO actions(description, id_service) VALUES ('Like a video', 5);
-INSERT INTO actions(description, id_service) VALUES ('You start a stream', 4);
-INSERT INTO actions(description, id_service) VALUES ('When you are mentionned', 1);
-INSERT INTO actions(description, id_service) VALUES ('Share a new video', 5);
-INSERT INTO actions(description, id_service) VALUES ('You post a new video', 5);
-INSERT INTO actions(description, id_service) VALUES ('The new top video of the week on twitch is released', 4);
-INSERT INTO actions(description, id_service) VALUES ('A selected streamer starts a new stream', 4);
-INSERT INTO actions(description, id_service) VALUES ('Make a new instagram reel', 2);
-INSERT INTO actions(description, id_service) VALUES ('Post a tweet', 1);
+INSERT INTO actions(description, id_service, params) VALUES ('A new tweet from specific user is posted', 1, ARRAY['User']);
+INSERT INTO actions(description, id_service, params) VALUES ('Make a new post on instagram', 2, ARRAY['User', 'Test 2']);
+INSERT INTO actions(description, id_service, params) VALUES ('Like a video', 5, ARRAY['User']);
+INSERT INTO actions(description, id_service, params) VALUES ('You start a stream', 4, ARRAY['User']);
+INSERT INTO actions(description, id_service, params) VALUES ('When you are mentionned', 1, ARRAY['User']);
+INSERT INTO actions(description, id_service, params) VALUES ('Share a new video', 5, ARRAY['User']);
+INSERT INTO actions(description, id_service, params) VALUES ('You post a new video', 5, ARRAY['User']);
+INSERT INTO actions(description, id_service, params) VALUES ('The new top video of the week on twitch is released', 4, ARRAY['User']);
+INSERT INTO actions(description, id_service, params) VALUES ('A selected streamer starts a new stream', 4, ARRAY['User', 'Test 8']);
+INSERT INTO actions(description, id_service, params) VALUES ('Make a new instagram reel', 2, ARRAY['User']);
+INSERT INTO actions(description, id_service, params) VALUES ('Post a tweet', 1, ARRAY['User']);
 
 
 --Reactions--
@@ -95,21 +96,25 @@ CREATE TABLE reactions (
     id                  SERIAL,
     description         varchar(255) NOT NULL,
     id_service          INT,
+    params              text[],
     primary key(id)
 );
 
-INSERT INTO reactions(description, id_service) VALUES ('Message a specific user on discord', 3);
-INSERT INTO reactions(description, id_service) VALUES ('Send message to group chat', 6);
-INSERT INTO reactions(description, id_service) VALUES ('Message on discord server', 3);
-INSERT INTO reactions(description, id_service) VALUES ('Post a tweet', 1);
-INSERT INTO reactions(description, id_service) VALUES ('Send message at a specific user', 6);
+INSERT INTO reactions(description, id_service, params) VALUES ('Message a specific user on discord', 3, ARRAY['User']);
+INSERT INTO reactions(description, id_service, params) VALUES ('Send message to group chat', 6, ARRAY['User']);
+INSERT INTO reactions(description, id_service, params) VALUES ('Message on discord server', 3, ARRAY['User']);
+INSERT INTO reactions(description, id_service, params) VALUES ('Post a tweet', 1, ARRAY['User']);
+INSERT INTO reactions(description, id_service, params) VALUES ('Send message at a specific user', 6, ARRAY['User']);
 
 
 --Link Actions Reactions--
 CREATE TABLE link_actions_reactions (
     id                  SERIAL,
-    id_user             INT,
-    id_actions          INT,
-    id_reactions        INT,
+    id_user             INT NOT NULL,
+    id_actions          INT NOT NULL,
+    id_reactions        INT NOT NULL,
+    params_action       text,
+    params_reaction     text,
+    is_active           bool,
     primary key(id)
 );
