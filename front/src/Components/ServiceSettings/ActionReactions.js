@@ -1,53 +1,75 @@
-import { ButtonBase, Card, Grid, Switch, Typography } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import { Alert, Button, Grid, Skeleton, Typography } from "@mui/material";
 import AreaDialog from "./AreaDialog";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
+import TutorialContext from "../Tools/TutorialContext/TutorialContext";
+import { Add } from "@mui/icons-material";
+import AreaComponent from "../Tools/AreaComponent";
+import SkeletonArea from "./SkeletonArea";
 
-export default function ActionsReactions() {
+export default function ActionsReactions({isLoading, actions, reactions, canAddArea, areas, onDialogClose}) {
     const [isAddOpen, setIsAddOpen] = useState(false)
-    const [areas, setAreas] = useState([])
+    let tutorialMode = useContext(TutorialContext);
 
     const handleAddClose = (value) => {
-        if (Object.keys(value).length !== 0) {              // TODO pass by request
-            let newArray = areas;
-            newArray.push({
-                actionId: value.actionId,
-                reactionId: value.reactionId,
-                color: '#26A2E1'
-            });
-            setAreas(newArray);
+        // if (Object.keys(value).length !== 0) {              // TODO pass by request
+        //     let newArray = areas;
+        //     newArray.push({
+        //         action: value.action,
+        //         reaction: value.reaction,
+        //         isActive: true,
+        //     });
+        //     setAreas(newArray);
+        // }
+        if (value === true) {
+            onDialogClose();
         }
         setIsAddOpen(false);
     }
 
+    const handleAreaActivation = (item) => {
+        // item.isActive = !item.isActive;
+        // setAreas([...areas]);
+    }
+
+    const handleAddOpen = async () => {
+        setIsAddOpen(true);
+    }
+
     return (
-        <Grid container item xs={12}>
-            <Grid container item xs={12} style={{ padding: 20 }}>
-                <Typography variant={'h5'} style={{fontWeight: 'bold'}}>
-                    ACTIONS-REACTIONS
-                </Typography>
+        <Grid container item xs={12} style={{ padding: 20 }} spacing={2}>
+            <Grid container item xs={12}>
+                <Grid item xs={6}>
+                    <Typography variant={'h5'} style={{fontWeight: 'bold'}}>
+                        ACTIONS-REACTIONS
+                    </Typography>
+                </Grid>
+                <Grid container item xs={6} alignItems={'center'} justifyContent={'flex-end'} spacing={2}>
+                    <Grid item>
+                        {isLoading ? <Skeleton variant="rectangular" width={180} height={40} /> : <Button disabled={!canAddArea} variant={'outlined'} startIcon={<Add/>} onClick={() => handleAddOpen()}>
+                            Add Action-Reaction
+                        </Button>}
+                    </Grid>
+                </Grid>
             </Grid>
-            <Grid container item xs={12} style={{ padding: 20 }}>
-                {areas.map((item, index) => {
-                    return (
-                        <Card key={`${item.actionId}-${index}-cards-service`} style={{marginRight: 50, background: item.color, width: 150, height: 150, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
-                            {item.actionId}
-                            <Switch>
-                            </Switch>
-                        </Card>
-                    )
-                })}
-                <Card style={{marginRight: 50, background: '#ffffff', width: 150, height: 150}}>
-                    <ButtonBase style={{width: '100%', height: '100%', paddingTop: 8, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', position: 'relative'}}
-                    onClick={() => setIsAddOpen(true)}>
-                    <AddIcon style={{width: '12vw', height: '12vh', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}/>
-                    </ButtonBase>
-                </Card>
+            {tutorialMode.isActive && <Grid container item xs={12}>
+                <Alert severity="info" style={{width: '100%'}}>Now link your actions and reactions available with your services.</Alert>
+            </Grid>}
+            {isLoading ? <SkeletonArea/> :
+            <Grid container item xs={12} spacing={3}>
+                {areas.map((item, index) =>
+                    <AreaComponent
+                    key={`${item.action.service}-${index}-cards-service`}
+                    area={item}
+                    onActivation={handleAreaActivation}
+                    />
+                )}
                 <AreaDialog
-                isAddOpen={isAddOpen}
-                onClose={handleAddClose}
+                    isAddOpen={isAddOpen}
+                    onClose={handleAddClose}
+                    actions={actions}
+                    reactions={reactions}
                 />
-            </Grid>
+            </Grid>}
         </Grid>
     )
 

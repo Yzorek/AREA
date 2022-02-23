@@ -50,7 +50,7 @@ export default function LoginHistory() {
     }, []);
 
 
-    return <Paper elevation={1}>
+    return <Paper elevation={0} style={{borderRadius: 5}}>
         <Grid container item xs={12} sx={{p: 4}}>
             <Grid container item xs={6}>
                 <Grid item xs={12}>

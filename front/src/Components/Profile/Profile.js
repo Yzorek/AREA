@@ -5,6 +5,7 @@ import Me from "./Me/Me";
 import Security from "./Security/Security";
 import Theme from "./Theme/Theme";
 import {Badge, Palette, GppGood, Settings} from "@mui/icons-material";
+import SettingsProfile from "./Settings/Settings";
 
 function SelectedRouter({setTabs, app, value}) {
     setTabs(value)
@@ -37,7 +38,7 @@ export default function Profile({handleThemeChange}) {
         {
             label: 'Settings',
             value: 'Settings',
-            component: <Grid container item xs={7}>Settings</Grid>,
+            component: <SettingsProfile/>,
             icon: <Settings/>
         },
     ]

@@ -35,6 +35,7 @@ class ProfileScreen extends Component {
         cancelToken: source.token,
         'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
       });
+      this.props.dispatch({type: "name", value: response.data.username})
       this.setState({
         data: response.data,
         isLoading: false,
@@ -218,6 +219,7 @@ const mapStateToProps = (state) => {
   return {
   index: state.index,
   accessToken: state.accessToken,
+  name: state.name,
   ip: state.ip
   }
 }

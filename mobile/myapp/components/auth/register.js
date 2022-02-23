@@ -9,30 +9,37 @@ class Register extends Component{
     super(props);
         this.state = {
             first: "", last: "", email: "", password: "", isError: false,
+            isMount: false,
         };
+    }
+
+    componentDidMount() {
+        this.setState({isMount: true})
     }
 
     async onSubmit(e) {
         e.preventDefault();
         const IP = this.props.ip
-
-        try {
-            let body = {
-                email: this.state.email,
-                password: this.state.password,
-                username: this.state.first + ' ' + this.state.last,
-                firstName: this.state.first,
-                lastName: this.state.last,
-                avatar: '',
-                auth: 'local',
+        if (this.state.isMount===true) {
+            try {
+                let body = {
+                    email: this.state.email,
+                    password: this.state.password,
+                    username: this.state.first + ' ' + this.state.last,
+                    firstName: this.state.first,
+                    lastName: this.state.last,
+                    avatar: '',
+                    auth: 'local',
+                }
+                const response = await axios.post(
+                    'http://'+IP+':8080/auth/register', body
+                );
+                this.setState({isError: false})
+            } catch (error) {
+                this.setState({isError: true})
             }
-            const response = await axios.post(
-                'http://'+IP+':8080/auth/register', body
-            );
-            this.setState({isError: false})
-        } catch (error) {
-            this.setState({isError: true})
         }
+        this.setState({isMount: false})
     }
 
     checkRegister(e) {

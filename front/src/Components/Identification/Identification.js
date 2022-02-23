@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import {useParams} from "react-router";
 import axios from "axios";
-import {Avatar, Link, Grid, Paper, Typography, Button} from "@mui/material";
-import CheckIcon from '@mui/icons-material/Check';
+import { Grid, Typography, Button} from "@mui/material";
 
 export default function Identification() {
     let {idUser, username} = useParams();

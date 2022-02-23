@@ -10,12 +10,11 @@ import {
     ListItemButton,
     ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert
 } from "@mui/material";
-import {API_WEATHER, drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS, SERVICE} from "./config";
+import {API_WEATHER, drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
 import {Cloud, Dashboard, Person} from "@mui/icons-material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
-import PropFromName from "../Tools/Services"
 
 function ClassicListItemButtonNav({idSelected, id, label, icon, redirectTo, isLoading}) {
     let navigate = useNavigate();
@@ -56,7 +55,7 @@ export default function DrawerArea({isLoading, idSelected, services}) {
     >
         <Toolbar>
             <Grid container item xs={12} justifyContent={'space-between'} alignItems={'center'}>
-                <img aly={'Ulys-Logo'} src={'/Ulys-5.png'} style={{width: 60, height: 'auto'}}/>
+                <img aly={'Ulys-Logo'} src={'/Ulys-5.png'} style={{width: 60, height: 'auto'}} alt="logo"/>
                 <Typography color={"white"} variant={'h3'} style={{fontWeight: 'bold'}}>
                     ULYS
                 </Typography>
@@ -74,8 +73,8 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Dashboard'} icon={<Dashboard/>} id={GENERAL_DASHBOARD}
-                                          label={'Dashboard'} idSelected={idSelected} isLoading={isLoading}/>
-                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={'Profile'}
+                                          label={<Typography variant={"subtitle1"}> Dashboard </Typography>} idSelected={idSelected} isLoading={isLoading}/>
+                <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={<Typography variant={"subtitle1"}> Profile </Typography>}
                                           idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
@@ -87,7 +86,7 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                 }
             >
                 <ClassicListItemButtonNav redirectTo={'Weather'} icon={<Cloud/>} id={API_WEATHER}
-                                          label={'Weather'} idSelected={idSelected} isLoading={isLoading}/>
+                                          label={<Typography variant={"subtitle1"}> Weather </Typography>} idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
                 dense
@@ -100,7 +99,7 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                 {!userContext ? <Skeleton variant="rectangular" width={'100%'} height={'100%'} style={{borderRadius: 5}}/>
                  : services.map((item, index) => {
                      if (!item.isActive)
-                        return;
+                        return (<div/>);
                      else
                      return (
                         <ClassicListItemButtonNav icon={item.icon}
@@ -113,7 +112,7 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                     )
                 })}
                 <ClassicListItemButtonNav redirectTo={'Service'} icon={<SettingsIcon/>} id={SERVICE_SETTINGS}
-                                          label={'Service settings'} idSelected={idSelected} isLoading={isLoading}/>
+                                          label={<Typography variant={"subtitle1"}> Service settings </Typography>} idSelected={idSelected} isLoading={isLoading}/>
             </List>
         </Box>
 

@@ -67,11 +67,6 @@ export default function AvatarUpload({logoUrl, handleSave, handleDelete, label =
         setImageSrc(null)
     }
 
-    function handleRemove() {
-        handleDelete()
-        handleCloseMenu()
-    }
-
     useEffect(() => {
         isMounted.current = true
         const source = axios.CancelToken.source();

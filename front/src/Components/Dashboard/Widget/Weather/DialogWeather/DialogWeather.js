@@ -72,7 +72,7 @@ export default function DialogWeather({open, handleClose, idBDD}) {
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     })
             setIsLoading(false);
-            handleCloseDialog(true)
+            handleCloseDialog(true);
         } catch (err) {
             if (err.response) {
                 setIsError(true);
