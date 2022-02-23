@@ -4,5 +4,8 @@
   },
   "google": {
     "clientId": "25301534648-0fuhhp3vrn7fc1s98kll9oppje91rquk.apps.googleusercontent.com"
+  },
+  "twitch": {
+    "clientId": "d7meoxhgs54czo7hv0lz335v838zz5"
   }
 }
