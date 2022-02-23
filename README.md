@@ -1,17 +1,45 @@
 # Area
 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">Description</a>
+      <ul>
+        <li><a href="#built-with">Group</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#infrastructure">Infrastructure</a>
+      <ul>
+        <li><a href="#front">Front</a></li>
+        <li><a href="#back">Back</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#installation">Installation</a>
+      <ul>
+        <li><a href="#prerequis">Prerequis</a></li>
+        <li><a href="#release">Run for release</a></li>
+        <li><a href="#dev">Run for development</a></li>
+      </ul>
+    </li>
+  </ol>
+</details>
+
 ## Description
 
 - **Taille du groupe** : 6
 - **Compilation** : docker-compose build && docker-compose up
-- **Langage** : <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/><img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/><img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white"/>
+- **Langage** :
 <p>
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
   <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
   <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white"/>
 </p>
 
-## Groups
+## Group
 
 - Damien Maillard (Dev Fullstack)
 - Ilian Baylon
