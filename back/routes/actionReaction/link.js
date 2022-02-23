@@ -32,7 +32,7 @@ async function deleteLink(req, res) {
 async function updateLink(req, res) {
 
     try {
-        await fctDataBase.request("UPDATE link_actions_reactions SET id_actions=$1, id_reactions=$2, params_action=$4, params_action=$5, is_active=$6 WHERE id=$3;", [req.body.idAction, req.body.idReaction, parseInt(res.params.id), JSON.stringify(req.body.paramsAction), JSON.stringify(req.body.paramsReaction), req.body.isActive]);
+        await fctDataBase.request("UPDATE link_actions_reactions SET id_actions=$1, id_reactions=$2, params_action=$4, params_reaction=$5, is_active=$6 WHERE id=$3;", [req.body.idAction, req.body.idReaction, parseInt(res.params.id), JSON.stringify(req.body.paramsAction), JSON.stringify(req.body.paramsReaction), req.body.isActive]);
         res.status(200).send({
             message: 'OK!'
         })
