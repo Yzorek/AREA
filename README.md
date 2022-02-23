@@ -80,8 +80,7 @@ C[App web] --> D{React}
 - Run for release
   > docker-compose up --build
 - Run for development
-  > docker-compose -f docker-compose.dev.yml up --build
-  > docker-compose -f docker-compose.dev.yml up --build <front|back|mobile>`
+  > docker-compose -f docker-compose.dev.yml up --build <front|back|mobile>
 
 ## Access to the back-end
 
