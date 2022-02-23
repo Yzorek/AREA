@@ -68,7 +68,7 @@ graph LR
 A --> B
 A((AREA)) --> C
 B[App mobile] --> E{React native}
-A --> F[Api]
+A --> F[API]
 F --> G{Node.js}
 C[App web] --> D{React}
 ```
