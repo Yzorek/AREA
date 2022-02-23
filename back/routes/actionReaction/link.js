@@ -37,7 +37,6 @@ async function updateLink(req, res) {
             message: 'OK!'
         })
     } catch (err) {
-        console.log(err)
         res.status(500).send({
             message: 'bdd error'
         })
