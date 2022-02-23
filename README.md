@@ -88,8 +88,4 @@ http://localhost:8080/<route>
 
 ## Access to the front-end
 
-http://localhost:3000
-
-## Back
-
-- [Back](back/README.md)
+http://localhost:8082
