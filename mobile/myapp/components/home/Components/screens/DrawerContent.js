@@ -11,29 +11,42 @@ import {
   Switch,
 } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { connect, useSelector, useDispatch } from 'react-redux'
+import { connect, useSelector, useDispatch } from "react-redux";
 import colors from "../../../../charte/colors";
 
 import { AuthContext } from "./../context";
 
-//import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/Ionicons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 function DrawerContent(props) {
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-
   const dispatch = useDispatch();
 
   const logOut = () => {
-    dispatch({ type: "index", value: 0 })
-    dispatch({ type: "accessToken", value: "" })
-  }
-
-  const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
+    dispatch({ type: "index", value: 0 });
+    dispatch({ type: "accessToken", value: "" });
+  };
+  const Twitter = () => {
+    dispatch({ type: "index", value: 3 });
+  };
+  const Instagram = () => {
+    dispatch({ type: "index", value: 4 });
+  };
+  const Discord = () => {
+    dispatch({ type: "index", value: 5 });
+  };
+  const Twitch = () => {
+    dispatch({ type: "index", value: 6 });
+  };
+  const Youtube = () => {
+    dispatch({ type: "index", value: 7 });
+  };
+  const Telegram = () => {
+    dispatch({ type: "index", value: 8 });
   };
 
-  const name = useSelector((state) => state.name)
+  const name = useSelector((state) => state.name);
 
   return (
     <View style={{ flex: 1 }}>
@@ -56,70 +69,62 @@ function DrawerContent(props) {
           <Drawer.Section title="Account" style={styles.drawerSection}>
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon
-                  name="radio-button-on-outline"
-                  color={color}
-                  size={size}
-                />
+                <Icon name="logo-twitter" color={color} size={size} />
               )}
-              label="Service 1"
+              label="Twitter"
               onPress={() => {
-                props.navigation.navigate("Home");
+                Twitter();
               }}
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon
-                  name="radio-button-off-outline"
-                  color={color}
-                  size={size}
-                />
+                <Icon name="logo-instagram" color={color} size={size} />
               )}
-              label="Service 2"
+              label="Instagram"
               onPress={() => {
-                props.navigation.navigate("Notifications");
+                Instagram();
               }}
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon
-                  name="radio-button-off-outline"
+                <MaterialCommunityIcons
+                  name="discord"
                   color={color}
                   size={size}
                 />
               )}
-              label="Service 3"
+              label="Discord"
               onPress={() => {
-                props.navigation.navigate("Profile");
+                Discord();
               }}
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon
-                  name="radio-button-off-outline"
-                  color={color}
-                  size={size}
-                />
+                <Icon name="logo-twitch" color={color} size={size} />
               )}
-              label="Service 4"
+              label="Twitch"
               onPress={() => {
-                props.navigation.navigate("Settings");
+                Twitch();
               }}
             />
-          </Drawer.Section>
-          <Drawer.Section title="Preferences">
-            <TouchableRipple
+            <DrawerItem
+              icon={({ color, size }) => (
+                <Icon name="logo-youtube" color={color} size={size} />
+              )}
+              label="Youtube"
               onPress={() => {
-                toggleTheme();
+                Youtube();
               }}
-            >
-              <View style={styles.preference}>
-                <Text>Dark Theme</Text>
-                <View pointerEvents="none">
-                  <Switch value={isDarkTheme} />
-                </View>
-              </View>
-            </TouchableRipple>
+            />
+            <DrawerItem
+              icon={({ color, size }) => (
+                <FontAwesome name="telegram" color={color} size={size} />
+              )}
+              label="Telegram"
+              onPress={() => {
+                Telegram();
+              }}
+            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
@@ -189,6 +194,6 @@ const mapStateToProps = (state) => {
     name: state.name,
     index: state.index,
     accessToken: state.accessToken,
-  }
-}
-export default connect(mapStateToProps)(DrawerContent) 
+  };
+};
+export default connect(mapStateToProps)(DrawerContent);
