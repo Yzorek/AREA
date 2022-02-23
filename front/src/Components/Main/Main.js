@@ -131,7 +131,7 @@ export default function Main() {
                                 <MainLoader/>
                             </Grid> : <Routes>
                                 <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
-                                {services.filter((item) => item.isActive === true).map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.name} element={<SelectedRouter app={<ServicePage service={item} areas={{}} widgets={{}}/>} idRoute={item.pageId} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
+                                {services.filter((item) => item.isActive === true).map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.name} element={<SelectedRouter app={<ServicePage service={item} widgets={{}}/>} idRoute={item.pageId} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
                                 <Route path={`Service/`} element={<SelectedRouter app={<ServiceSettings onServicesSub={handleServicesSub}/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Profile/*`} element={<SelectedRouter app={<Profile handleThemeChange={handleThemeChange}/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
