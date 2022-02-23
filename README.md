@@ -2,20 +2,54 @@
 
 ## Description
 
---
+- **Taille du groupe** : 6
+- **Langage** :
+<p>
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+  <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white"/>
+</p>
+- **Compilation** : docker-compose build && docker-compose up
 
 ## Groups
 
 - Damien Maillard (Dev Fullstack)
-- 
+- Ilian Baylon
+- Jules Clerc
+- Houssam El-affas 
+-Gregoire Duhem
 
-## How to run docker-compose for development?
+## Infrastructure
 
-`docker-compose -f docker-compose.dev.yml up --build`
+### Front
+```mermaid
+graph LR
+A --> B
+A((AREA)) --> C
+B[App mobile] --> E{React native}
+C[App web] --> D{React}
+```
 
-## You want to start only the back or the front end?
+### Back
+```mermaid
+graph LR
+A --> B
+A((AREA)) --> C
+B[App mobile] --> E{React native}
+A --> F[Api]
+F --> G{Node.js}
+C[App web] --> D{React}
+```
 
-`docker-compose -f docker-compose.dev.yml up --build <front|back>`
+# Installation
+- Prérequis.
+  > Docker
+
+- Run for release
+  > docker-compose up --build
+- Run for development
+  > docker-compose -f docker-compose.dev.yml up --build
+  > docker-compose -f docker-compose.dev.yml up --build <front|back|mobile>`
 
 ## Access to the back-end
 
