@@ -6,10 +6,8 @@
   <ol>
     <li>
       <a href="#about-the-project">Description</a>
-      <ul>
-        <li><a href="#built-with">Group</a></li>
-      </ul>
     </li>
+    <li><a href="#group">Group</a></li>
     <li>
       <a href="#infrastructure">Infrastructure</a>
       <ul>
