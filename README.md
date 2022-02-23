@@ -5,9 +5,12 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
       <a href="#about-the-project">Description</a>
     </li>
-    <li><a href="#group">Group</a></li>
+    <li><a href="#members">Members</a></li>
     <li>
       <a href="#infrastructure">Infrastructure</a>
       <ul>
@@ -26,6 +29,10 @@
   </ol>
 </details>
 
+## About The Project
+
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
 ## Description
 
 - **Taille du groupe** : 6
@@ -37,7 +44,7 @@
   <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white"/>
 </p>
 
-## Group
+## Members
 
 - Damien Maillard (Dev Fullstack)
 - Ilian Baylon
