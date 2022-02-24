@@ -1,39 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Text, Button, StyleSheet } from "react-native";
-import { Picker, View } from "react-native";
+import { Text, Button, StyleSheet, View } from "react-native";
+//import { Picker } from "react-native";
+//import { Picker } from "react-native-picker-select";
+import RNPickerSelect from "react-native-picker-select";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Drawer = createDrawerNavigator();
 
 const TwitterPage = () => {
-  const [selectedValue, setSelectedValue, selectedValue2, setSelectedValue2] =
-    useState("Post a tweet");
   return (
     <View style={styles.container}>
-      <Picker
-        selectedValue={selectedValue}
-        style={{ height: 50, width: 150 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="A tweet from a specific user is posted" value="1" />
-        <Picker.Item label="Specific mention on twitter" value="2" />
-      </Picker>
-
-      <View style={{ height: 100, borderWidth: 1 }}></View>
-
-      <Picker
-        selectedValue={selectedValue2}
-        styles={{ height: 50, width: 150 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue2(itemValue)}
-      >
-        <Picker.Item label="Message a specific user on discord" value2="1" />
-        <Picker.Item label="Send message on a group chat" value2="2" />
-        <Picker.Item label="Message by bot discord" value2="3" />
-        <Picker.Item label="Post a tweet" value2="4" />
-      </Picker>
+      <Icon name="twitter" size={50} color="#136ea3" />
+      <View style={{ height: 50 }} />
+      <RNPickerSelect
+        onValueChange={(value) => console.log(value)}
+        items={[
+          {
+            label: "A tweet from a specific user is posted",
+            value: "1",
+          },
+          { label: "Specific mention on twitter", value: "2" },
+        ]}
+      />
+      <View style={{ height: 100 }} />
+      <View style={{ height: 200, borderWidth: 1 }} />
+      <View style={{ height: 100 }} />
+      <RNPickerSelect
+        onValueChange={(value) => console.log(value)}
+        items={[
+          {
+            label: "Message a specific user on discord",
+            value: "1",
+          },
+          { label: "Send message on a group chat", value: "2" },
+          { label: "Message by bot discord", value: "3" },
+          { label: "Post a tweet", value: "4" },
+        ]}
+      />
     </View>
   );
 };
