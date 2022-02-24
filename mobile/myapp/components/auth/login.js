@@ -3,11 +3,13 @@ import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, Alert, Flat
 import { connect } from 'react-redux'
 import axios from 'axios';
 import colors from '../../charte/colors';
+import * as Google from 'expo-google-app-auth';
 
 class Login extends Component{
     constructor(props) {
     super(props);
         this.state = {
+            data: {},
             email: "", password: "",
             isError: false,
             isMount: false,
@@ -19,14 +21,43 @@ class Login extends Component{
         this.setState({isMount: true})
     }
 
-    _conditionToGoHome = async (e) => {
+    _onSuccessGoogle = () => {
+        const config = {
+            androidClientId: "278231454576-i92vk8rv49ge3gguru6bp0gpqs63js0g.apps.googleusercontent.com",
+            scopes: ['profile', 'email']
+        };
+        Google
+            .logInAsync(config)
+            .then(async (result) => {
+                const {type, user} = result
+                if (type=='success') {
+                    this.props.dispatch({type: 'index', value: 2});
+                    // console.log(result)
+                }
+                else {
+                    Alert.alert(
+                        "Error !",
+                        "You can't Login In with Google !",
+                    );
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                Alert.alert(
+                    "You can't Login In with Google !",
+                );
+            })
+    }
+
+    _conditionToGoHome = async (type, email, pwd) => {
         const IP = this.props.ip
 
         if (this.state.isMount===true) {
             try {
                 let body = {
-                    email: this.state.email,
-                    password: this.state.password
+                    email: email,
+                    password: pwd,
+                    type: type
                 }
                 const response = await axios.post(
                     'http://'+IP+':8080/auth/login', body
@@ -42,6 +73,57 @@ class Login extends Component{
             }
         }
         this.setState({isMount: false})
+    }
+
+    _loginGoogle = async () => {
+        const IP = this.props.ip
+        const config = {
+            androidClientId: "278231454576-i92vk8rv49ge3gguru6bp0gpqs63js0g.apps.googleusercontent.com",
+            scopes: ['profile', 'email']
+        };
+        Google
+            .logInAsync(config)
+            .then(async (result) => {
+                const {type, user} = result
+                if (type=='success') {
+                    try {
+                        let body = {
+                            email: user.email,
+                            password: user.id,
+                            type: 'google'
+                        }
+                        console.log(result)
+                        const response = await axios.post(
+                            'http://'+IP+':8080/auth/login', body
+                        );
+                        this.props.dispatch({type: "accessToken", value: response.data.accessToken})
+                        this.props.dispatch({type: 'index', value: 2});
+                        this.setState({isError: false})
+                    } catch (error) {
+                        this.setState({isError: true})
+                        Alert.alert(
+                            "Please enter your email and password !",
+                        );
+                    }
+                }
+                else {
+                    Alert.alert(
+                        "Error !",
+                        "You can't Login In with Google !",
+                    );
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                Alert.alert(
+                    "You can't Login In with Google !",
+                );
+            })
+    }
+
+    _onSubmit = async () => {
+        await this._conditionToGoHome('local', this.state.email, this.state.password)
+        console.log("token => "+this.props.accessToken)
     }
 
     render() {
@@ -65,10 +147,10 @@ class Login extends Component{
                         onChangeText={(value) => {this.setState({password: value})}}
                     ></TextInput>
                 </View>
-                <TouchableOpacity style={styles.btn_login} onPress={(e) => {this._conditionToGoHome(e)}}>
+                <TouchableOpacity style={styles.btn_login} onPress={(e) => {this._onSubmit()}}>
                     <Text style={styles.txt_login}>Login</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.social_media}>
+                <TouchableOpacity style={styles.social_media} onPress={() => {this._onSuccessGoogle()}}>
                     <Image style={styles.img_google} source={{uri:"https://icones.pro/wp-content/uploads/2021/02/google-icone-symbole-logo-png.png"}} />
                     <Text style={{textAlign: 'center', textAlignVertical: 'center'}}>Login with Google</Text>
                 </TouchableOpacity>
