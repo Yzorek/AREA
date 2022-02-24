@@ -41,7 +41,7 @@ export default function Register() {
     const [showTerm, setShowTerm] = useState(false);
     let navigate = useNavigate();
 
-    async function registerInSerer(type, pass, mail, lName, FName, avatar) {
+    async function registerInServer(type, pass, mail, lName, FName, avatar) {
         try {
             setIsLoading(true)
             let body = {
@@ -67,10 +67,9 @@ export default function Register() {
     }
 
     const onSuccessGoogle = (response) => {
-        console.log(response);
         (async () => {
             try {
-                await registerInSerer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
+                await registerInServer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
             } catch (err) {
                 console.log(err);
             }
@@ -84,7 +83,7 @@ export default function Register() {
 
     async function onSubmit(e) {
         e.preventDefault();
-        await registerInSerer('local', password, email, lastName, firstName, '');
+        await registerInServer('local', password, email, lastName, firstName, '');
     }
 
     return <Grid container item xs={12} alignItems={'center'} justifyContent={'center'} style={{height: '100vh'}}>

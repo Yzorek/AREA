@@ -9,47 +9,59 @@ import SvgIcon from '@mui/icons-material/Twitter';
 export const Actions = [
     {
         id: 1,
-        text: 'A new tweet from specific user is posted',
-        service: 'twitter',
+        id_service: 1,
+        description: 'A new tweet from specific user is posted',
+        service: 'Twitter',
         color: '#1C9CEB',
-        icon: <TwitterIcon sx={{ fontSize: '12' }}/>
+        icon: <TwitterIcon/>,
+        params: [{name: 'user @', value: ''}]
     },
     {
         id: 2,
-        text: 'Post a new video on instagram',
-        service: 'instagram',
+        id_service: 2,
+        description: 'Post a new video on instagram',
+        service: 'Instagram',
         color: '#CC0063',
-        icon: <InstagramIcon sx={{ fontSize: '12' }}/>
+        icon: <InstagramIcon/>,
+        params: []
     },
     {
         id: 3,
-        text: 'Like a video',
-        service: 'youtube',
+        id_service: 5,
+        description: 'Like a video',
+        service: 'Youtube',
         color: '#F70000',
-        icon: <YouTubeIcon sx={{ fontSize: '12' }}/>
+        icon: <YouTubeIcon/>,
+        params: []
     },
     {
         id: 4,
-        text: 'Start a stream on twitch',
-        service: 'twitch',
+        id_service: 4,
+        description: 'Start a stream on twitch',
+        service: 'Twitch',
         color: '#8C45F7',
-        icon: <SvgIcon component={TwitchIcon} sx={{ fontSize: '12' }} inheritViewBox/>
+        icon: <SvgIcon component={TwitchIcon} inheritViewBox/>,
+        params: []
     },
   ];
 
   export const Reactions = [
     {
         id: 5,
-        text: 'Message a specific user on discord',
-        service: 'discord',
+        id_service: 3,
+        description: 'Message a specific user on discord',
+        service: 'Discord',
         color: '#5562EA',
-        icon: <SvgIcon component={DiscordIcon} sx={{ fontSize: '12' }} inheritViewBox/>
+        icon: <SvgIcon component={DiscordIcon} inheritViewBox/>,
+        params: [{name: 'server name', value: ''}, {name: 'channel name', value: ''}]
     },
     {
         id: 6,
-        text: 'Send message to group chat',
-        service: 'telegram',
+        id_service: 6,
+        description: 'Send message to group chat',
+        service: 'Telegram',
         color: '#26A2E1',
-        icon: <TelegramIcon sx={{ fontSize: '12' }}/>
+        icon: <TelegramIcon/>,
+        params: [{name: 'group name', value: ''}]
     }
   ];
