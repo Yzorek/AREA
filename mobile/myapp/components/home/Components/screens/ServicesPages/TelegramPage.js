@@ -16,6 +16,7 @@ const TelegramPage = () => {
       <Icon name="telegram" size={50} color="#44a6c6" />
       <View style={{ height: 50 }} />
       <RNPickerSelect
+        style={{ inputAndroid: { color: "black" } }}
         onValueChange={(value) => console.log(value)}
         items={[
           {
@@ -25,10 +26,11 @@ const TelegramPage = () => {
           { label: "void", value: "2" },
         ]}
       />
-      <View style={{ height: 100 }} />
+      <View style={{ height: 60 }} />
       <View style={{ height: 200, borderWidth: 1 }} />
-      <View style={{ height: 100 }} />
+      <View style={{ height: 60 }} />
       <RNPickerSelect
+        style={{ inputAndroid: { color: "black" } }}
         onValueChange={(value) => console.log(value)}
         items={[
           {
