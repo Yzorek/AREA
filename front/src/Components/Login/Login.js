@@ -5,6 +5,7 @@ import {Button, Divider, Grid, IconButton, InputAdornment, Paper, Snackbar, Text
 import {Email, Create, Lock, Visibility, VisibilityOff, Google} from "@mui/icons-material";
 import {Alert, LoadingButton} from '@mui/lab';
 import { GoogleLogin } from 'react-google-login';
+import TelegramLoginButton from 'react-telegram-login';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -60,6 +61,10 @@ export default function Login() {
         e.preventDefault();
         await loginInSerer('local', password, email);
     }
+
+    const handleTelegramResponse = response => {
+        console.log(response);
+    };
 
     return <Grid container item xs={12} alignItems={'center'} justifyContent={'center'} style={{height: '100vh'}}>
         <Grid item xs={12} sm={8} md={4}>
@@ -137,6 +142,7 @@ export default function Login() {
                                 onFailure={onFailureGoogle}
                                 cookiePolicy={'single_host_origin'}
                             />
+                            <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="OdauBot" />,
                         </Grid>
                     </Grid>
 

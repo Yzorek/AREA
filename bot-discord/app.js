@@ -38,7 +38,7 @@ client.on("message", msg => {
                 .setColor('RED')
                 .setTitle('ERROR !')
                 .setAuthor(client.user.username, client.user.displayAvatarURL())
-                .setDescription('One error as pop in my systeme, sorry try again later')
+                .setDescription('One error as pop in my system, sorry try again later')
                 .setFooter('If you have question, please call WhiteWolf');
             msg.channel.send({embeds: [exampleEmbed]});
             console.log("----------------------------------------------------------- ERROR -----------------------------------------------------------");

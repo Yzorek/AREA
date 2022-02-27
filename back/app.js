@@ -49,6 +49,7 @@ app.use('/AR', ARRouter);
 //app.use('/api/twitch', apiTwitchRouter);
 
 require('./bot_discord/app');
+require('./bot_telegram/app')
 require('./socket/socket')(io);
 //require('./twitch/twitch').getStream().then(r => console.log("END !"));
 

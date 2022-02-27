@@ -15,6 +15,7 @@
     "jade": "~1.11.0",
     "moment": "^2.29.1",
     "morgan": "~1.9.1",
+    "node-telegram-bot-api": "^0.56.0",
     "node-twitch": "^0.4.5",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1",
@@ -24,6 +25,7 @@
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
-    "nodemailer": "^6.7.2"
+    "nodemailer": "^6.7.2",
+    "telegraf": "^4.7.0"
   }
 }
