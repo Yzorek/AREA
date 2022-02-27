@@ -53,14 +53,15 @@ require('./bot_telegram/app')
 require('./socket/socket')(io);
 //require('./twitch/twitch').getStream().then(r => console.log("END !"));
 
-function logEvery2Seconds(i) {
-    setTimeout(() => {
+function loopAR(i) {
+    setTimeout(async () => {
         console.log('AR reload loop n:', i);
-        logEvery2Seconds(++i);
-    }, 20000)
+        await require('./twitch/twitch').reloadStreamsManagement();
+        loopAR(++i);
+    }, 30000)
 }
 
-logEvery2Seconds(0);
+loopAR(0);
 
 server.listen(8080, () => {
     console.log('listening on *:8080');

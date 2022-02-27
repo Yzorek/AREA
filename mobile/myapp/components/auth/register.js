@@ -66,7 +66,10 @@ class Register extends Component{
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.txt_logo}>ULYS</Text>
+                <Image
+                    style={styles.img_logo}
+                    source={require("../../assets/Ulys.png")}
+                />
                 <Text style={styles.txt_input}>FIRST NAME</Text>
                 <View style={styles.input}>
                     <TextInput
@@ -127,8 +130,8 @@ const styles = StyleSheet.create({
         marginBottom: "20%",
     },
     img_logo: {
-        width: 100,
-        height: 160,
+        width: 150,
+        height: 150,
         marginBottom: "10%",
     },
     txt_input: {

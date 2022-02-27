@@ -9,12 +9,12 @@ client.on('ready', () => {
 });
 
 client.on("message", msg => {
-    console.log("----------- CHANNELS -----------")
-    client.channels.cache.forEach(item => console.log(item.name))
-    console.log("----------- GUILDS -----------")
-    client.guilds.cache.forEach(item => console.log(item.name))
-    console.log("----------- USERS -----------")
-    client.users.cache.forEach(item => console.log(item.username))
+    //console.log("----------- CHANNELS -----------")
+    //client.channels.cache.forEach(item => console.log(item.name))
+    //console.log("----------- GUILDS -----------")
+    //client.guilds.cache.forEach(item => console.log(item.name))
+    //console.log("----------- USERS -----------")
+    //client.users.cache.forEach(item => console.log(item.username))
 
     if (msg.author.bot)
         return
@@ -37,4 +37,57 @@ client.on("message", msg => {
     })
 })
 
+function sendMessageTwitchInGuilds(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
+
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    const twitchEmbed = new MessageEmbed()
+        .setColor('PURPLE')
+        .setTitle(data.title)
+        .setURL("https://www.twitch.tv/" + data.user_login)
+        .setFooter(data.started_at)
+        .setImage(data.getThumbnailUrl())
+        .setAuthor(data.user_name + " is now streaming")
+        .addField(" Playing ", data.game_name, true,)
+        .addField("Started at ", data.started_at, true)
+
+    channel.send({ embeds: [twitchEmbed] });
+}
+
+function sendMessageTwitchInMessage(channelsName, username, data) {
+
+    //console.log("je suis la 1");
+    client.guilds.cache.forEach(async elem => {
+        //console.log("je suis la 3");
+        //let members = await elem.members
+        //console.log("je suis la 2");
+        elem.members.cache.forEach(item => {
+            //console.log(item)
+        })
+    })
+    /*const twitchEmbed = new MessageEmbed()
+        .setColor('PURPLE')
+        .setTitle(data.title)
+        .setURL("https://www.twitch.tv/" + data.user_login)
+        .setFooter(data.started_at)
+        .setImage(data.getThumbnailUrl())
+        .setAuthor(data.user_name + " is now streaming")
+        .addField(" Playing ", data.game_name, true,)
+        .addField("Started at ", data.started_at, true)
+
+    channel.send({ embeds: [twitchEmbed] });*/
+}
+
 client.login('OTQwOTEyNjkyODY3MjY0NTYz.YgOTOw.f54-ym5cgCNvwSDjY1lhK4Aa8o0')
+
+
+module.exports = {
+    sendMessageTwitchInGuilds,
+    sendMessageTwitchInMessage
+}
