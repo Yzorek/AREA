@@ -1,25 +1,10 @@
 import React, { Component, useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Text, Button, StyleSheet, View } from "react-native";
-
-import { createDrawerNavigator } from "@react-navigation/drawer";
-
-import { AuthContext } from "./Components/context";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import MainTabScreen from "./Components/screens/MainTabScreen";
-import ProfileScreen from "./Components/screens/ProfileScreen";
-import NotificationsScreen from "./Components/screens/NotificationsScreen";
-import SettingsScreen from "./Components/screens/SettingsScreen";
-import HomeScreen from "./Components/screens/HomeScreen";
-import DrawerContent from "./Components/screens/DrawerContent";
-import colors from "../../charte/colors";
+import { Text, SafeAreaView, StyleSheet, View } from "react-native";
 import { connect } from 'react-redux'
 import axios from 'axios';
-
-const Drawer = createDrawerNavigator();
+import Header from "./header";
+import Bottom from "./bottom";
+import DisplayBody from "./displayBody";
 
 class Accueil extends Component {
   constructor(props) {
@@ -49,28 +34,50 @@ class Accueil extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, width: "100%"}}>
-        <NavigationContainer>
-          <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
-            <Drawer.Screen options={{
-                headerStyle: {backgroundColor: colors.primary},
-                headerTitleStyle: {fontWeight: 'bold', color: "white"}
-              }}
-              name="MainTabScreen"
-              component={MainTabScreen} />
-          </Drawer.Navigator>
-        </NavigationContainer>
-      </View>
+        <SafeAreaView style={{flex: 1, width: "100%"}}>
+          <View style={styles.container}>
+                {/* header */}
+              <Header/>
+
+              <View style={styles.body}>
+                <DisplayBody/>
+              </View>
+
+              <Bottom/>
+          </View>
+        </SafeAreaView>
     );
   }
-};
+}
+
+const styles = StyleSheet.create({
+container: {
+  flex: 1,
+  width: "100%",
+  backgroundColor: '#fff',
+  alignItems: 'center',
+},
+body: {
+  height: "82%",
+  width: "100%",
+},
+bottom: {
+  width: "100%",
+  height: "8%",
+  flexDirection: "row",
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: "3%",
+},
+});
 
 const mapStateToProps = (state) => {
   return {
   index: state.index,
   name: state.name,
   ip: state.ip,
-  accessToken: state.accessToken
+  accessToken: state.accessToken,
+  clickBottom: state.clickBottom
   }
 }
 export default connect(mapStateToProps)(Accueil) 
