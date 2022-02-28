@@ -44,7 +44,7 @@ async function ChannelStartNewStream(data) {
                 result_stream.data.forEach(item => require('../bot_discord/app').sendMessageTwitchInGuilds(params_reaction[1].value, params_reaction[0].value, item))
             } else if (data.id_reactions === 1) {
                 console.log("lmalalalalalalla")
-                result_stream.data.forEach(item => require('../bot_discord/app').sendMessageTwitchInMessage(params_reaction[0].value, item))
+                result_stream.data.forEach(item => require('../tools/fctMail').sendMailTwitch(params_reaction[0].value, item))
             }
             alreadyPush.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream")
