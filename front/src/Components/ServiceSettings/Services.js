@@ -126,13 +126,8 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
             } else {
                 subUnsubToService(service, false);
             }
+            //AUTh2_TODO
         } else {
-            if (service.name === "Telegram") {
-                ReactDOM.render(
-                    <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="OdauBot"/>,
-                    document.getElementById('telegramButton')
-                );
-            }
             subUnsubToService(service, false);
         }
     }
