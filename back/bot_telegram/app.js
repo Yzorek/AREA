@@ -1,39 +1,22 @@
-const {Telegraf} = require('telegraf')
+const axios = require('axios')
 
-//const bot = new TelegramBot(token, {polling: true});
 const token = '5160965468:AAHAcyYNrKYWrRCR_9eOfYl94Z6DIWSk7KM';
 
-const excString = "!!";
+const chatIDGroup = -730273977
+const chatIDUser = 922550661
 
-const bot = new Telegraf(token)
-bot.command('test', (ctx) => ctx.reply('Hello'))
-bot.on('message', (ctx) => {
-    require("./config").commands.forEach(item => {
-        try {
-            console.log(ctx)
-            if (ctx.text === `${excString}${item.name}`)
-                item.fct(ctx, {
-                    id: '44777820604',
-                    user_id: '50597026',
-                    user_login: 'ponce',
-                    user_name: 'Ponce',
-                    game_id: '490100',
-                    game_name: 'Lost Ark',
-                    type: 'live',
-                    title: 'PONCE - Oh la grosse journée MEUPORG avec Onu et RdBidet ! !lostark | !rs !boutique',
-                    viewer_count: 9385,
-                    started_at: '2022-02-22T09:43:08Z',
-                    language: 'fr',
-                    thumbnail_url: 'https://static-cdn.jtvnw.net/previews-ttv/live_user_ponce-500x400.jpg',
-                    tag_ids: [Array],
-                    is_mature: true,
-                });
-        } catch (e) {
-            ctx.reply("Error")
-            console.log("----------------------------------------------------------- ERROR -----------------------------------------------------------");
-            console.log(e);
-            console.log("-----------------------------------------------------------------------------------------------------------------------------");
-        }
-    })
-})
-bot.launch()
+const telegramUrl = "https://api.telegram.org/bot" + token;
+//axios.post(telegramUrl + "/sendMessage?chat_id=" + chatIDUser + "&text=" + "test is on stream")
+
+function sendMessageTwitchInTelegramGroup(data) {
+    axios.post(telegramUrl + "/sendMessage?chat_id=" + chatIDGroup + "&text=" + data.user_name + "is on stream")
+}
+
+function sendMessageTwitchInTelegramUser(chatID, data) {
+    axios.post(telegramUrl + "/sendMessage?chat_id=" + chatID + "&text=" + data.user_name + "is on stream")
+}
+
+module.exports = {
+    sendMessageTwitchInTelegramGroup,
+    sendMessageTwitchInTelegramUser,
+}
