@@ -70,7 +70,10 @@ async function ChannelStartOverflow(data) {
         //console.log(result_stream, params_action[0].value)
         if (result_stream.data && result_stream.data.length > 0 && parseInt(params_action[1].value) >= result_stream.viewer_count && !alreadyPushOverflow.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
             if (data.id_reactions === 3) {
-                result_stream.data.forEach(item => require('../bot_discord/app').sendMessageTwitchInGuilds(params_reaction[1].value, params_reaction[0].value, item))
+                result_stream.data.forEach(item => {
+                    require('../bot_discord/app').sendClassicMessage(params_reaction[1].value, params_reaction[0].value, {title: 'New RECORD !!', message: `${params_action[0].value} have exceed ${params_action[1].value} viewer !`})
+                    require('../bot_discord/app').sendMessageTwitchInGuilds(params_reaction[1].value, params_reaction[0].value, item)
+                })
             } else if (data.id_reactions === 1) {
                 result_stream.data.forEach(item => require('../tools/fctMail').sendMailTwitch(params_reaction[0].value, item))
             }

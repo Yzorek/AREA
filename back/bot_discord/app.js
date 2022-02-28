@@ -85,6 +85,25 @@ function sendMessageYoutubeInGuilds(channelsName, guilds, data) {
     channel.send({ embeds: [youtubeEmbed] });
 }
 
+function sendClassicMessage(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
+
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    const classicMessage = new MessageEmbed()
+        .setColor('BLURPLE')
+        .setTitle(data.title)
+        .addField("Info ", data.message || 0, true)
+
+    channel.send({ embeds: [classicMessage] });
+}
+
+
 function sendMessageTwitchInMessage(channelsName, username, data) {
 
     //console.log("je suis la 1");
@@ -115,5 +134,6 @@ client.login('OTQwOTEyNjkyODY3MjY0NTYz.YgOTOw.f54-ym5cgCNvwSDjY1lhK4Aa8o0')
 module.exports = {
     sendMessageTwitchInGuilds,
     sendMessageTwitchInMessage,
-    sendMessageYoutubeInGuilds
+    sendMessageYoutubeInGuilds,
+    sendClassicMessage
 }
