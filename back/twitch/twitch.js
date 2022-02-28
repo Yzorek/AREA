@@ -101,6 +101,8 @@ async function reloadStreamsManagement() {
             } else if (item.id_actions === 8) {
                 console.log("==== Amout view ====")
                 ChannelStartOverflow(item)
+            } else if (item.id_actions === 2) {
+                console.log("==== Amout view ====")
             }
         })
     } catch (err) {
