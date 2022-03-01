@@ -3,8 +3,8 @@ import { Text, SafeAreaView, StyleSheet, View } from "react-native";
 import { connect } from 'react-redux'
 
 import SettingsScreen from "./Components/screens/SettingsScreen";
-import ProfileScreen from "./Components/screens/ProfileScreen";
-import InstagramPage from "./Components/screens/ServicesPages/InstagramPage";
+import ProfileScreen from "./Components/screens/Profile/ProfileScreen"
+import TrelloPage from "./Components/screens/ServicesPages/TrelloPage";
 import TwitterPage from "./Components/screens/ServicesPages/TwitterPage";
 import TelegramPage from "./Components/screens/ServicesPages/TelegramPage";
 import TwitchPage from "./Components/screens/ServicesPages/TwitchPage";
@@ -38,7 +38,7 @@ class DisplayBody extends Component {
 
     else if (this.props.clickBottom===2) {
       return (
-        <InstagramPage/>
+        <TrelloPage/>
       )
     }
 

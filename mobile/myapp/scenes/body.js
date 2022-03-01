@@ -22,9 +22,11 @@ class Body extends Component {
     }
     if (this.props.index === 0) {
       return <Login />;
-    } else if (this.props.index === 1) {
+    }
+    else if (this.props.index === 1) {
       return <Register />;
-    } else if (this.props.index === 2) {
+    }
+    else if (this.props.index === 2) {
       return <Accueil />;
     }
   }

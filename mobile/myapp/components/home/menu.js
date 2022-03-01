@@ -7,18 +7,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from '../../charte/colors';
 import axios from 'axios';
 
-// const Navigation = [
-// 	{id: 5, label: "Encaissement", type: AntDesign, name: "twitter"},
-// 	{id: 6, label: "En attente", type: AntDesign, name: "instagram"},
-// 	{id: 7, label: "Articles", type: MaterialCommunityIcons, name: "discord"},
-// 	{id: 8, label: "Clients", type: FontAwesome, name: "twitch"},
-// 	{id: 9, label: "Historique", type: FontAwesome, name: "youtube"},
-// 	{id: 10, label: "Réglages", type: FontAwesome, name: "telegram"},
-// ];
-
 const Navigation = [
     {id: 1, type: AntDesign, name: "twitter"},
-    {id: 2, type: AntDesign, name: "instagram"},
+    {id: 2, type: MaterialCommunityIcons, name: "trello"},
     {id: 3, type: MaterialCommunityIcons, name: "discord"},
     {id: 4, type: FontAwesome, name: "twitch"},
     {id: 5, type: FontAwesome, name: "youtube"},
@@ -94,8 +85,12 @@ class Display_menu extends React.Component {
         }
 	}
 
+    _logOut() {
+        this.props.dispatch({ type: "index", value: 0 })
+        this.props.dispatch({ type: "accessToken", value: "" })
+    }
+
 	render() {
-        console.log(this.state.services)
 		return (
 			<Animated.View style={[styles.animation, {left: this.state.transition_menu}]}>
 				<View style={{width: "100%"}}>
@@ -125,6 +120,11 @@ class Display_menu extends React.Component {
 							/>
 						</View>
 					</View>
+
+                    <TouchableOpacity style={styles.view_logout} onPress={() => {this._logOut()}}>
+                        <MaterialCommunityIcons name="logout" color={colors.secondary} size={24} />
+                        <Text style={styles.txt_logout}>Logout</Text>
+                    </TouchableOpacity>
 					{this.props.children}
 				</View>
 			</Animated.View>
@@ -154,13 +154,26 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	container_labels: {
-		height: "80%",
+		height: "68%",
 	},
 	text_navigation: {
 		fontSize: 20,
 		marginLeft: "5%",
 		textAlign: "center"
 	},
+    view_logout: {
+        height: "5%",
+        flexDirection: 'row',
+        borderColor: "white",
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    txt_logout: {
+        color: colors.secondary,
+        fontSize: 20,
+        marginLeft: "2%",
+        fontWeight: 'bold'
+    }
 })
 
 const mapStateToProps = (state) => {

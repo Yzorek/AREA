@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { View , Alert, FlatList} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux'
 import axios from 'axios';
 import colors from "../../../../../charte/colors";
 
-class YoutubePage extends Component {
+class TrelloPage extends Component {
   constructor(props) {
     super(props);
       this.state = {
@@ -109,7 +109,7 @@ class YoutubePage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <MaterialCommunityIcons name="discord" style={styles.logo} size={90} color="#8c6fed" />
+        <MaterialCommunityIcons name="trello" style={styles.logo} size={90} color="#008FE4" />
         <View style={styles.input}>
           <Text style={styles.txt_input}>Action *</Text>
           <RNPickerSelect
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: "2%",
     borderWidth: 1,
-    backgroundColor: "#8c6fed",
+    backgroundColor: "#0084D1",
     marginBottom: "10%",
     marginTop: "6%",
   },
@@ -190,4 +190,4 @@ const mapStateToProps = (state) => {
     clickBottom: state.clickBottom
   }
 }
-export default connect(mapStateToProps)(YoutubePage)
+export default connect(mapStateToProps)(TrelloPage)
