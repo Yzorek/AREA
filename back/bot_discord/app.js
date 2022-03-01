@@ -60,28 +60,79 @@ function sendMessageTwitchInGuilds(channelsName, guilds, data) {
     channel.send({ embeds: [twitchEmbed] });
 }
 
-function sendMessageTwitchInMessage(channelsName, username, data) {
+function sendMessageYoutubeInGuilds(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
 
-    //console.log("je suis la 1");
-    client.guilds.cache.forEach(async elem => {
-        //console.log("je suis la 3");
-        //let members = await elem.members
-        //console.log("je suis la 2");
-        elem.members.cache.forEach(item => {
-            //console.log(item)
-        })
-    })
-    /*const twitchEmbed = new MessageEmbed()
-        .setColor('PURPLE')
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    const youtubeEmbed = new MessageEmbed()
+        .setColor('RED')
         .setTitle(data.title)
-        .setURL("https://www.twitch.tv/" + data.user_login)
-        .setFooter(data.started_at)
-        .setImage(data.getThumbnailUrl())
+        .setURL("https://www.youtube.com/watch?v=" + data.user_login)
+        .setDescription("{description}")
+        .setFooter("Youtube")
         .setAuthor(data.user_name + " is now streaming")
-        .addField(" Playing ", data.game_name, true,)
-        .addField("Started at ", data.started_at, true)
+        .addField("Subscribers ", data.game_name || 0, true,)
+        .addField("Videos ", data.started_at || 0, true)
+        .addField("Verified ", data.started_at ? 'Yes' : 'No', false)
+        .setThumbnail()
 
-    channel.send({ embeds: [twitchEmbed] });*/
+    channel.send({ embeds: [youtubeEmbed] });
+}
+
+function sendClassicMessage(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
+
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    const classicMessage = new MessageEmbed()
+        .setColor('BLURPLE')
+        .setTitle(data.title)
+        .addField("Info ", data.message || 0, true)
+
+    channel.send({ embeds: [classicMessage] });
+}
+
+function sendClassicMessageToUser(channelsName, guilds, data) {
+    let target = client.users.cache.find(item => item.username === username);
+    if (target) {
+        const classicMessage = new MessageEmbed()
+            .setColor('BLURPLE')
+            .setTitle(data.title)
+            .addField("Info ", data.message || 0, true)
+
+        target.send({embeds: [classicMessage]});
+    }
+}
+
+
+function sendMessageTwitchInMessage(username, data) {
+
+    let target = client.users.cache.find(item => item.username === username);
+    if (target) {
+        const twitchEmbed = new MessageEmbed()
+            .setColor('PURPLE')
+            .setTitle(data.title)
+            .setURL("https://www.twitch.tv/" + data.user_login)
+            .setFooter(data.started_at)
+            .setImage(data.getThumbnailUrl())
+            .setAuthor(data.user_name + " is now streaming")
+            .addField(" Playing ", data.game_name, true,)
+            .addField("Started at ", data.started_at, true)
+
+        target.send({ embeds: [twitchEmbed] });
+    }
+
 }
 
 client.login('OTQwOTEyNjkyODY3MjY0NTYz.YgOTOw.f54-ym5cgCNvwSDjY1lhK4Aa8o0')
@@ -89,5 +140,8 @@ client.login('OTQwOTEyNjkyODY3MjY0NTYz.YgOTOw.f54-ym5cgCNvwSDjY1lhK4Aa8o0')
 
 module.exports = {
     sendMessageTwitchInGuilds,
-    sendMessageTwitchInMessage
+    sendMessageTwitchInMessage,
+    sendMessageYoutubeInGuilds,
+    sendClassicMessage,
+    sendClassicMessageToUser
 }
