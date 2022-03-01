@@ -45,6 +45,10 @@ async function ChannelStartNewStream(data) {
                 result_stream.data.forEach(item => require('../bot_discord/app').sendMessageTwitchInGuilds(params_reaction[1].value, params_reaction[0].value, item))
             } else if (data.id_reactions === 1) {
                 result_stream.data.forEach(item => require('../tools/fctMail').sendMailTwitch(params_reaction[0].value, item))
+            } else if (data.id_reactions === 2) {
+                result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroup(item, params_reaction[0].value))
+            } else if (data.id_reactions === 5) {
+                result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUser(item, params_reaction[0].value))
             }
             alreadyPushChannelStartNew.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream")
@@ -76,6 +80,10 @@ async function ChannelStartOverflow(data) {
                 })
             } else if (data.id_reactions === 1) {
                 result_stream.data.forEach(item => require('../tools/fctMail').sendMailTwitch(params_reaction[0].value, item))
+            } else if (data.id_reactions === 2) {
+                result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroupOverflow(item, params_reaction[0].value))
+            } else if (data.id_reactions === 5) {
+                result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserOverflow(item, params_reaction[0].value))
             }
             alreadyPushOverflow.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream overflow")

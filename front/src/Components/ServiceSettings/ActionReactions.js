@@ -6,29 +6,19 @@ import { Add } from "@mui/icons-material";
 import AreaComponent from "../Tools/AreaComponent";
 import SkeletonArea from "./SkeletonArea";
 
-export default function ActionsReactions({isLoading, actions, reactions, canAddArea, areas, onDialogClose}) {
+export default function ActionsReactions({isLoading, actions, reactions, canAddArea, areas, onDialogClose, onAreaActivation}) {
     const [isAddOpen, setIsAddOpen] = useState(false)
     let tutorialMode = useContext(TutorialContext);
 
     const handleAddClose = (value) => {
-        // if (Object.keys(value).length !== 0) {              // TODO pass by request
-        //     let newArray = areas;
-        //     newArray.push({
-        //         action: value.action,
-        //         reaction: value.reaction,
-        //         isActive: true,
-        //     });
-        //     setAreas(newArray);
-        // }
         if (value === true) {
             onDialogClose();
         }
         setIsAddOpen(false);
     }
 
-    const handleAreaActivation = (item) => {
-        // item.isActive = !item.isActive;
-        // setAreas([...areas]);
+    const handleAreaActivation = async (item) => {
+        await onAreaActivation(item);
     }
 
     const handleAddOpen = async () => {

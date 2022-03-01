@@ -15,59 +15,63 @@ export default function ServicesSettings({onServicesSub}) {
     const [isLoading, setIsLoading] = useState(false);
     const isMounted = useRef(null);
 
-    const rawData = {
-        actions: actions,
-        reactions: reactions
+    const onDialogClose = async () => {
+        await getActionsAndReactions(true);
     }
 
-    const onDialogClose = () => {
-        getMyAreas(
-            {
-                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-            },
-            true
-        );
-    }
-
-    const deleteAR = async (arId) => {
+    const deleteAR = async (arId, isLoadingOver) => {
         try {
             setIsLoading(true);
             await axios.delete(`${process.env.REACT_APP_DASHBOARD_API}/AR/link/${arId}`,
             {
                 'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
             });
-            setIsLoading(false);
+            setIsLoading(!isLoadingOver);
         } catch (err) {
             if (err.response) {
                 setIsError(true);
-                setIsLoading(false);
+                setIsLoading(!isLoadingOver);
+            }
+        }
+    }
+
+    const handleAreaSub = async (area) => {
+        try {
+            let body = {
+                idAction: area.action.id,
+                idReaction: area.reaction.id,
+                paramsAction: area.action.params,
+                paramsReaction: area.reaction.params,
+                isActive: !area.isActive
+            }
+            let response = await axios.put(`${process.env.REACT_APP_DASHBOARD_API}/AR/link/${area.id}`, body,
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+            if (response.status === 200) {
+                area.isActive = !area.isActive;
+                setMyAreas([...myAreas]);
+            }
+        } catch (err) {
+            console.log(err);
+            if (err.response) {
+                setIsError(true)
             }
         }
     }
 
     const handleServicesSub = async (services, serviceToDel) => {
         if (serviceToDel !== undefined) {
+            console.log('test');
             await myAreas.forEach(async (area) => {
                 if (area.action.id_service === serviceToDel.id || area.reaction.id_service === serviceToDel.id) {
-                    console.log(area);
-                    await deleteAR(area.id);
+                    await deleteAR(area.id, false);
                 }
             });
         }
         await onServicesSub(services);
         services.filter((e) => e.isActive === true).length !== 0 ? setCanAddArea(true) : setCanAddArea(false);
-        await getMyAreas(
-            {
-                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-            },
-            false
-        );
-        await getActionsAndReactions(
-            {
-                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-            },
-            true
-        );
+        await getActionsAndReactions(true);
     }
 
     const checkIfCanAdd = async (nbService) => {
@@ -79,90 +83,145 @@ export default function ServicesSettings({onServicesSub}) {
         return (value);
     }
 
-    const getMyAreas = async (header, isLoadingOver) => {
-        await (async () => {
+    const getActionsAndReactions = async (isLoadingOver) => {
+        try {
+            setIsLoading(true);
+            const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/`,
+            {
+                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+            });
+            let arFetched = response.data;
+            arFetched.actions.forEach((element, index) => {
+                let params = [];
+                if (element.params) {
+                    element?.params.forEach((param) => {
+                        params.push({name: param, value: ''});
+                    });
+                }
+                arFetched.actions[index] = {
+                    icon: PropFromId(element.id_service)['icon'],
+                    color: PropFromId(element.id_service)['color'],
+                    ...element,
+                    params: params
+                }
+            })
+            arFetched.reactions.forEach((element, index) => {
+                let params = [];
+                if (element.params) {
+                    element?.params.forEach((param) => {
+                        params.push({name: param, value: ''});
+                    });
+                }
+                arFetched.reactions[index] = {
+                    icon: PropFromId(element.id_service)['icon'],
+                    color: PropFromId(element.id_service)['color'],
+                    ...element,
+                    params: params
+                }
+            })
             try {
                 setIsLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`, header);
-                if (isMounted && isMounted.current) {
-                    let areasFetched = response.data;
-                    areasFetched.forEach((element, index) => {
-                        areasFetched[index] = {
-                            action: rawData.actions.find((e) => e.id === element.idActions),
-                            reaction: rawData.reactions.find((e) => e.id === element.idReactions),
-                            isActive: true,             // TEMP
-                            ...element
-                        }
-                        areasFetched[index].action.params = areasFetched[index].paramsAction;
-                        areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
-                    })
-                    setMyAreas(areasFetched);
-                    setIsLoading(!isLoadingOver);
-                }
+                const res = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`,
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+                let areasFetched = res.data;
+                areasFetched.forEach((element, index) => {
+                    areasFetched[index] = {
+                        action: arFetched.actions.find((e) => e.id === element.idActions),
+                        reaction: arFetched.reactions.find((e) => e.id === element.idReactions),
+                        ...element
+                    }
+                    areasFetched[index].action.params = areasFetched[index].paramsAction;
+                    areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
+                })
+                setMyAreas(areasFetched);
             } catch (err) {
                 if (err.response) {
                     setIsError(true);
-                    setIsLoading(!isLoadingOver);
                 }
             }
-        })()
+            setActions(arFetched.actions);
+            setReactions(arFetched.reactions);
+            setIsLoading(!isLoadingOver);
+        } catch (err) {
+            if (err.response) {
+                setIsError(true);
+                setIsLoading(!isLoadingOver);
+            }
+        }
     }
 
-    const getActionsAndReactions = async (header, isLoadingOver) => {
-        await (async () => {
+    useEffect(() => {
+        isMounted.current = true
+        const source = axios.CancelToken.source();
+        (async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/actions`, header);
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/`,
+                {
+                    cancelToken: source.token,
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
                 if (isMounted && isMounted.current) {
-                    let actionsFetched = response.data;
-                    actionsFetched.forEach((element, index) => {
+                    let arFetched = response.data;
+                    arFetched.actions.forEach((element, index) => {
                         let params = [];
                         if (element.params) {
                             element?.params.forEach((param) => {
                                 params.push({name: param, value: ''});
                             });
                         }
-                        actionsFetched[index] = {
+                        arFetched.actions[index] = {
                             icon: PropFromId(element.id_service)['icon'],
                             color: PropFromId(element.id_service)['color'],
                             ...element,
                             params: params
                         }
                     })
-                    rawData.actions = actionsFetched;
-                    setActions(actionsFetched);
-                    setIsLoading(!isLoadingOver);
-                }
-            } catch (err) {
-                if (err.response) {
-                    setIsError(true);
-                    setIsLoading(!isLoadingOver);
-                }
-            }
-        })()
-
-        await (async () => {
-            try {
-                setIsLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/reactions`, header);
-                if (isMounted && isMounted.current) {
-                    let reactionsFetched = response.data;
-                    reactionsFetched.forEach((element, index) => {
+                    arFetched.reactions.forEach((element, index) => {
                         let params = [];
                         if (element.params) {
-                            element.params.forEach((param) => {
+                            element?.params.forEach((param) => {
                                 params.push({name: param, value: ''});
                             });
                         }
-                        reactionsFetched[index] = {
+                        arFetched.reactions[index] = {
                             icon: PropFromId(element.id_service)['icon'],
                             color: PropFromId(element.id_service)['color'],
                             ...element,
                             params: params
                         }
                     })
-                    rawData.reactions = reactionsFetched;
-                    setReactions(reactionsFetched);
+                    await (async () => {
+                        try {
+                            setIsLoading(true);
+                            const res = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`,
+                            {
+                                cancelToken: source.token,
+                                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                            });
+                            if (isMounted && isMounted.current) {
+                                let areasFetched = res.data;
+                                areasFetched.forEach((element, index) => {
+                                    areasFetched[index] = {
+                                        action: arFetched.actions.find((e) => e.id === element.idActions),
+                                        reaction: arFetched.reactions.find((e) => e.id === element.idReactions),
+                                        ...element
+                                    }
+                                    areasFetched[index].action.params = areasFetched[index].paramsAction;
+                                    areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
+                                })
+                                setMyAreas(areasFetched);
+                            }
+                        } catch (err) {
+                            if (err.response) {
+                                setIsError(true);
+                            }
+                        }
+                    })()
+                    setActions(arFetched.actions);
+                    setReactions(arFetched.reactions);
                     setIsLoading(false);
                 }
             } catch (err) {
@@ -172,30 +231,11 @@ export default function ServicesSettings({onServicesSub}) {
                 }
             }
         })()
-    }
-
-    useEffect(async () => {
-        isMounted.current = true
-        const source = axios.CancelToken.source();
-        await (async () => {
-            await getActionsAndReactions(
-                {
-                    cancelToken: source.token,
-                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                }, false
-            );
-            await getMyAreas(
-                {
-                    cancelToken: source.token,
-                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                }, true
-            );
-        })
         return () => {
             isMounted.current = false;
             source.cancel("Component Services GET user data got unmounted");
         }
-    }, [getActionsAndReactions, getMyAreas])
+    }, [])
 
     return (
         <Grid container item xs={12}>
@@ -208,6 +248,7 @@ export default function ServicesSettings({onServicesSub}) {
             isLoading={isLoading}
             canAddArea={canAddArea}
             onDialogClose={onDialogClose}
+            onAreaActivation={handleAreaSub}
             />
             <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>
