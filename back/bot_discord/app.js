@@ -103,29 +103,36 @@ function sendClassicMessage(channelsName, guilds, data) {
     channel.send({ embeds: [classicMessage] });
 }
 
+function sendClassicMessageToUser(channelsName, guilds, data) {
+    let target = client.users.cache.find(item => item.username === username);
+    if (target) {
+        const classicMessage = new MessageEmbed()
+            .setColor('BLURPLE')
+            .setTitle(data.title)
+            .addField("Info ", data.message || 0, true)
 
-function sendMessageTwitchInMessage(channelsName, username, data) {
+        target.send({embeds: [classicMessage]});
+    }
+}
 
-    //console.log("je suis la 1");
-    client.guilds.cache.forEach(async elem => {
-        //console.log("je suis la 3");
-        //let members = await elem.members
-        //console.log("je suis la 2");
-        elem.members.cache.forEach(item => {
-            //console.log(item)
-        })
-    })
-    /*const twitchEmbed = new MessageEmbed()
-        .setColor('PURPLE')
-        .setTitle(data.title)
-        .setURL("https://www.twitch.tv/" + data.user_login)
-        .setFooter(data.started_at)
-        .setImage(data.getThumbnailUrl())
-        .setAuthor(data.user_name + " is now streaming")
-        .addField(" Playing ", data.game_name, true,)
-        .addField("Started at ", data.started_at, true)
 
-    channel.send({ embeds: [twitchEmbed] });*/
+function sendMessageTwitchInMessage(username, data) {
+
+    let target = client.users.cache.find(item => item.username === username);
+    if (target) {
+        const twitchEmbed = new MessageEmbed()
+            .setColor('PURPLE')
+            .setTitle(data.title)
+            .setURL("https://www.twitch.tv/" + data.user_login)
+            .setFooter(data.started_at)
+            .setImage(data.getThumbnailUrl())
+            .setAuthor(data.user_name + " is now streaming")
+            .addField(" Playing ", data.game_name, true,)
+            .addField("Started at ", data.started_at, true)
+
+        target.send({ embeds: [twitchEmbed] });
+    }
+
 }
 
 client.login('OTQwOTEyNjkyODY3MjY0NTYz.YgOTOw.f54-ym5cgCNvwSDjY1lhK4Aa8o0')
@@ -135,5 +142,6 @@ module.exports = {
     sendMessageTwitchInGuilds,
     sendMessageTwitchInMessage,
     sendMessageYoutubeInGuilds,
-    sendClassicMessage
+    sendClassicMessage,
+    sendClassicMessageToUser
 }
