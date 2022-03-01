@@ -57,14 +57,43 @@ async function checkPassword(req, res, next) {
     }
 }
 
+async function newClient(body) {
+    try {
+        await bcrypt.hash(body.password, 10, (err, hash) => {
+            return new Promise(async (resolve, reject) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                try {
+                    await fctDataBase.request("INSERT INTO clients(username, first_name, last_name, email, password, is_identified, avatar, auth, id_theme, id_status, is_tutorial_mode) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);",
+                        [body.username, body.firstName, body.lastName, body.email, hash, false, body.avatar ? body.avatar : null, body.auth, 1, 1, true]);
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            })
+        })
+    } catch (err) {
+        throw err;
+    }
+}
+
 async function getInfoUser(req, res, next) {
     try {
         let data = await fctDataBase.request('SELECT password, id FROM clients WHERE email=$1;', [req.body.email]);
 
         if (data.rowCount === 0) {
-            res.status(403).send({
-                error: "This email doesn't exist, retry or create your account."
-            });
+            if (req.body.type !== 'local') {
+                await newClient(req.body);
+                data = await fctDataBase.request('SELECT password, id FROM clients WHERE email=$1;', [req.body.email]);
+                res.locals = {...data.rows[0]};
+                next()
+            } else {
+                res.status(403).send({
+                    error: "This email doesn't exist, retry or create your account."
+                });
+            }
         } else {
             res.locals = {...data.rows[0]};
             next()

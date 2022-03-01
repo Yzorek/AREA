@@ -19,7 +19,7 @@ export default function Login() {
     const onSuccessGoogle = (response) => {
         (async () => {
             try {
-                await loginInSerer('google', response.profileObj.googleId, response.profileObj.email)
+                await loginInSerer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
             } catch (err) {
                 console.log(err);
             }
@@ -32,13 +32,17 @@ export default function Login() {
         setIsGoogleError(true);
     }
 
-    async function loginInSerer(type, pass, mail) {
+    async function loginInSerer(type, pass, mail, lName = "", FName = "", avatar = "") {
         try {
             setIsLoading(true);
             let body = {
                 email: mail,
                 password: pass,
-                type: type
+                username: FName + ' ' + lName,
+                firstName: FName,
+                lastName: lName,
+                avatar: avatar,
+                auth: type,
             }
             const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/login`, body);
 
