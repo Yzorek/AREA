@@ -9,12 +9,12 @@ client.on('ready', () => {
 });
 
 client.on("message", msg => {
-    console.log("----------- CHANNELS -----------")
-    client.channels.cache.forEach(item => console.log(item.name))
-    console.log("----------- GUILDS -----------")
-    client.guilds.cache.forEach(item => console.log(item.name))
-    console.log("----------- USERS -----------")
-    client.users.cache.forEach(item => console.log(item.username))
+    //console.log("----------- CHANNELS -----------")
+    //client.channels.cache.forEach(item => console.log(item.name))
+    //console.log("----------- GUILDS -----------")
+    //client.guilds.cache.forEach(item => console.log(item.name))
+    //console.log("----------- USERS -----------")
+    //client.users.cache.forEach(item => console.log(item.username))
 
     if (msg.author.bot)
         return
@@ -37,4 +37,111 @@ client.on("message", msg => {
     })
 })
 
+function sendMessageTwitchInGuilds(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
+
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    const twitchEmbed = new MessageEmbed()
+        .setColor('PURPLE')
+        .setTitle(data.title)
+        .setURL("https://www.twitch.tv/" + data.user_login)
+        .setFooter(data.started_at)
+        .setImage(data.getThumbnailUrl())
+        .setAuthor(data.user_name + " is now streaming")
+        .addField(" Playing ", data.game_name, true,)
+        .addField("Started at ", data.started_at, true)
+
+    channel.send({ embeds: [twitchEmbed] });
+}
+
+function sendMessageYoutubeInGuilds(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
+
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    const youtubeEmbed = new MessageEmbed()
+        .setColor('RED')
+        .setTitle(data.title)
+        .setURL("https://www.youtube.com/watch?v=" + data.user_login)
+        .setDescription("{description}")
+        .setFooter("Youtube")
+        .setAuthor(data.user_name + " is now streaming")
+        .addField("Subscribers ", data.game_name || 0, true,)
+        .addField("Videos ", data.started_at || 0, true)
+        .addField("Verified ", data.started_at ? 'Yes' : 'No', false)
+        .setThumbnail()
+
+    channel.send({ embeds: [youtubeEmbed] });
+}
+
+function sendClassicMessage(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
+
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    const classicMessage = new MessageEmbed()
+        .setColor('BLURPLE')
+        .setTitle(data.title)
+        .addField("Info ", data.message || 0, true)
+
+    channel.send({ embeds: [classicMessage] });
+}
+
+function sendClassicMessageToUser(channelsName, guilds, data) {
+    let target = client.users.cache.find(item => item.username === username);
+    if (target) {
+        const classicMessage = new MessageEmbed()
+            .setColor('BLURPLE')
+            .setTitle(data.title)
+            .addField("Info ", data.message || 0, true)
+
+        target.send({embeds: [classicMessage]});
+    }
+}
+
+
+function sendMessageTwitchInMessage(username, data) {
+
+    let target = client.users.cache.find(item => item.username === username);
+    if (target) {
+        const twitchEmbed = new MessageEmbed()
+            .setColor('PURPLE')
+            .setTitle(data.title)
+            .setURL("https://www.twitch.tv/" + data.user_login)
+            .setFooter(data.started_at)
+            .setImage(data.getThumbnailUrl())
+            .setAuthor(data.user_name + " is now streaming")
+            .addField(" Playing ", data.game_name, true,)
+            .addField("Started at ", data.started_at, true)
+
+        target.send({ embeds: [twitchEmbed] });
+    }
+
+}
+
 client.login('OTQwOTEyNjkyODY3MjY0NTYz.YgOTOw.f54-ym5cgCNvwSDjY1lhK4Aa8o0')
+
+
+module.exports = {
+    sendMessageTwitchInGuilds,
+    sendMessageTwitchInMessage,
+    sendMessageYoutubeInGuilds,
+    sendClassicMessage,
+    sendClassicMessageToUser
+}

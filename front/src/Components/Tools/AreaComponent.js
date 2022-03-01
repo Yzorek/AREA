@@ -55,13 +55,13 @@ export default function AreaComponent({area, onActivation}) {
         <Grid item xs={4}>
             <Paper style={{cursor: 'pointer', background: area.isActive ?
                 (isMoreToDisplay() ? area.action.color : area.reaction.color) : 'gray',
-                position: 'relative'}}
+                position: 'relative', borderRadius: 10}}
                     sx={{ transition: '0.5s',
                         '&:hover': {boxShadow: 12},
-                        }} elevation={5} onClick={() => handleAreaActivation(area)}>
+                        }} elevation={0} onClick={() => handleAreaActivation(area)}>
                 <Grid container item xs={12} style={{height: '200px'}}>
                     <Grid container item xs={6} alignItems={'center'} justifyContent={'center'} sx={{p: 2}}
-                    style={{height: '100%', background: area.isActive ? area.action.color : 'gray', transition: '0.5s'}}>
+                    style={{height: '100%', background: area.isActive ? area.action.color : 'gray', transition: '0.5s', borderBottomLeftRadius: 10,  borderTopLeftRadius: 10}}>
                         <Icon sx={{color: 'white', minHeight: '50px', width: '100%'}}>
                             {iconFromName(PropFromId(area.action.id_service)['name'])}
                         </Icon>
@@ -70,7 +70,7 @@ export default function AreaComponent({area, onActivation}) {
                         </Typography>
                     </Grid>
                     <Grid container item xs={6} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{p: 2}}
-                    style={{height: '100%', background: area.isActive ? area.reaction.color : 'gray', transition: '0.5s'}}>
+                    style={{height: '100%', background: area.isActive ? area.reaction.color : 'gray', transition: '0.5s',borderBottomRightRadius: isExpanded ? 0 : 10, borderTopRightRadius: 10}}>
                         <Icon sx={{color: 'white', minHeight: '50px', width: '100%'}}>
                             {iconFromName(PropFromId(area.reaction.id_service)['name'])}
                         </Icon>
@@ -89,7 +89,7 @@ export default function AreaComponent({area, onActivation}) {
                 <Collapse in={isExpanded} timeout="auto" unmountOnExit>
                     <Grid container item xs={12}>
                         <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}
-                        style={{height: '100%', background: area.isActive ? area.action.color : 'gray', transition: '0.5s'}}>
+                        style={{height: '100%', background: area.isActive ? area.action.color : 'gray', transition: '0.5s', borderBottomLeftRadius: 10}}>
                             {area.action.params.map((area, index) => {
                                 return (
                                     <Typography align={'center'} style={{color: 'white'}} key={`${area.name}-${index}-action-params`}>
@@ -99,7 +99,7 @@ export default function AreaComponent({area, onActivation}) {
                             })}
                         </Grid>
                         <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}
-                        style={{height: '100%', background: area.isActive ? area.reaction.color : 'gray', transition: '0.5s'}}>
+                        style={{height: '100%', background: area.isActive ? area.reaction.color : 'gray', transition: '0.5s', borderBottomRightRadius: 10}}>
                             {area.reaction.params.map((area, index) => {
                                 return (
                                     <Typography align={'center'} style={{color: 'white'}} key={`${area.name}-${index}-reaction-params`}>
