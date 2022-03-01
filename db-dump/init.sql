@@ -79,7 +79,7 @@ CREATE TABLE actions (
 );
 
 INSERT INTO actions(description, id_service, params) VALUES ('A new tweet from specific user is posted', 1, ARRAY['User @']);
-INSERT INTO actions(description, id_service, params) VALUES ('Make a new post on instagram', 2, null);
+INSERT INTO actions(description, id_service, params) VALUES ('A streamer starts a game specific stream', 4, ARRAY['Streamer name', 'Game name']);
 INSERT INTO actions(description, id_service, params) VALUES ('Like a video', 5, null);
 INSERT INTO actions(description, id_service, params) VALUES ('You start a stream', 4, null);
 INSERT INTO actions(description, id_service, params) VALUES ('When you are mentionned', 1, null);
