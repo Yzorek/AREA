@@ -63,7 +63,7 @@ async function getInfoUser(req, res, next) {
         let data = await fctDataBase.request('SELECT password, id FROM clients WHERE email=$1;', [req.body.email]);
 
         if (data.rowCount === 0) {
-            if (req.body.type !== 'local') {
+            if (req.body.auth !== 'local') {
                 let body = {
                     email: req.body.email,
                     password: req.body.password,
