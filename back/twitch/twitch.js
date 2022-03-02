@@ -110,10 +110,11 @@ async function ChannelStartSpecificGame(data) {
         let params_action = JSON.parse(data.params_action)
         let params_reaction = JSON.parse(data.params_reaction)
 
+        console.log(params_action[0].value, "alalalalala")
         if (!params_action[0].value)
             return;
         let result_stream = await twitch.getStreams({ channel: params_action[0].value })
-        console.log(result_stream, params_action[0].value, params_action[1].value)
+        console.log(result_stream[0], params_action[0].value, params_action[1].value)
         if (result_stream.data && result_stream.data.length > 0 && params_action[1].value === result_stream[0].game_name && !alreadyPushSpecificGame.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
             if (data.id_reactions === 3) {
                 result_stream.data.forEach(item => {
@@ -127,7 +128,7 @@ async function ChannelStartSpecificGame(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserSpecificGame(item, params_reaction[0].value))
             }
             alreadyPushSpecificGame.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
-            console.log("New stream overflow")
+            console.log("New stream specific games")
         } else if (!result_stream.data || result_stream.data.length <= 0 || params_action[1].value !== result_stream.game_name) {
             let index = alreadyPushSpecificGame.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
             alreadyPushSpecificGame.splice(index, 1);
