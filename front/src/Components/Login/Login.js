@@ -146,7 +146,6 @@ export default function Login() {
                                 onFailure={onFailureGoogle}
                                 cookiePolicy={'single_host_origin'}
                             />
-                            <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="OdauBot" />,
                         </Grid>
                     </Grid>
 
