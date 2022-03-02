@@ -113,7 +113,7 @@ async function ChannelStartSpecificGame(data) {
         if (!params_action[0].value)
             return;
         let result_stream = await twitch.getStreams({ channel: params_action[0].value })
-        //console.log(result_stream, params_action[0].value)
+        console.log(result_stream, params_action[0].value, params_action[1].value)
         if (result_stream.data && result_stream.data.length > 0 && params_action[1].value === result_stream.game_name && !alreadyPushSpecificGame.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
             if (data.id_reactions === 3) {
                 result_stream.data.forEach(item => {
@@ -131,9 +131,9 @@ async function ChannelStartSpecificGame(data) {
         } else if (!result_stream.data || result_stream.data.length <= 0 || params_action[1].value !== result_stream.game_name) {
             let index = alreadyPushSpecificGame.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
             alreadyPushSpecificGame.splice(index, 1);
-            console.log("Stream disconnect overflow or below")
+            console.log("Stream disconnect specific game")
         } else {
-            console.log("Already Emit overflow or sup")
+            console.log("Already Emit specific game")
         }
 
     } catch (err) {
