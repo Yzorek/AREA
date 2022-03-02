@@ -150,7 +150,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                             </FormControl>
                         </Grid>
                         <Grid container item xs={12}>
-                            <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}>
+                            <Grid container item xs={6} justifyContent={'center'} alignItems={'center'}>
                                 {action && action.params.map((element, index) => {
                                     return (
                                         <Grid container item xs={12} key={`${index}-action-params`} style={{'paddingTop': 20}}>
