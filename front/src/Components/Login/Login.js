@@ -5,6 +5,7 @@ import {Button, Divider, Grid, IconButton, InputAdornment, Paper, Snackbar, Text
 import {Email, Create, Lock, Visibility, VisibilityOff, Google} from "@mui/icons-material";
 import {Alert, LoadingButton} from '@mui/lab';
 import { GoogleLogin } from 'react-google-login';
+import TelegramLoginButton from 'react-telegram-login';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ export default function Login() {
     const onSuccessGoogle = (response) => {
         (async () => {
             try {
-                await loginInSerer('google', response.profileObj.googleId, response.profileObj.email)
+                await loginInSerer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
             } catch (err) {
                 console.log(err);
             }
@@ -31,13 +32,17 @@ export default function Login() {
         setIsGoogleError(true);
     }
 
-    async function loginInSerer(type, pass, mail) {
+    async function loginInSerer(type, pass, mail, lName = "", FName = "", avatar = "") {
         try {
             setIsLoading(true);
             let body = {
                 email: mail,
                 password: pass,
-                type: type
+                username: FName + ' ' + lName,
+                firstName: FName,
+                lastName: lName,
+                avatar: avatar,
+                auth: type,
             }
             const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/auth/login`, body);
 
@@ -60,6 +65,10 @@ export default function Login() {
         e.preventDefault();
         await loginInSerer('local', password, email);
     }
+
+    const handleTelegramResponse = response => {
+        console.log(response);
+    };
 
     return <Grid container item xs={12} alignItems={'center'} justifyContent={'center'} style={{height: '100vh'}}>
         <Grid item xs={12} sm={8} md={4}>
@@ -137,6 +146,7 @@ export default function Login() {
                                 onFailure={onFailureGoogle}
                                 cookiePolicy={'single_host_origin'}
                             />
+                            <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="OdauBot" />,
                         </Grid>
                     </Grid>
 

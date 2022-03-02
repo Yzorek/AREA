@@ -3,6 +3,7 @@ const fctDataBase = require("../../tools/fctDBRequest");
 const settingsToken = require('../../config/token.json').settings;
 const bcrypt = require("bcrypt");
 const moment = require("moment");
+const axios = require("axios");
 
 async function sendToken(req, res) {
     try {
@@ -62,9 +63,24 @@ async function getInfoUser(req, res, next) {
         let data = await fctDataBase.request('SELECT password, id FROM clients WHERE email=$1;', [req.body.email]);
 
         if (data.rowCount === 0) {
-            res.status(403).send({
-                error: "This email doesn't exist, retry or create your account."
-            });
+            if (req.body.type !== 'local') {
+                let body = {
+                    email: req.body.email,
+                    password: req.body.password,
+                    username: req.body.username,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    avatar: req.body.avatar,
+                    auth: req.body.auth,
+                }
+                const response = await axios.post(`http://localhost:8080/auth/register`, body);
+                console.log(response.data);
+                res.status(200).send(response.data);
+            } else {
+                res.status(403).send({
+                    error: "This email doesn't exist, retry or create your account."
+                });
+            }
         } else {
             res.locals = {...data.rows[0]};
             next()
