@@ -3,6 +3,7 @@ const TwitchApi = require("node-twitch").default;
 
 let alreadyPushChannelStartNew = []
 let alreadyPushOverflow = []
+let alreadyPushSpecificGame = []
 
 const twitch = new TwitchApi({
     client_id: "t7f8n8gwo0206l8n3vduq1sqkeb26y", //a mettre dans le fichier config
@@ -100,6 +101,40 @@ async function ChannelStartOverflow(data) {
     }
 }
 
+async function ChannelStartSpecificGame(data) {
+    try {
+        let params_action = JSON.parse(data.params_action)
+        let params_reaction = JSON.parse(data.params_reaction)
+
+        let result_stream = await twitch.getStreams({ channel: params_action[0].value })
+        //console.log(result_stream, params_action[0].value)
+        if (result_stream.data && result_stream.data.length > 0 && params_action[1].value === result_stream.game_name && !alreadyPushSpecificGame.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
+            if (data.id_reactions === 3) {
+                result_stream.data.forEach(item => {
+                    require('../bot_discord/app').sendMessageTwitchInGuilds(params_reaction[1].value, params_reaction[0].value, item)
+                })
+            } else if (data.id_reactions === 1) {
+                result_stream.data.forEach(item => require('../tools/fctMail').sendMailTwitch(params_reaction[0].value, item))
+            } else if (data.id_reactions === 2) {
+                result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroupSpecificGame(item, params_reaction[0].value))
+            } else if (data.id_reactions === 5) {
+                result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserSpecificGame(item, params_reaction[0].value))
+            }
+            alreadyPushSpecificGame.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
+            console.log("New stream overflow")
+        } else if (!result_stream.data || result_stream.data.length <= 0 || params_action[1].value !== result_stream.game_name) {
+            let index = alreadyPushSpecificGame.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
+            alreadyPushSpecificGame.splice(index, 1);
+            console.log("Stream disconnect overflow or below")
+        } else {
+            console.log("Already Emit overflow or sup")
+        }
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 async function reloadStreamsManagement() {
     try {
         let linkForTwitch = await getLinkWithTwitch()
@@ -113,7 +148,8 @@ async function reloadStreamsManagement() {
                 console.log("==== Amout view ====")
                 ChannelStartOverflow(item)
             } else if (item.id_actions === 2) {
-                console.log("==== Amout view ====")
+                console.log("==== Specific Game ====")
+                ChannelStartSpecificGame(item)
             }
         })
     } catch (err) {
