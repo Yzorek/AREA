@@ -5,6 +5,8 @@ const logger = require('morgan');
 const cors = require('cors');
 const http = require("http");
 const Server = require("socket.io");
+const {Telegraf} = require("telegraf");
+const token = '5160965468:AAHAcyYNrKYWrRCR_9eOfYl94Z6DIWSk7KM';
 
 const indexRouter = require('./routes/index');
 const aboutRouter = require('./routes/about/about');
@@ -45,9 +47,23 @@ app.use('/dashboard', dashboardRouter);
 app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 
+let myUser = []
+let myGroup = []
+
+const bot = new Telegraf(token)
+bot.command('start', (ctx) => {
+    if (ctx.chat.username)
+        myUser.push(ctx.chat)
+    if (ctx.chat.title)
+        myGroup.push(ctx.chat)
+    ctx.reply('Initialize')
+})
+bot.launch()
+
 require('./bot_discord/app');
 require('./bot_telegram/app')
 require('./socket/socket')(io);
+
 
 function loopAR(i) {
     setTimeout(async () => {
@@ -63,4 +79,7 @@ server.listen(8080, () => {
     console.log('listening on *:8080');
 });
 
-//module.exports = app;
+module.exports = {
+    myGroup,
+    myUser
+};

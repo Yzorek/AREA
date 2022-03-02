@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./back/app.js:/app/app.js
+      - ./back/trelloRoute.js:/app/trelloRoute.js
       - ./back/routes:/app/routes
       - ./back/socket:/app/socket
       - ./back/tools:/app/tools
