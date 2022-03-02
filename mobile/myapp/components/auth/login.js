@@ -21,7 +21,7 @@ class Login extends Component{
         this.setState({isMount: true})
     }
 
-    _onSuccessGoogle = () => {
+    _onSuccessGoogle = async () => {
         const config = {
             androidClientId: "278231454576-i92vk8rv49ge3gguru6bp0gpqs63js0g.apps.googleusercontent.com",
             scopes: ['profile', 'email']
@@ -32,20 +32,31 @@ class Login extends Component{
             .then(async (result) => {
                 const {type, user} = result
                 if (type==='success') {
-                    console.log(user)
-                    // let body = {
-                    //     email: user.email,
-                    //     password: user.id,
-                    //     type: 'google'
-                    // }
-                    // const response = await axios.post(
-                    //     'http://'+IP+':8080/auth/login', body
-                    // );
-                    // console.log(response)
-                    // this.props.dispatch({type: "accessToken", value: response.data.accessToken})
+                    // console.log(user)
+                    try {
+                        let body = {
+                            email: user.email, //STRING
+                            password: user.id, //STRING
+                            username: user.name, //STRING
+                            firstName: user.familyName, //STRING
+                            lastName: user.givenName, //STRING
+                            avatar: user.photoUrl, //STRING
+                            auth: "google"
+                        }
+                        const response = await axios.post(
+                            'http://'+IP+':8080/auth/login', body
+                        );
+                        console.log(response)
+                        // this.props.dispatch({type: "accessToken", value: response.data.accessToken})
+                        // this.props.dispatch({type: 'index', value: 2});
+                        // this.setState({isError: false})
+                    } catch (error) {
+                        this.setState({isError: true})
+                        Alert.alert(
+                            "Please enter your email and password !",
+                        );
+                    }
                     // this.props.dispatch({type: 'index', value: 2});
-                    // this.setState({isError: false})
-                    this.props.dispatch({type: 'index', value: 2});
                 }
                 else {
                     Alert.alert(
