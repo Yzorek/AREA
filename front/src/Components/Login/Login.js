@@ -23,7 +23,7 @@ export default function Login() {
     const onSuccessGoogle = (response) => {
         (async () => {
             try {
-                await loginInSerer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
+                await loginInServer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
             } catch (err) {
                 console.log(err);
             }
@@ -36,7 +36,7 @@ export default function Login() {
         setIsGoogleError(true);
     }
 
-    async function loginInSerer(type, pass, mail, lName = "", FName = "", avatar = "") {
+    async function loginInServer(type, pass, mail, lName = "", FName = "", avatar = "") {
         try {
             setIsLoading(true);
             let body = {
