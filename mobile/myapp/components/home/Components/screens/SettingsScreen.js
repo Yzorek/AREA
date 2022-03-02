@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Icon = [
   {id: 1, type: AntDesign, name: "twitter"},
-  {id: 2, type: AntDesign, name: "instagram"},
+  {id: 2, type: MaterialCommunityIcons, name: "trello"},
   {id: 3, type: MaterialCommunityIcons, name: "discord"},
   {id: 4, type: FontAwesome, name: "twitch"},
   {id: 5, type: FontAwesome, name: "youtube"},
