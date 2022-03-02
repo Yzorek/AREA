@@ -26,13 +26,26 @@ class Login extends Component{
             androidClientId: "278231454576-i92vk8rv49ge3gguru6bp0gpqs63js0g.apps.googleusercontent.com",
             scopes: ['profile', 'email']
         };
+        const IP = this.props.ip
         Google
             .logInAsync(config)
             .then(async (result) => {
                 const {type, user} = result
-                if (type=='success') {
+                if (type==='success') {
+                    console.log(user)
+                    // let body = {
+                    //     email: user.email,
+                    //     password: user.id,
+                    //     type: 'google'
+                    // }
+                    // const response = await axios.post(
+                    //     'http://'+IP+':8080/auth/login', body
+                    // );
+                    // console.log(response)
+                    // this.props.dispatch({type: "accessToken", value: response.data.accessToken})
+                    // this.props.dispatch({type: 'index', value: 2});
+                    // this.setState({isError: false})
                     this.props.dispatch({type: 'index', value: 2});
-                    // console.log(result)
                 }
                 else {
                     Alert.alert(

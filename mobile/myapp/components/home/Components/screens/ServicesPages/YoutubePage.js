@@ -1,49 +1,141 @@
-import React, { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Text, Button, StyleSheet } from "react-native";
-import { View } from "react-native";
+import React, { Component } from "react";
+import { Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View , Alert, FlatList} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { connect } from 'react-redux'
+import axios from 'axios';
+import colors from "../../../../../charte/colors";
 
-import { createDrawerNavigator } from "@react-navigation/drawer";
+class YoutubePage extends Component {
+  constructor(props) {
+    super(props);
+      this.state = {
+        isError: false,
+        acti_id: 0,
+        reacti_id: 0,
+        action: [],
+        reaction: [],
+        action_params: [],
+        reaction_params: [],
+        service: [],
+        Reaservice: [],
+        input: "",
+        input2: ""
+    };
+  }
 
-const Drawer = createDrawerNavigator();
+  async componentDidMount() {
+    const IP = this.props.ip
+    const descr_service = []
+    const descr_reaction = []
+    const params_action = []
+    const params_reaction = []
+    try {
+        const response = await axios.get('http://'+IP+':8080/AR/',
+        {
+            'headers': {'Authorization': 'Bearer  ' + this.props.accessToken}
+        });
+        for (let data of response.data.actions) {
+          this.setState({service: data})
+          if (data.id_service===this.props.clickBottom) {
+            descr_service.push({label: data.description, value: data.id})
+            this.setState({action: descr_service})
+            if (data.params!==null) {
+              params_action.push({label: data.params, id: data.id})
+              this.setState({action_params: params_action})
+            }
+          }
+        }
+        for (let data of response.data.reactions) {
+          this.setState({Reaservice: data})
+          descr_reaction.push({label: data.description, value: data.id})
+          this.setState({reaction: descr_reaction})
+          if (data.params!==null) {
+            params_reaction.push({label: data.params, id: data.id})
+            this.setState({reaction_params: params_reaction})
+          }
+        }
+    } catch (error) {
+        this.setState({isError: true})
+        Alert.alert(
+            "Please enter your email and password !",
+        );
+    }
+  }
 
-const YoutubePage = () => {
-  return (
-    <View style={styles.container}>
-      <Icon name="youtube" size={50} color="#ff0000" />
-      <View style={{ height: 50 }} />
-      <RNPickerSelect
-        style={{ inputAndroid: { color: "black" } }}
-        onValueChange={(value) => console.log(value)}
-        items={[
-          {
-            label: "Like a video",
-            value: "1",
-          },
-          { label: "void", value: "2" },
-        ]}
-      />
-      <View style={{ height: 60 }} />
-      <View style={{ height: 200, borderWidth: 1 }} />
-      <View style={{ height: 60 }} />
-      <RNPickerSelect
-        style={{ inputAndroid: { color: "black" } }}
-        onValueChange={(value) => console.log(value)}
-        items={[
-          {
-            label: "Message a specific user on discord",
-            value: "1",
-          },
-          { label: "Send message on a group chat", value: "2" },
-          { label: "Message by bot discord", value: "3" },
-          { label: "Post a tweet", value: "4" },
-        ]}
-      />
-    </View>
-  );
+  _display_params = () => {
+    for (let data of this.state.action_params) {
+      if (data.label!==undefined) {
+        if(data.id===this.state.acti_id) {
+          return (
+              <FlatList
+                data={data.label}
+                numColumns={2}
+                keyExtractor={(item) => item}
+                renderItem={({item}) => {  return (
+                  <View style={styles.textinput}>
+                    <TextInput style={{width: "100%"}} placeholder={item} />
+                  </View>
+                )  }}
+              />
+          )
+        }
+      }
+    }
+  }
+
+  _display_paramsRea = () => {
+    for (let data of this.state.reaction_params) {
+      if (data.label!==undefined) {
+        if(data.id===this.state.reacti_id) {
+          return (
+              <FlatList
+                data={data.label}
+                numColumns={2}
+                keyExtractor={(item) => item}
+                renderItem={({item}) => {  return (
+                  <View style={styles.textinput}>
+                    <TextInput style={{width: "100%"}} placeholder={item} />
+                  </View>
+                )  }}
+              />
+          )
+        }
+      }
+    }
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Icon name="youtube" style={styles.logo} size={90} color="#ff0000" />
+        <View style={styles.input}>
+          <Text style={styles.txt_input}>Action *</Text>
+          <RNPickerSelect
+            style={{inputAndroid: {color: 'white'}}}
+            onValueChange={(value) => this.setState({acti_id: value})}
+            items={this.state.action}
+          />
+          {this._display_params()}
+        </View>
+
+        <View style={styles.input}>
+          <Text style={styles.txt_input}>Reaction *</Text>
+          <RNPickerSelect
+            style={{inputAndroid: {color: 'white'}}}
+            onValueChange={(value) => this.setState({reacti_id: value})}
+            items={this.state.reaction}
+          />
+          {this._display_paramsRea()}
+        </View>
+
+        <TouchableOpacity style={styles.button}>
+          <Text style={{fontWeight: 'bold', fontSize: 18, color: "white"}}>Save</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -51,6 +143,51 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 40,
     alignItems: "center",
+    justifyContent: 'space-between',
+    margin: "8%",
   },
+  logo: {
+    marginBottom: "0%",
+  },
+  input: {
+    width: "70%",
+    borderRadius: 10,
+    padding: "2%",
+    borderWidth: 1,
+    backgroundColor: "#ff0000",
+    marginBottom: "10%",
+    marginTop: "6%",
+  },
+  textinput: {
+    width: "45%",
+    borderRadius: 50,
+    padding: "3%",
+    backgroundColor: colors.login.backg_input,
+    margin: "2%"
+},
+  txt_input: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    width: "70%",
+    color: "white",
+    textAlign: 'left',
+    marginBottom: "2%",
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    backgroundColor: colors.secondary,
+    width: "25%",
+    padding: "3%"
+  }
 });
-export default YoutubePage;
+
+const mapStateToProps = (state) => {
+  return {
+    ip: state.ip,
+    accessToken: state.accessToken,
+    clickBottom: state.clickBottom
+  }
+}
+export default connect(mapStateToProps)(YoutubePage)

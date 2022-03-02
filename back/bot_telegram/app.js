@@ -43,9 +43,23 @@ function sendMessageTwitchInTelegramToGroupOverflow(data, group_name) {
         axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" + data.user_name + " exceed " + data.viewer_count + "!")
 }
 
+function sendMessageTwitchInTelegramToUserSpecificGame(data, user_name) {
+    let target = myUser.find(item => item.username.toLowerCase() === user_name.toLowerCase())
+    if (target)
+        axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" + data.user_name + " play to " + data.game_name + "!")
+}
+
+function sendMessageTwitchInTelegramToGroupSpecificGame(data, group_name) {
+    let target = myGroup.find(item => item.title.toLowerCase() === group_name.toLowerCase())
+    if (target)
+        axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" + data.user_name + " play to " + data.game_name + "!")
+}
+
 module.exports = {
     sendMessageTwitchInTelegramToUser,
     sendMessageTwitchInTelegramToGroup,
     sendMessageTwitchInTelegramToUserOverflow,
     sendMessageTwitchInTelegramToGroupOverflow,
+    sendMessageTwitchInTelegramToUserSpecificGame,
+    sendMessageTwitchInTelegramToGroupSpecificGame
 }
