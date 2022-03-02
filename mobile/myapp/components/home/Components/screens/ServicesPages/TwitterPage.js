@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TextInput, TouchableOpacity, Touchable } from "react-native";
 import { View , Alert, FlatList} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -12,6 +12,7 @@ class TwitterPage extends Component {
     super(props);
       this.state = {
         isError: false,
+        id: 0,
         acti_id: 0,
         reacti_id: 0,
         action: [],
@@ -20,8 +21,12 @@ class TwitterPage extends Component {
         reaction_params: [],
         service: [],
         Reaservice: [],
-        input: "",
-        input2: ""
+        ActionInput_1: "",
+        ActionInput_2: "",
+        ReactionInput_1: "",
+        ReactionInput_2: "",
+        paramsAction: [],
+        paramsReaction: [],
     };
   }
 
@@ -68,45 +73,119 @@ class TwitterPage extends Component {
     for (let data of this.state.action_params) {
       if (data.label!==undefined) {
         if(data.id===this.state.acti_id) {
-          return (
-              <FlatList
-                data={data.label}
-                numColumns={2}
-                keyExtractor={(item) => item}
-                renderItem={({item}) => {  return (
-                  <View style={styles.textinput}>
-                    <TextInput style={{width: "100%"}} placeholder={item} />
-                  </View>
-                )  }}
-              />
-          )
+          if (data.label.length===1) {
+            return (
+              <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
+                <View style={styles.textinput}>
+                  <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ActionInput_1: value})}}/>
+                </View>
+                <TouchableOpacity style={[styles.button, {backgroundColor: "white"}]} onPress={() => {this.setState({paramsAction: {name: data.label[0], value: this.state.ActionInput_1}})}}>
+                  <Text style={{fontWeight: "bold"}}>OK</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
+          else if (data.label.length===2) {
+            return (
+              <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
+                <View style={styles.textinput}>
+                  <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ActionInput_1: value})}}/>
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput style={{width: "100%"}} placeholder={data.label[1]} onChangeText={(value) => {this.setState({ActionInput_2: value})}}/>
+                </View>
+                <TouchableOpacity style={[styles.button, {backgroundColor: "white", margin: "3%"}]} onPress={() => {this.setState({paramsAction: [{name: data.label[0], value: this.state.ActionInput_1}, {name: data.label[1], value: this.state.ActionInput_2}]})}}>
+                  <Text style={{fontWeight: "bold"}}>OK</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
         }
       }
     }
+    return (
+      <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
+        <Text style={{margin: "2%", fontSize: 15, color: "white"}}>No Parameter</Text>
+        <TouchableOpacity style={[styles.button, {backgroundColor: "white"}]} onPress={() => {this.setState({paramsAction: []})}}>
+         <Text style={{fontWeight: "bold"}}>OK</Text>
+        </TouchableOpacity>
+      </View>
+    )
   }
 
   _display_paramsRea = () => {
     for (let data of this.state.reaction_params) {
       if (data.label!==undefined) {
         if(data.id===this.state.reacti_id) {
-          return (
-              <FlatList
-                data={data.label}
-                numColumns={2}
-                keyExtractor={(item) => item}
-                renderItem={({item}) => {  return (
-                  <View style={styles.textinput}>
-                    <TextInput style={{width: "100%"}} placeholder={item} />
-                  </View>
-                )  }}
-              />
-          )
+          if (data.label.length===1) {
+            return (
+              <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
+                <View style={styles.textinput}>
+                  <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ReactionInput_1: value})}}/>
+                </View>
+                <TouchableOpacity style={[styles.button, {backgroundColor: "white"}]} onPress={() => {this.setState({paramsReaction: {name: data.label[0], value: this.state.ReactionInput_1}})}}>
+                  <Text style={{fontWeight: "bold"}}>OK</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
+          else if (data.label.length===2) {
+            return (
+              <View>
+              <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
+                <View style={styles.textinput}>
+                  <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ReactionInput_1: value})}}/>
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput style={{width: "100%"}} placeholder={data.label[1]} onChangeText={(value) => {this.setState({ReactionInput_2: value})}}/>
+                </View>
+              </View>
+              <TouchableOpacity style={[styles.button, {backgroundColor: "white", margin: "3%"}]} onPress={() => {this.setState({paramsReaction: [{name: data.label[0], value: this.state.ReactionInput_1}, {name: data.label[1], value: this.state.ReactionInput_2}]})}}>
+                <Text style={{fontWeight: "bold"}}>OK</Text>
+              </TouchableOpacity>
+              </View>
+            )
+          }
         }
       }
+    }
+    return (
+      <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
+        <Text style={{margin: "2%", fontSize: 15, color: "white"}}>No Parameter</Text>
+        <TouchableOpacity style={[styles.button, {backgroundColor: "white"}]} onPress={() => {this.setState({paramsReaction: []})}}>
+        <Text style={{fontWeight: "bold"}}>OK</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  _save = async () => {
+    const IP = this.props.ip
+    try {
+      let body = {
+        idAction: this.state.acti_id,
+        idReaction: this.state.reacti_id,
+        paramsAction: this.state.paramsAction,
+        paramsReaction: this.state.paramsReaction
+      }
+      await axios.post('http://'+IP+':8080/AR/link', body,
+        {
+          'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
+        });
+        this.props.dispatch({type: 'clickBottom', value: 7});
+    } catch (err) {
+      this.setState({isError: true})
+      Alert.alert(
+        "Error, you can't save card !",
+      );
     }
   }
 
   render() {
+    // console.log("ACTION : ")
+    // console.log(this.state.paramsAction)
+    // console.log("REACTION : ")
+    // console.log(this.state.paramsReaction)
     return (
       <View style={styles.container}>
         <Icon name="twitter" style={styles.logo} size={90} color="#136ea3" />
@@ -130,7 +209,7 @@ class TwitterPage extends Component {
           {this._display_paramsRea()}
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => {this._save()}}>
           <Text style={{fontWeight: 'bold', fontSize: 18, color: "white"}}>Save</Text>
         </TouchableOpacity>
       </View>
