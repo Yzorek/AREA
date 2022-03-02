@@ -3,9 +3,6 @@ const { Telegraf } = require('telegraf')
 
 const token = '5160965468:AAHAcyYNrKYWrRCR_9eOfYl94Z6DIWSk7KM';
 
-const chatIDGroup = -730273977
-const chatIDUser = 922550661
-
 let myUser = []
 let myGroup = []
 
@@ -13,7 +10,6 @@ const bot = new Telegraf(token)
 bot.command('start', (ctx) => {
     if (ctx.chat.username)
         myUser.push(ctx.chat)
-    console.log(ctx.chat)
     if (ctx.chat.title)
         myGroup.push(ctx.chat)
     ctx.reply('Initialize')
