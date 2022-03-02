@@ -208,15 +208,9 @@ export default function ServicesSettings({onServicesSub}) {
                                         reaction: arFetched.reactions.find((e) => e.id === element.idReactions),
                                         ...element
                                     }
-                                    // console.log("=======================");
-                                    // console.log(areasFetched[index].paramsAction);
-                                    // console.log(areasFetched[index].paramsReaction);
                                     areasFetched[index].action.params = areasFetched[index].paramsAction;
                                     areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
-                                    // console.log(areasFetched[index].action.params);
-                                    // console.log(areasFetched[index].reaction.params);
                                 })
-                                console.log(areasFetched);
                                 setMyAreas(areasFetched);
                             }
                         } catch (err) {
