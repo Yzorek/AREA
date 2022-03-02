@@ -89,8 +89,8 @@ export default function AreaComponent({area, onActivation}) {
                 <Collapse in={isExpanded} timeout="auto" unmountOnExit>
                     <Grid container item xs={12}>
                         <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}
-                        style={{height: '100%', background: area.isActive ? area.action.color : 'gray', transition: '0.5s', borderBottomLeftRadius: 10}}>
-                            {area.action.params.map((area, index) => {
+                        style={{height: '100%', background: area.isActive ? area.action.color : 'gray', transition: '0.5s'}}>
+                            {area.paramsAction.map((area, index) => {
                                 return (
                                     <Typography align={'center'} style={{color: 'white'}} key={`${area.name}-${index}-action-params`}>
                                         {area.name + ' : ' + area.value}
@@ -99,8 +99,8 @@ export default function AreaComponent({area, onActivation}) {
                             })}
                         </Grid>
                         <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}
-                        style={{height: '100%', background: area.isActive ? area.reaction.color : 'gray', transition: '0.5s', borderBottomRightRadius: 10}}>
-                            {area.reaction.params.map((area, index) => {
+                        style={{height: '100%', background: area.isActive ? area.reaction.color : 'gray', transition: '0.5s'}}>
+                            {area.paramsReaction.map((area, index) => {
                                 return (
                                     <Typography align={'center'} style={{color: 'white'}} key={`${area.name}-${index}-reaction-params`}>
                                         {area.name + ' : ' + area.value}

@@ -35,6 +35,68 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
         setIsAddOpen(true);
     }
 
+    const findCodeInURL = (url) => {
+        let result = url.indexOf("code");
+        if (result !== -1) {
+            return (url.substring(result + 5, url.length))
+        }
+        return ('');
+    }
+
+    useEffect(() => {
+        isMounted.current = true
+        const source = axios.CancelToken.source();
+        (async () => {
+            let res = findCodeInURL(window.location.href);
+            if (res !== '') {
+                let body = {
+                    code: res,
+                    grant_type: 'authorization_code',
+                    client_id: process.env.REACT_APP_TWITTER_CLIENT_ID,
+                    redirect_uri: 'https://www.google.fr/',
+                    code_verifier: 'challenge'
+                }
+                try {
+                    let auth = 'Basic ' + btoa(process.env.REACT_APP_TWITTER_API_KEY + ":" + process.env.REACT_APP_TWITTER_API_SECRET);
+                    const response = await axios.post(`https://api.twitter.com/2/oauth2/token`, body,
+                        {
+                            cancelToken: source.token,
+                            'headers': {
+                                'Access-Control-Allow-Origin': '*',
+                                'Content-type': 'application/json',
+                                'authorization': auth,
+                            }
+                        });
+                    console.log(response);
+                    if (isMounted && isMounted.current) {
+                        // try {
+                        //     let body = {
+                        //         token: 
+                        //     }
+                        //     const otherResponse = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/twitter`, body,
+                        //         {
+                        //             cancelToken: source.token,
+                        //             'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                        //         });
+                        // } catch (err) {
+                        //     if (err.response) {
+                        //         setIsError(true);
+                        //     }
+                        // }
+                    }
+                } catch (err) {
+                    if (err.response) {
+                        setIsError(true);
+                    }
+                }
+            }
+        })()
+        return () => {
+            isMounted.current = false;
+            source.cancel("Component Services GET user data got unmounted");
+        }
+    })
+
     useEffect(() => {
         isMounted.current = true
         const source = axios.CancelToken.source();
@@ -126,9 +188,14 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
             } else {
                 subUnsubToService(service, false);
             }
-            //AUTh2_TODO
-        } else {
-            subUnsubToService(service, false);
+        }
+        else {
+            if (service.name === 'Twitter') {
+                window.location.href = "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ&redirect_uri=http://localhost:8082/App/Service&scope=tweet.read%20tweet.write%20users.read%20follows.read%20follows.write&state=state&code_challenge=challenge&code_challenge_method=plain"
+            }
+            else {
+                subUnsubToService(service, false);
+            }
         }
     }
 

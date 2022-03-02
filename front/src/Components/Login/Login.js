@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import {Button, Divider, Grid, IconButton, InputAdornment, Paper, Snackbar, TextField, Typography} from "@mui/material";
-import {Email, Create, Lock, Visibility, VisibilityOff, Google} from "@mui/icons-material";
+import {Email, Create, Lock, Visibility, VisibilityOff, Google, Twitter} from "@mui/icons-material";
 import {Alert, LoadingButton} from '@mui/lab';
 import { GoogleLogin } from 'react-google-login';
 import TelegramLoginButton from 'react-telegram-login';
@@ -15,6 +15,10 @@ export default function Login() {
     const [isError, setIsError] = useState(false);
     const [isGoogleError, setIsGoogleError] = useState(false);
     let navigate = useNavigate();
+
+    const onSuccessTwitter = (response) => {
+        console.log(response)
+    }
 
     const onSuccessGoogle = (response) => {
         (async () => {
@@ -63,7 +67,7 @@ export default function Login() {
 
     async function onSubmit(e) {
         e.preventDefault();
-        await loginInSerer('local', password, email);
+        await loginInServer('local', password, email);
     }
 
     const handleTelegramResponse = response => {
