@@ -1,13 +1,36 @@
 const express = require('express');
+const axios = require('axios');
+const fctDataBase = require("../tools/fctDBRequest");
 const router = express.Router();
-const fctToken = require('../../tools/fctToken');
 
-const fctData = require('./allData')
+async function postTwitchTweet(aRdata, twitchData) {
+    let twitterToken = "";
+    try {
+        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(aRdata.id_user)]);
 
-const twitter = {
-    client_id: "YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ", //a mettre dans le fichier config
-    client_secret: "OhEVgTOExeb4OSe4A3EOzrKRzttKbPrUB10MULU-3B4jIKLMll"
-};
+        if (data.rowCount === 0) {
+            console.log("This user doesn't exist");
+        } else {
+            twitterToken = data.rows[0].twitter_token;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+    let bearer = 'Bearer ' + twitterToken;
+    try {
+        axios.post(`https://api.twitter.com/2/tweets`, {
+            "text": JSON.parse(aRdata.params_reaction)[0].value
+        },
+        {
+            'headers': {
+                'Authorization': bearer,
+                'Content-type': 'application/json',
+            }
+        });
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 async function getLinkWithTwitter() {
     try {
@@ -28,4 +51,5 @@ async function getLinkWithTwitter() {
 }
 
 module.exports = {
+    postTwitchTweet
 }

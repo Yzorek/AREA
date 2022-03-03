@@ -12,6 +12,7 @@ CREATE TABLE clients (
     id_theme        INT,
     id_status       INT,
     is_tutorial_mode bool,
+    twitter_token   varchar(255),
     primary key(id)
 );
 

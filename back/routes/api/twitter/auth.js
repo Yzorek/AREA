@@ -1,4 +1,6 @@
 const axios = require("axios");
+const fctDataBase = require("../../../tools/fctDBRequest");
+const fctToken = require('../../../tools/fctToken');
 
 const twitter = {
     client_id: "YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ", //a mettre dans le fichier config
@@ -22,10 +24,18 @@ async function authTwitter(req, res, next) {
                     'Authorization': auth,
                 }
             });
-        console.log(response.data);
-        res.status(200).send(response.data);
+        try {
+            let dataToken = fctToken.getTokenData(req);
+            await fctDataBase.request('UPDATE clients SET twitter_token=$1 WHERE id=$2;', [response.data.access_token, parseInt(dataToken.id)]);
+            console.log(response.data);
+            res.status(200).send(response.data);
+        } catch (err) {
+            res.status(500).send({
+                message: 'BDD error',
+            });
+        }
     } catch (err) {
-        console.log(err.response.data)
+        console.log(err);
         res.status(500).send({
             message: 'Err twitter API',
             err: err
@@ -34,5 +44,5 @@ async function authTwitter(req, res, next) {
 }
 
 module.exports = {
-    authTwitter
+    authTwitter,
 }

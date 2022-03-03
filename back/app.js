@@ -70,10 +70,10 @@ require('./socket/socket')(io);
 
 function loopAR(i) {
     setTimeout(async () => {
-        console.log('AR reload loop n:', i);
+        console.log('AR reload loops n:', i);
         await require('./twitch/twitch').reloadStreamsManagement();
         loopAR(++i);
-    }, 30000)
+    }, 10000)
 }
 
 loopAR(0);
