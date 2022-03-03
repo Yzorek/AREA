@@ -114,6 +114,33 @@ async function getTwitterUser(arData) {
     }
 }
 
+async function getTwitterUserById(arData, userId) {
+    let twitterToken = "";
+    try {
+        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(arData.id_user)]);
+
+        if (data.rowCount === 0) {
+            console.log("This user doesn't exist");
+        } else {
+            twitterToken = data.rows[0].twitter_token;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+    let bearer = 'Bearer ' + twitterToken;
+    try {
+        let res = await axios.get(`https://api.twitter.com/2/users/${userId}`,
+        {
+            'headers': {
+                'Authorization': bearer,
+            }
+        });
+        return (res.data);
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 async function getTwitterUserTweets(arData, userId) {
     let twitterToken = "";
     try {
@@ -156,7 +183,7 @@ async function getTwitterUserMentions(arData, userId) {
     }
     let bearer = 'Bearer ' + twitterToken;
     try {
-        let res = await axios.get(`https://api.twitter.com/2/users/${userId}/mentions`,
+        let res = await axios.get(`https://api.twitter.com/2/users/${userId}/mentions?expansions=author_id`,
         {
             'headers': {
                 'Authorization': bearer,
@@ -173,12 +200,14 @@ async function YouAreMentionned(arData) {
     if (me === undefined || me.data.id === undefined) return;
     let mentions = await getTwitterUserMentions(arData, me.data.id);
     if (mentions === undefined || mentions.meta.newest_id === undefined) return;
-    let lastTweetMention = lastMentinonned.find((e) => e.user_id === me.data.id);
+    let lastTweetMention = lastMentinonned.find((e) => e.user_id === me.data.id && e.id_reaction === arData.id_reactions);
     if (lastTweetMention !== undefined) {
         if (lastTweetMention.last_tweet !== mentions.meta.newest_id) { // Past the discord / telegram reactions
             lastTweetMention.last_tweet = mentions.meta.newest_id;
+            let user = await getTwitterUserById(arData, mentions.data[0].author_id);
             let data = {
-                username: me.data.username,
+                username: user.data.username,
+                mentionned: me.data.username,
                 tweet_id: mentions.meta.newest_id,
             }
             if (arData.id_reactions === 2) {
@@ -187,12 +216,19 @@ async function YouAreMentionned(arData) {
             } else if (arData.id_reactions === 5) {
                 let params_reaction = JSON.parse(arData.params_reaction);
                 require('../bot_telegram/app').sendMessageTwitterToUserTelegram(data, params_reaction[0].value)
+            } else if (arData.id_reactions === 3) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_discord/app').sendMessageTwitterInGuilds(params_reaction[1].value, params_reaction[0].value, data)
+            } else if (arData.id_reactions === 1) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
             }
         }
     } else {
         lastMentinonned.push({
             user_id: me.data.id,
-            last_tweet: mentions.meta.newest_id
+            last_tweet: mentions.meta.newest_id,
+            id_reaction: arData.id_reactions
         })
     }
 }
@@ -202,27 +238,34 @@ async function YouPostATweet(arData) {
     if (me === undefined || me.data.id === undefined) return;
     let tweets = await getTwitterUserTweets(arData, me.data.id);
     if (tweets === undefined || tweets.meta.newest_id === undefined) return;
-    let lastUserTweet = lastTweet.find((e) => e.user_id === me.data.id);
+    let lastUserTweet = lastTweet.find((e) => e.user_id === me.data.id && e.id_reaction === arData.id_reactions);
     if (lastUserTweet !== undefined) {
         if (lastUserTweet.last_tweet !== tweets.meta.newest_id) { // Past the discord / telegram reactions
             lastUserTweet.last_tweet = tweets.meta.newest_id;
             let data = {
                 username: me.data.username,
+                mentionned: undefined,
                 tweet_id: tweets.meta.newest_id,
             }
-            console.log(arData.id_reactions);
             if (arData.id_reactions === 2) {
                 let params_reaction = JSON.parse(arData.params_reaction);
                 require('../bot_telegram/app').sendMessageTwitterToGroupTelegram(data, params_reaction[0].value)
             } else if (arData.id_reactions === 5) {
                 let params_reaction = JSON.parse(arData.params_reaction);
                 require('../bot_telegram/app').sendMessageTwitterToUserTelegram(data, params_reaction[0].value)
+            } else if (arData.id_reactions === 3) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_discord/app').sendMessageTwitterInGuilds(params_reaction[1].value, params_reaction[0].value, data)
+            } else if (arData.id_reactions === 1) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
             }
         }
     } else {
         lastTweet.push({
             user_id: me.data.id,
-            last_tweet: tweets.meta.newest_id
+            last_tweet: tweets.meta.newest_id,
+            id_reaction: arData.id_reactions
         })
     }
 }
@@ -232,12 +275,13 @@ async function SomeonePostATweet(arData) {
     if (user === undefined || user.data.id === undefined) return;
     let tweets = await getTwitterUserTweets(arData, user.data.id);
     if (tweets === undefined || tweets.meta.newest_id === undefined) return;
-    let lastUserTweet = userLastTweet.find((e) => e.user_id === user.data.id);
+    let lastUserTweet = userLastTweet.find((e) => e.user_id === user.data.id && e.id_reaction === arData.id_reactions);
     if (lastUserTweet !== undefined) {
         if (lastUserTweet.last_tweet !== tweets.meta.newest_id) { // Past the discord / telegram reactions
             lastUserTweet.last_tweet = tweets.meta.newest_id;
             let data = {
                 username: user.data.username,
+                mentionned: undefined,
                 tweet_id: tweets.meta.newest_id,
             }
             if (arData.id_reactions === 2) {
@@ -246,12 +290,19 @@ async function SomeonePostATweet(arData) {
             } else if (arData.id_reactions === 5) {
                 let params_reaction = JSON.parse(arData.params_reaction);
                 require('../bot_telegram/app').sendMessageTwitterToUserTelegram(data, params_reaction[0].value)
+            } else if (arData.id_reactions === 3) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_discord/app').sendMessageTwitterInGuilds(params_reaction[1].value, params_reaction[0].value, data)
+            } else if (arData.id_reactions === 1) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
             }
         }
     } else {
         userLastTweet.push({
             user_id: user.data.id,
-            last_tweet: tweets.meta.newest_id
+            last_tweet: tweets.meta.newest_id,
+            id_reaction: arData.id_reactions
         })
     }
 }
