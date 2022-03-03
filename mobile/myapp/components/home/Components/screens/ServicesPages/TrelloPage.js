@@ -88,12 +88,14 @@ class TrelloPage extends Component {
           }
           else if (data.label.length===2) {
             return (
-              <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
-                <View style={styles.textinput}>
-                  <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ActionInput_1: value})}}/>
-                </View>
-                <View style={styles.textinput}>
-                  <TextInput style={{width: "100%"}} placeholder={data.label[1]} onChangeText={(value) => {this.setState({ActionInput_2: value})}}/>
+              <View>
+                <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
+                  <View style={styles.textinput}>
+                    <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ActionInput_1: value})}}/>
+                  </View>
+                  <View style={styles.textinput}>
+                    <TextInput style={{width: "100%"}} placeholder={data.label[1]} onChangeText={(value) => {this.setState({ActionInput_2: value})}}/>
+                  </View>
                 </View>
                 <TouchableOpacity style={[styles.button, {backgroundColor: colors.third, margin: "3%"}]} onPress={() => {this.setState({paramsAction: [{name: data.label[0], value: this.state.ActionInput_1}, {name: data.label[1], value: this.state.ActionInput_2}], okIsPressed: true})}}>
                   <Text style={{fontWeight: "bold"}}>OK</Text>
