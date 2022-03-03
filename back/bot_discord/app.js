@@ -1,6 +1,6 @@
-const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-const { MessageEmbed } = require('discord.js');
+const {Client, Intents} = require('discord.js');
+const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+const {MessageEmbed} = require('discord.js');
 
 const excString = "!!";
 
@@ -29,7 +29,7 @@ client.on("message", msg => {
                 .setAuthor(client.user.username, client.user.displayAvatarURL())
                 .setDescription('One error as pop in my systeme, sorry try again later')
                 .setFooter('If you have question, please call WhiteWolf');
-            msg.channel.send({ embeds: [exampleEmbed] });
+            msg.channel.send({embeds: [exampleEmbed]});
             console.log("----------------------------------------------------------- ERROR -----------------------------------------------------------");
             console.log(e);
             console.log("-----------------------------------------------------------------------------------------------------------------------------");
@@ -57,7 +57,7 @@ function sendMessageTwitchInGuilds(channelsName, guilds, data) {
         .addField(" Playing ", data.game_name, true,)
         .addField("Started at ", data.started_at, true)
 
-    channel.send({ embeds: [twitchEmbed] });
+    channel.send({embeds: [twitchEmbed]});
 }
 
 function sendMessageYoutubeInGuilds(channelsName, guilds, data) {
@@ -82,7 +82,7 @@ function sendMessageYoutubeInGuilds(channelsName, guilds, data) {
         .addField("Verified ", data.started_at ? 'Yes' : 'No', false)
         .setThumbnail()
 
-    channel.send({ embeds: [youtubeEmbed] });
+    channel.send({embeds: [youtubeEmbed]});
 }
 
 function sendClassicMessage(channelsName, guilds, data) {
@@ -100,7 +100,7 @@ function sendClassicMessage(channelsName, guilds, data) {
         .setTitle(data.title)
         .addField("Info ", data.message || 0, true)
 
-    channel.send({ embeds: [classicMessage] });
+    channel.send({embeds: [classicMessage]});
 }
 
 function sendClassicMessageToUser(channelsName, guilds, data) {
@@ -130,7 +130,7 @@ function sendMessageTwitchInMessage(username, data) {
             .addField(" Playing ", data.game_name, true,)
             .addField("Started at ", data.started_at, true)
 
-        target.send({ embeds: [twitchEmbed] });
+        target.send({embeds: [twitchEmbed]});
     }
 
 }
@@ -138,13 +138,26 @@ function sendMessageTwitchInMessage(username, data) {
 function sendMessageTwitterInMessage(username, data) {
 
     let target = client.users.cache.find(item => item.username === username);
-    if (target) {
-        const twitterEmbed = new MessageEmbed()
-            .setColor('BLUE')
-            .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
-            .setAuthor(data.username + " has tweeted")
+    if (data.mentionned === undefined) {
+        if (target) {
+            const twitterEmbed = new MessageEmbed()
+                .setColor('BLUE')
+                .setTitle('@' + data.username + " has tweeted")
+                .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
+                .setAuthor(data.username)
 
-        target.send({ embeds: [twitterEmbed] });
+            target.send({embeds: [twitterEmbed]});
+        }
+    } else {
+        if (target) {
+            const twitterEmbed = new MessageEmbed()
+                .setColor('BLUE')
+                .setTitle('@' + data.username + " has mentionned @" + data.mentionned)
+                .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
+                .setAuthor(data.username)
+
+            target.send({embeds: [twitterEmbed]});
+        }
     }
 
 }
@@ -159,12 +172,23 @@ function sendMessageTwitterInGuilds(channelsName, guilds, data) {
     if (!channel)
         return;
 
-    const twitterEmbed = new MessageEmbed()
-        .setColor('BLUE')
-        .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
-        .setAuthor(data.username + " has tweeted")
+    if (data.mentionned === undefined) {
+            const twitterEmbed = new MessageEmbed()
+                .setColor('BLUE')
+                .setTitle('@' + data.username + " has tweeted")
+                .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
+                .setAuthor(data.username)
 
-    channel.send({ embeds: [twitterEmbed] });
+            channel.send({embeds: [twitterEmbed]});
+    } else {
+            const twitterEmbed = new MessageEmbed()
+                .setColor('BLUE')
+                .setTitle('@' + data.username + " has mentionned @" + data.mentionned)
+                .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
+                .setAuthor(data.username)
+
+            channel.send({embeds: [twitterEmbed]});
+    }
 }
 
 client.login('OTQwOTEyNjkyODY3MjY0NTYz.YgOTOw.f54-ym5cgCNvwSDjY1lhK4Aa8o0')
