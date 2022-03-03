@@ -19,6 +19,8 @@ const weatherRouter = require('./routes/weather/weather');
 const dashboardRouter = require('./routes/dashboard/dashboard');
 const downloadRouter = require('./routes/download/download');
 const ARRouter = require('./routes/actionReaction/actionReaction');
+const apiTwitchRouter = require('./routes/api/twitch/twitch');
+const apiTwitterRouter = require('./routes/api/twitter/twitter');
 
 const app = express();
 const server = http.createServer(app);
@@ -46,6 +48,7 @@ app.use('/weather', weatherRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
+app.use('/twitter', apiTwitterRouter);
 
 let myUser = []
 let myGroup = []
@@ -70,10 +73,10 @@ require('./socket/socket')(io);
 
 function loopAR(i) {
     setTimeout(async () => {
-        console.log('AR reload loop n:', i);
+        console.log('AR reload loops n:', i);
         await require('./twitch/twitch').reloadStreamsManagement();
         loopAR(++i);
-    }, 15000)
+    }, 10000)
 }
 
 loopAR(0);

@@ -62,7 +62,6 @@ export default function ServicesSettings({onServicesSub}) {
 
     const handleServicesSub = async (services, serviceToDel) => {
         if (serviceToDel !== undefined) {
-            console.log('test');
             await myAreas.forEach(async (area) => {
                 if (area.action.id_service === serviceToDel.id || area.reaction.id_service === serviceToDel.id) {
                     await deleteAR(area.id, false);
