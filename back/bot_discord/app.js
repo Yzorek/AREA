@@ -135,6 +135,38 @@ function sendMessageTwitchInMessage(username, data) {
 
 }
 
+function sendMessageTwitterInMessage(username, data) {
+
+    let target = client.users.cache.find(item => item.username === username);
+    if (target) {
+        const twitterEmbed = new MessageEmbed()
+            .setColor('BLUE')
+            .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
+            .setAuthor(data.username + " has tweeted")
+
+        target.send({ embeds: [twitterEmbed] });
+    }
+
+}
+
+function sendMessageTwitterInGuilds(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
+
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    const twitterEmbed = new MessageEmbed()
+        .setColor('BLUE')
+        .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
+        .setAuthor(data.username + " has tweeted")
+
+    channel.send({ embeds: [twitterEmbed] });
+}
+
 client.login('OTQwOTEyNjkyODY3MjY0NTYz.YgOTOw.f54-ym5cgCNvwSDjY1lhK4Aa8o0')
 
 
@@ -143,5 +175,7 @@ module.exports = {
     sendMessageTwitchInMessage,
     sendMessageYoutubeInGuilds,
     sendClassicMessage,
-    sendClassicMessageToUser
+    sendClassicMessageToUser,
+    sendMessageTwitterInMessage,
+    sendMessageTwitterInGuilds,
 }
