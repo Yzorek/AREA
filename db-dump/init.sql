@@ -12,6 +12,7 @@ CREATE TABLE clients (
     id_theme        INT,
     id_status       INT,
     is_tutorial_mode bool,
+    twitter_token   varchar(255),
     primary key(id)
 );
 
@@ -81,7 +82,7 @@ CREATE TABLE actions (
 INSERT INTO actions(description, id_service, params) VALUES ('A new tweet from specific user is posted', 1, ARRAY['User @']);
 INSERT INTO actions(description, id_service, params) VALUES ('A streamer starts a game specific stream', 4, ARRAY['Streamer name', 'Game name']);
 INSERT INTO actions(description, id_service, params) VALUES ('Like a video', 5, null);
-INSERT INTO actions(description, id_service, params) VALUES ('You start a stream', 4, null);
+INSERT INTO actions(description, id_service, params) VALUES ('You start a stream', 4, ARRAY['Your username']);
 INSERT INTO actions(description, id_service, params) VALUES ('When you are mentionned', 1, null);
 INSERT INTO actions(description, id_service, params) VALUES ('Share a new video', 5, null);
 INSERT INTO actions(description, id_service, params) VALUES ('You post a new video', 5, null);

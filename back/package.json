@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./app.js"
+    "start": "node ./app.js"
   },
   "dependencies": {
     "axios": "^0.25.0",
@@ -20,7 +20,8 @@
     "node-twitch": "^0.4.5",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "trello": "^0.11.0"
   },
   "devDependencies": {
     "bcrypt": "^5.0.1",

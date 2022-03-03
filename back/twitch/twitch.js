@@ -52,6 +52,8 @@ async function ChannelStartNewStream(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroup(item, params_reaction[0].value))
             } else if (data.id_reactions === 5) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUser(item, params_reaction[0].value))
+            } else if (data.id_reactions === 4) {
+                result_stream.data.forEach(item => require('../twitter/twitter').postTwitchTweet(data, item))
             }
             alreadyPushChannelStartNew.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream")
@@ -77,7 +79,7 @@ async function ChannelStartOverflow(data) {
             return;
         let result_stream = await twitch.getStreams({ channel: params_action[0].value })
         //console.log(result_stream, params_action[0].value)
-        if (result_stream.data && result_stream.data.length > 0 && parseInt(params_action[1].value) >= parseInt(result_stream[0].viewer_count) && !alreadyPushOverflow.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
+        if (result_stream.data && result_stream.data.length > 0 && parseInt(params_action[1].value) >= parseInt(result_stream.data[0].viewer_count) && !alreadyPushOverflow.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
             if (data.id_reactions === 3) {
                 result_stream.data.forEach(item => {
                     require('../bot_discord/app').sendClassicMessage(params_reaction[1].value, params_reaction[0].value, {title: 'New RECORD !!', message: `${params_action[0].value} have exceed ${params_action[1].value} viewer !`})
@@ -89,10 +91,12 @@ async function ChannelStartOverflow(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroupOverflow(item, params_reaction[0].value))
             } else if (data.id_reactions === 5) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserOverflow(item, params_reaction[0].value))
+            } else if (data.id_reactions === 4) {
+                result_stream.data.forEach(item => require('../twitter/twitter').postTwitchTweet(data, item))
             }
             alreadyPushOverflow.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream overflow")
-        } else if (!result_stream.data || result_stream.data.length <= 0 || parseInt(params_action[1].value) < parseInt(result_stream[0].viewer_count)) {
+        } else if (!result_stream.data || result_stream.data.length <= 0 || parseInt(params_action[1].value) < parseInt(result_stream.data[0].viewer_count)) {
             let index = alreadyPushOverflow.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
             alreadyPushOverflow.splice(index, 1);
             console.log("Stream disconnect overflow or below")
@@ -114,8 +118,8 @@ async function ChannelStartSpecificGame(data) {
         if (!params_action[0].value)
             return;
         let result_stream = await twitch.getStreams({ channel: params_action[0].value })
-        console.log(result_stream[0], params_action[0].value, params_action[1].value)
-        if (result_stream.data && result_stream.data.length > 0 && params_action[1].value === result_stream[0].game_name && !alreadyPushSpecificGame.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
+        console.log(result_stream.data[0], params_action[0].value, params_action[1].value)
+        if (result_stream.data && result_stream.data.length > 0 && params_action[1].value === result_stream.data[0].game_name && !alreadyPushSpecificGame.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
             if (data.id_reactions === 3) {
                 result_stream.data.forEach(item => {
                     require('../bot_discord/app').sendMessageTwitchInGuilds(params_reaction[1].value, params_reaction[0].value, item)
@@ -126,10 +130,12 @@ async function ChannelStartSpecificGame(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroupSpecificGame(item, params_reaction[0].value))
             } else if (data.id_reactions === 5) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserSpecificGame(item, params_reaction[0].value))
+            } else if (data.id_reactions === 4) {
+                result_stream.data.forEach(item => require('../twitter/twitter').postTwitchTweet(data, item))
             }
             alreadyPushSpecificGame.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream specific games")
-        } else if (!result_stream.data || result_stream.data.length <= 0 || params_action[1].value !== result_stream[0].game_name) {
+        } else if (!result_stream.data || result_stream.data.length <= 0 || params_action[1].value !== result_stream.data[0].game_name) {
             let index = alreadyPushSpecificGame.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
             alreadyPushSpecificGame.splice(index, 1);
             console.log("Stream disconnect specific game")
@@ -147,7 +153,6 @@ async function reloadStreamsManagement() {
         let linkForTwitch = await getLinkWithTwitch()
 
         linkForTwitch.forEach(item => {
-            console.log(item);
             if (item.id_actions === 9 || item.id_actions === 4) {
                 console.log("==== Result Stream ====")
                 ChannelStartNewStream(item)
