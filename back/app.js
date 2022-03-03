@@ -52,15 +52,18 @@ let myGroup = []
 
 const bot = new Telegraf(token)
 bot.command('start', (ctx) => {
+    ctx.reply('Initialize')
     if (ctx.chat.username)
         myUser.push(ctx.chat)
     if (ctx.chat.title)
         myGroup.push(ctx.chat)
-    ctx.reply('Initialize')
+    ctx.reply('User Save !')
+    console.log(ctx)
 })
 bot.launch()
 
 require('./bot_discord/app');
+require('./trello/trello')
 require('./bot_telegram/app')
 require('./socket/socket')(io);
 
@@ -70,7 +73,7 @@ function loopAR(i) {
         console.log('AR reload loop n:', i);
         await require('./twitch/twitch').reloadStreamsManagement();
         loopAR(++i);
-    }, 30000)
+    }, 15000)
 }
 
 loopAR(0);
