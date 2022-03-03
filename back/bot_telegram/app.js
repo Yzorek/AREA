@@ -40,6 +40,18 @@ function sendMessageTwitchInTelegramToGroupSpecificGame(data, group_name) {
         axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" + data.user_name + " play to " + data.game_name + "!")
 }
 
+function sendMessageTwitterToUserTelegram(data, user_name) {
+    let target = require('../app').myUser.find(item => item.username.toLowerCase() === user_name.toLowerCase())
+    if (target)
+    axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" +  'https://twitter.com/' + data.username + "/status/" + data.tweet_id)
+}
+
+function sendMessageTwitterToGroupTelegram(data, group_name) {
+    let target = require('../app').myUser.find(item => item.username.toLowerCase() === group_name.toLowerCase())
+    if (target)
+        axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" +  'https://twitter.com/' + data.username + "/status/" + data.tweet_id)
+}
+
 module.exports = {
     sendMessageTwitchInTelegramToUser,
     sendMessageTwitchInTelegramToGroup,
@@ -47,4 +59,6 @@ module.exports = {
     sendMessageTwitchInTelegramToGroupOverflow,
     sendMessageTwitchInTelegramToUserSpecificGame,
     sendMessageTwitchInTelegramToGroupSpecificGame,
+    sendMessageTwitterToUserTelegram,
+    sendMessageTwitterToGroupTelegram
 }

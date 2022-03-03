@@ -177,6 +177,17 @@ async function YouAreMentionned(arData) {
     if (lastTweetMention !== undefined) {
         if (lastTweetMention.last_tweet !== mentions.meta.newest_id) { // Past the discord / telegram reactions
             lastTweetMention.last_tweet = mentions.meta.newest_id;
+            let data = {
+                username: me.data.username,
+                tweet_id: mentions.meta.newest_id,
+            }
+            if (arData.id_reactions === 2) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_telegram/app').sendMessageTwitterToGroupTelegram(data, params_reaction[0].value)
+            } else if (arData.id_reactions === 5) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_telegram/app').sendMessageTwitterToUserTelegram(data, params_reaction[0].value)
+            }
         }
     } else {
         lastMentinonned.push({
@@ -195,6 +206,18 @@ async function YouPostATweet(arData) {
     if (lastUserTweet !== undefined) {
         if (lastUserTweet.last_tweet !== tweets.meta.newest_id) { // Past the discord / telegram reactions
             lastUserTweet.last_tweet = tweets.meta.newest_id;
+            let data = {
+                username: me.data.username,
+                tweet_id: tweets.meta.newest_id,
+            }
+            console.log(arData.id_reactions);
+            if (arData.id_reactions === 2) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_telegram/app').sendMessageTwitterToGroupTelegram(data, params_reaction[0].value)
+            } else if (arData.id_reactions === 5) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_telegram/app').sendMessageTwitterToUserTelegram(data, params_reaction[0].value)
+            }
         }
     } else {
         lastTweet.push({
@@ -213,6 +236,17 @@ async function SomeonePostATweet(arData) {
     if (lastUserTweet !== undefined) {
         if (lastUserTweet.last_tweet !== tweets.meta.newest_id) { // Past the discord / telegram reactions
             lastUserTweet.last_tweet = tweets.meta.newest_id;
+            let data = {
+                username: user.data.username,
+                tweet_id: tweets.meta.newest_id,
+            }
+            if (arData.id_reactions === 2) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_telegram/app').sendMessageTwitterToGroupTelegram(data, params_reaction[0].value)
+            } else if (arData.id_reactions === 5) {
+                let params_reaction = JSON.parse(arData.params_reaction);
+                require('../bot_telegram/app').sendMessageTwitterToUserTelegram(data, params_reaction[0].value)
+            }
         }
     } else {
         userLastTweet.push({
