@@ -75,6 +75,7 @@ function loopAR(i) {
     setTimeout(async () => {
         console.log('AR reload loops n:', i);
         await require('./twitch/twitch').reloadStreamsManagement();
+        await require('./twitter/twitter').reloadTweetsManagement();
         loopAR(++i);
     }, 10000)
 }
