@@ -25,6 +25,7 @@ import ServicePage from '../ServicePage/ServicePage';
 import Weather from "../Weather/Weather";
 import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext";
 import PropFromId from '../Tools/Services';
+import TwitterRedirect from '../Tools/Twitter/TwitterRedirect';
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -134,6 +135,7 @@ export default function Main() {
                                 <Route path={`Service/`} element={<SelectedRouter app={<ServiceSettings onServicesSub={handleServicesSub}/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Profile/*`} element={<SelectedRouter app={<Profile handleThemeChange={handleThemeChange}/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
+                                <Route path={`TwitterRedirect`} element={<SelectedRouter app={<TwitterRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`Weather/*`}
                                     element={<SelectedRouter app={<Weather/>} idRoute={API_WEATHER}
                                     setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>

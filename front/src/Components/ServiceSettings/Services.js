@@ -126,9 +126,14 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
             } else {
                 subUnsubToService(service, false);
             }
-            //AUTh2_TODO
-        } else {
-            subUnsubToService(service, false);
+        }
+        else {
+            if (service.name === 'Twitter') {
+                window.location.href = "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ&redirect_uri=http://localhost:8082/App/TwitterRedirect&scope=tweet.read%20tweet.write%20users.read%20follows.read%20follows.write&state=state&code_challenge=challenge&code_challenge_method=plain"
+            }
+            else {
+                subUnsubToService(service, false);
+            }
         }
     }
 

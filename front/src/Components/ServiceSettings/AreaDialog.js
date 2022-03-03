@@ -31,13 +31,13 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                 });
             setIsLoading(false)
+            onClose(true);
         } catch (err) {
             if (err.response) {
                 setIsError(true)
                 setIsLoading(false)
             }
         }
-        onClose(true);
     }
 
     const handleClose = () => {
@@ -63,10 +63,6 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
         }
 
         await saveArea();
-        onClose({
-            action: action,
-            reaction: reAction
-        });
         setAction('');
         setReAction('');
         setIsActionNeeded(false);

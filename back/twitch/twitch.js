@@ -52,6 +52,8 @@ async function ChannelStartNewStream(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroup(item, params_reaction[0].value))
             } else if (data.id_reactions === 5) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUser(item, params_reaction[0].value))
+            } else if (data.id_reactions === 4) {
+                result_stream.data.forEach(item => require('../twitter/twitter').postTwitchTweet(data, item))
             }
             alreadyPushChannelStartNew.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream")
@@ -89,6 +91,8 @@ async function ChannelStartOverflow(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroupOverflow(item, params_reaction[0].value))
             } else if (data.id_reactions === 5) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserOverflow(item, params_reaction[0].value))
+            } else if (data.id_reactions === 4) {
+                result_stream.data.forEach(item => require('../twitter/twitter').postTwitchTweet(data, item))
             }
             alreadyPushOverflow.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream overflow")
@@ -126,6 +130,8 @@ async function ChannelStartSpecificGame(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToGroupSpecificGame(item, params_reaction[0].value))
             } else if (data.id_reactions === 5) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserSpecificGame(item, params_reaction[0].value))
+            } else if (data.id_reactions === 4) {
+                result_stream.data.forEach(item => require('../twitter/twitter').postTwitchTweet(data, item))
             }
             alreadyPushSpecificGame.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream specific games")
@@ -147,7 +153,6 @@ async function reloadStreamsManagement() {
         let linkForTwitch = await getLinkWithTwitch()
 
         linkForTwitch.forEach(item => {
-            console.log(item);
             if (item.id_actions === 9 || item.id_actions === 4) {
                 console.log("==== Result Stream ====")
                 ChannelStartNewStream(item)
