@@ -66,7 +66,6 @@ bot.command('start', (ctx) => {
 bot.launch()
 
 require('./bot_discord/app');
-require('./trello/trello')
 require('./bot_telegram/app')
 require('./socket/socket')(io);
 
