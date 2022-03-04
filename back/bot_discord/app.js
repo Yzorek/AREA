@@ -152,7 +152,7 @@ function sendMessageTwitterInMessage(username, data) {
         if (target) {
             const twitterEmbed = new MessageEmbed()
                 .setColor('BLUE')
-                .setTitle(data.username + "has mentinned " + data.mentionned)
+                .setTitle(data.username + "has mentionned " + data.mentionned)
                 .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
                 .setAuthor(data.username)
 
@@ -186,7 +186,7 @@ function sendMessageTwitterInGuilds(channelsName, guilds, data) {
         if (target) {
             const twitterEmbed = new MessageEmbed()
                 .setColor('BLUE')
-                .setTitle(data.username + "has mentinned " + data.mentionned)
+                .setTitle(data.username + " has mentionned @" + data.mentionned)
                 .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
                 .setAuthor(data.username)
 
