@@ -85,7 +85,7 @@ INSERT INTO actions(description, id_service, params) VALUES ('You like a video',
 INSERT INTO actions(description, id_service, params) VALUES ('You start a stream', 4, ARRAY['Your username']);
 INSERT INTO actions(description, id_service, params) VALUES ('When you are mentionned', 1, null);
 INSERT INTO actions(description, id_service, params) VALUES ('A youtuber post a new video', 5, ARRAY['Youtuber name']);
-INSERT INTO actions(description, id_service, params) VALUES ('Spotify temp', 2, null);
+INSERT INTO actions(description, id_service, params) VALUES ('You like a song', 2, null);
 INSERT INTO actions(description, id_service, params) VALUES ('A streamer exceed an amount of viewer', 4, ARRAY['Streamer name', 'Amount']);
 INSERT INTO actions(description, id_service, params) VALUES ('A selected streamer starts a new stream', 4, ARRAY['Streamer name']);
 INSERT INTO actions(description, id_service, params) VALUES ('Spotify temp', 2, null);
