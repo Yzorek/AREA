@@ -142,7 +142,7 @@ function sendMessageTwitterInMessage(username, data) {
         if (target) {
             const twitterEmbed = new MessageEmbed()
                 .setColor('BLUE')
-                .setTitle(data.username + " has tweeted")
+                .setTitle('@' + data.username + " has tweeted")
                 .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
                 .setAuthor(data.username)
 
@@ -152,7 +152,7 @@ function sendMessageTwitterInMessage(username, data) {
         if (target) {
             const twitterEmbed = new MessageEmbed()
                 .setColor('BLUE')
-                .setTitle(data.username + "has mentionned " + data.mentionned)
+                .setTitle('@' + data.username + " has mentionned @" + data.mentionned)
                 .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
                 .setAuthor(data.username)
 
@@ -173,25 +173,21 @@ function sendMessageTwitterInGuilds(channelsName, guilds, data) {
         return;
 
     if (data.mentionned === undefined) {
-        if (target) {
             const twitterEmbed = new MessageEmbed()
                 .setColor('BLUE')
-                .setTitle(data.username + " has tweeted")
+                .setTitle('@' + data.username + " has tweeted")
                 .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
                 .setAuthor(data.username)
 
             channel.send({embeds: [twitterEmbed]});
-        }
     } else {
-        if (target) {
             const twitterEmbed = new MessageEmbed()
                 .setColor('BLUE')
-                .setTitle(data.username + " has mentionned @" + data.mentionned)
+                .setTitle('@' + data.username + " has mentionned @" + data.mentionned)
                 .setURL("https://twitter.com/" + data.username + "/status/" + data.tweet_id)
                 .setAuthor(data.username)
 
             channel.send({embeds: [twitterEmbed]});
-        }
     }
 }
 
