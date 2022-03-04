@@ -13,6 +13,7 @@ CREATE TABLE clients (
     id_status       INT,
     is_tutorial_mode bool,
     twitter_token   varchar(255),
+    spotify_token   varchar(255),
     primary key(id)
 );
 
@@ -32,7 +33,7 @@ CREATE TABLE services (
 );
 
 INSERT INTO services(name, color) VALUES ('Twitter', '#1C9CEB');
-INSERT INTO services(name, color) VALUES ('Instagram', '#CC0063');
+INSERT INTO services(name, color) VALUES ('Spotify', '#1DB954');
 INSERT INTO services(name, color) VALUES ('Discord', '#5562EA');
 INSERT INTO services(name, color) VALUES ('Twitch', '#8C45F7');
 INSERT INTO services(name, color) VALUES ('Youtube', '#F70000');
