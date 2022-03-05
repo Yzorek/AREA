@@ -1,26 +1,15 @@
-import {Grid, Paper, SvgIcon, Alert, Typography} from "@mui/material";
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import {ReactComponent as DiscordIcon} from '../../assets/discord.svg'
-import {ReactComponent as TwitchIcon} from '../../assets/twitch.svg'
-import {useContext, useEffect, useRef, useState} from "react";
+import {Grid, Paper, Alert, Typography} from "@mui/material";
+import {useContext, useState} from "react";
 import axios from "axios";
 import SkeletonServices from "./SkeletonServices";
 import React from "react";
 import AlertError from "../Tools/AlertError";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 import DialogConfirmationUnsub from "./UnsubDialog";
-import TelegramLoginButton from 'react-telegram-login';
-import ReactDOM from 'react-dom';
 
-export default function Services({onServiceSub, onGetService, checkIfAR}) {
-    const [isLoading, setIsLoading] = useState(true);
-    const [services, setServices] = useState([]);
+export default function Services({services, onServiceSub, checkIfAR, isLoading}) {
     const [serviceToDel, setServiceToDel] = useState('');
     const [isError, setIsError] = useState(false);
-    const isMounted = useRef(null);
     const [isAddOpen, setIsAddOpen] = useState(false);
     let tutorialMode = useContext(TutorialContext);
 
@@ -35,66 +24,9 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
         setIsAddOpen(true);
     }
 
-    useEffect(() => {
-        isMounted.current = true
-        const source = axios.CancelToken.source();
-        (async () => {
-            try {
-                setIsLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/services`,
-                    {
-                        cancelToken: source.token,
-                        'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                    });
-                if (isMounted && isMounted.current) {
-                    let servicesFetched = response.data;
-                    servicesFetched.forEach((element, index) => {
-                        servicesFetched[index] = {
-                            icon: iconFromName(element.name),
-                            ...element
-                        }
-                    })
-                    setServices(servicesFetched);
-                    onGetService(servicesFetched.filter((e) => e.isActive === true).length);
-                    setIsLoading(false);
-                }
-            } catch (err) {
-                if (err.response) {
-                    setIsError(true);
-                    setIsLoading(false);
-                }
-            }
-        })()
-        return () => {
-            isMounted.current = false;
-            source.cancel("Component Services GET user data got unmounted");
-        }
-    }, [onGetService])
-
-    const iconFromName = (name) => {
-        switch (name) {
-            case ('Twitter'):
-                return (<TwitterIcon sx={{fontSize: 50, color: 'white'}}/>);
-            case ('Instagram'):
-                return (<InstagramIcon sx={{fontSize: 50, color: 'white'}}/>);
-            case ('Telegram'):
-                return (<TelegramIcon sx={{fontSize: 50, color: 'white'}}/>);
-            case ('Twitch'):
-                return (<SvgIcon component={TwitchIcon} sx={{fontSize: 50, color: 'white'}} inheritViewBox/>);
-            case ('Discord'):
-                return (<SvgIcon component={DiscordIcon} sx={{fontSize: 50, color: 'white'}} inheritViewBox/>);
-            case ('Youtube'):
-                return (<YouTubeIcon sx={{fontSize: 50, color: 'white'}}/>);
-            default:
-                return (<TwitterIcon sx={{fontSize: 50, color: 'white'}}/>);
-        }
-    }
-
     const subUnsubToService = async (service, shouldDeleteAR) => {
         service.isActive = !service.isActive;
-        setServices([...services]);
-        onServiceSub([...services], shouldDeleteAR ? serviceToDel : undefined);
-        const source = axios.CancelToken.source();
+        onServiceSub(shouldDeleteAR ? serviceToDel : undefined);
         await (async () => {
             try {
                 let body = {
@@ -103,7 +35,6 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
                 };
                 await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/services/subscribe`, body,
                     {
-                        cancelToken: source.token,
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     });
             } catch (err) {
@@ -113,10 +44,6 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
             }
         })()
     }
-
-    const handleTelegramResponse = response => {
-        console.log(response);
-    };
 
     const handleServiceActivation = async (service) => {
         if (service.isActive) {
@@ -129,9 +56,10 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
         }
         else {
             if (service.name === 'Twitter') {
-                window.location.href = "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ&redirect_uri=http://localhost:8082/App/TwitterRedirect&scope=tweet.read%20tweet.write%20users.read%20follows.read%20follows.write&state=state&code_challenge=challenge&code_challenge_method=plain"
-            }
-            else {
+                window.location.href = "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/TwitterRedirect&scope=tweet.read%20tweet.write%20users.read%20follows.read%20follows.write&state=state&code_challenge=challenge&code_challenge_method=plain"
+            } else if(service.name === 'Spotify') {
+                window.location.href = "https://accounts.spotify.com/authorize?response_type=code&client_id=187c0fc794714871bbe61948b5232d56&scope=user-read-private%20user-read-email%20user-library-read%20user-read-playback-state&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/SpotifyRedirect&state=generateRandomString(16)"
+            } else {
                 subUnsubToService(service, false);
             }
         }

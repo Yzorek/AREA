@@ -13,6 +13,7 @@ CREATE TABLE clients (
     id_status       INT,
     is_tutorial_mode bool,
     twitter_token   varchar(255),
+    spotify_token   varchar(255),
     primary key(id)
 );
 
@@ -32,7 +33,7 @@ CREATE TABLE services (
 );
 
 INSERT INTO services(name, color) VALUES ('Twitter', '#1C9CEB');
-INSERT INTO services(name, color) VALUES ('Instagram', '#CC0063');
+INSERT INTO services(name, color) VALUES ('Spotify', '#1DB954');
 INSERT INTO services(name, color) VALUES ('Discord', '#5562EA');
 INSERT INTO services(name, color) VALUES ('Twitch', '#8C45F7');
 INSERT INTO services(name, color) VALUES ('Youtube', '#F70000');
@@ -81,14 +82,14 @@ CREATE TABLE actions (
 
 INSERT INTO actions(description, id_service, params) VALUES ('A new tweet from specific user is posted', 1, ARRAY['User @']);
 INSERT INTO actions(description, id_service, params) VALUES ('A streamer starts a game specific stream', 4, ARRAY['Streamer name', 'Game name']);
-INSERT INTO actions(description, id_service, params) VALUES ('Like a video', 5, null);
+INSERT INTO actions(description, id_service, params) VALUES ('You like a video', 5, null);
 INSERT INTO actions(description, id_service, params) VALUES ('You start a stream', 4, ARRAY['Your username']);
 INSERT INTO actions(description, id_service, params) VALUES ('When you are mentionned', 1, null);
-INSERT INTO actions(description, id_service, params) VALUES ('Share a new video', 5, null);
-INSERT INTO actions(description, id_service, params) VALUES ('You post a new video', 5, null);
+INSERT INTO actions(description, id_service, params) VALUES ('A youtuber post a new video', 5, ARRAY['Youtuber name']);
+INSERT INTO actions(description, id_service, params) VALUES ('You like a song', 2, null);
 INSERT INTO actions(description, id_service, params) VALUES ('A streamer exceed an amount of viewer', 4, ARRAY['Streamer name', 'Amount']);
 INSERT INTO actions(description, id_service, params) VALUES ('A selected streamer starts a new stream', 4, ARRAY['Streamer name']);
-INSERT INTO actions(description, id_service, params) VALUES ('Make a new instagram reel', 2, null);
+INSERT INTO actions(description, id_service, params) VALUES ('Spotify temp', 2, null);
 INSERT INTO actions(description, id_service, params) VALUES ('Post a tweet', 1, null);
 
 
@@ -102,10 +103,10 @@ CREATE TABLE reactions (
 );
 
 INSERT INTO reactions(description, id_service, params) VALUES ('Message a specific user on discord', 3, ARRAY['Username', 'Message']);
-INSERT INTO reactions(description, id_service, params) VALUES ('Send message to group chat', 6, ARRAY['Group name', 'Message']);
+INSERT INTO reactions(description, id_service, params) VALUES ('Send message to group chat', 6, ARRAY['Group name']);
 INSERT INTO reactions(description, id_service, params) VALUES ('Message on discord server', 3, ARRAY['Server name', 'Channel name']);
 INSERT INTO reactions(description, id_service, params) VALUES ('Post a tweet', 1, ARRAY['Tweet text']);
-INSERT INTO reactions(description, id_service, params) VALUES ('Send message at a specific user', 6, ARRAY['Message']);
+INSERT INTO reactions(description, id_service, params) VALUES ('Send message at a specific user', 6, ARRAY['User']);
 
 
 --Link Actions Reactions--

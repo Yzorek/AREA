@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const fctToken = require('../../../tools/fctToken');
 
-const fctUsers = require('./users');
+const fctAuth = require('./auth');
 
-/* GET users streamer */
-router.get('/users', fctUsers.getUsersBySearchKey);
+/* POST get bearer token */
+router.post('/auth', fctToken.auth, fctAuth.authSpotify);
 
 
 module.exports = router;
