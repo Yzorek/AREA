@@ -114,7 +114,7 @@ export default function Main() {
     }
 
     return <ThemeProvider theme={theme}>
-        <SocketContextProvider>
+        {/*<SocketContextProvider>*/}
             <UserContextProvider user={user}>
                 <TutorialContextProvider value={tutorial}>
                     <Grid container item xs={12}>
@@ -131,7 +131,7 @@ export default function Main() {
                                             justifyContent={'center'}>
                                 <MainLoader/>
                             </Grid> : <Routes>
-                                <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
+                                <Route path={`/`} element={<Navigate to={'Service'}/>}/>
                                 {services.filter((item) => item.isActive === true).map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.name} element={<SelectedRouter app={<ServicePage service={item} areas={{}} widgets={{}}/>} idRoute={item.pageId} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
                                 <Route path={`Service/`} element={<SelectedRouter app={<ServiceSettings onServicesSub={handleServicesSub}/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
@@ -154,6 +154,6 @@ export default function Main() {
                     </Grid>
                 </TutorialContextProvider>
             </UserContextProvider>
-        </SocketContextProvider>
+            {/*</SocketContextProvider>*/}
     </ThemeProvider>
 }
