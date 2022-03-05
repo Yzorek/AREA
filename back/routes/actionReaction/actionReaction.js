@@ -21,9 +21,11 @@ router.get('/reactions', fctToken.auth, fctGetAR.getServices, fctGetAR.getLinkSe
 
 router.get('/link', fctToken.auth, fctLink.getLink, (req, res) => res.status(200).send(res.locals.target))
 
-router.get('/ilian', fctToken.auth, fctLink.getLink,  fctGetAR.getServices, fctGetAR.getLinkService, (req, res) => res.status(200).send({
+router.get('/ilian', fctToken.auth, fctLink.getLink,  fctGetAR.getServices, fctGetAR.getLinkService, fctGetAR.getActions, fctGetAR.getReactions, (req, res) => res.status(200).send({
     link: res.locals.target,
     services: res.locals.services,
+    actions: res.locals.actions,
+    reactions: res.locals.reactions
 }))
 
 router.get('/service/link' /*?idService=*/, fctToken.auth, fctLink.getReactions, fctLink.getActions, fctLink.getLinkByService)

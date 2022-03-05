@@ -9,7 +9,7 @@ import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg';
 import SvgIcon from '@mui/icons-material/Twitter';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import PropFromId from '../Tools/Services';
+import {PropFromId} from '../Tools/Services';
 
 export default function AreaComponent({area, onActivation}) {
     const [isExpanded, setIsExpanded] = useState(false);
