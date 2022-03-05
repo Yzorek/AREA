@@ -1,19 +1,13 @@
 import { Add } from "@mui/icons-material";
-import { Button, Divider, Grid, Skeleton, SvgIcon, Typography } from "@mui/material";
+import { Button, Divider, Grid, Skeleton, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import AreaDialog from "../ServiceSettings/AreaDialog";
 import AreaComponent from "../Tools/AreaComponent";
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import { ReactComponent as DiscordIcon } from '../../assets/discord.svg'
-import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg'
 import axios from "axios";
 import {iconFromName, PropFromId} from '../Tools/Services';
 import AlertError from "../Tools/AlertError";
 
-export default function ServicePage({service, arLinks}) {
+export default function ServicePage({service}) {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [actions, setActions] = useState([]);
@@ -60,7 +54,7 @@ export default function ServicePage({service, arLinks}) {
             })
             try {
                 setIsLoading(true);
-                const res = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`,
+                const res = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/service/link?idService=${service.id}`,
                 {
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                 });
@@ -247,6 +241,7 @@ export default function ServicePage({service, arLinks}) {
                         onClose={handleAddClose}
                         actions={actions}
                         reactions={reactions}
+                        pageService={service}
                     />
                 </Grid>
             </Grid>

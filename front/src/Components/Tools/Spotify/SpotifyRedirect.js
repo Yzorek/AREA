@@ -2,6 +2,7 @@ import { Button, Grid } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import React from "react";
+import AlertError from "../AlertError";
 
 export default function SpotifyRedirect() {
     const [isError, setIsError] = useState(false);
@@ -16,16 +17,14 @@ export default function SpotifyRedirect() {
     const handleGoBack = async () => {
         let res = findCodeInURL(window.location.href);
         if (res !== '') {
-            console.log(res);
             try {
                 let body = {
                     code: res
                 }
-                const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/spotify/auth`, body,
+                await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/spotify/auth`, body,
                     {
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     });
-                console.log('success: ', response);
                 try {
                     let subBody = {
                         action: 'sub',
@@ -53,6 +52,7 @@ export default function SpotifyRedirect() {
     return (
         <Grid>
             <Button variant={'contained'} color={'secondary'} onClick={() => {handleGoBack()}}>Go back</Button>
+            <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>
     )
 }
