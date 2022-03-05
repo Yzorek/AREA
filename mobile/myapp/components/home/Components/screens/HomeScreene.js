@@ -3,8 +3,18 @@ import { View, Text, FlatList, StyleSheet, Alert } from "react-native";
 import { connect } from 'react-redux'
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
-import Icon from "react-native-vector-icons/FontAwesome";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+const Services = [
+  {id: 1, type: AntDesign, name: "twitter", color: "#1C9CEB"},
+  {id: 2, type: MaterialCommunityIcons, name: "trello", color: "#1DB954"},
+  {id: 3, type: MaterialCommunityIcons, name: "discord", color: "#5562EA"},
+  {id: 4, type: FontAwesome, name: "twitch", color: "#8C45F7"},
+  {id: 5, type: FontAwesome, name: "youtube", color: "#F70000"},
+  {id: 6, type: FontAwesome, name: "telegram", color: "#26A2E1"},
+]
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -12,57 +22,21 @@ class HomeScreen extends Component {
     this.state = {
       isError: false,
       services: [],
+      actions: [],
+      reactions: [],
     };
   }
 
   async componentDidMount() {
     const IP = this.props.ip
-    // const descr_service = []
-    // const descr_reaction = []
-    // const params_action = []
-    // const params_reaction = []
-    // try {
-    //     const response = await axios.get('http://'+IP+':8080/AR/',
-    //     {
-    //         'headers': {'Authorization': 'Bearer  ' + this.props.accessToken}
-    //     });
-    //     for (let data of response.data.actions) {
-    //       // this.setState({service: data})
-    //       // if (data.id_service===this.props.clickBottom) {
-    //         descr_service.push({label: data.description, value: data.id, id_service: data.id_service})
-    //         console.log("Action")
-    //         console.log(descr_service)
-    //         // this.setState({action: descr_service})
-    //         // if (data.params!==null) {
-    //         //   params_action.push({label: data.params, id: data.id})
-    //         //   this.setState({action_params: params_action})
-    //         // }
-    //       // }
-    //     }
-    //     for (let data of response.data.reactions) {
-    //       // this.setState({Reaservice: data})
-    //       descr_reaction.push({label: data.description, value: data.id, id_service: data.id_service})
-    //       console.log("Reaction")
-    //       console.log(descr_reaction)
-    //       // this.setState({reaction: descr_reaction})
-    //       // if (data.params!==null) {
-    //       //   params_reaction.push({label: data.params, id: data.id})
-    //       //   this.setState({reaction_params: params_reaction})
-    //       // }
-    //     }
-    // } catch (error) {
-    //     this.setState({isError: true})
-    //     Alert.alert(
-    //         "Please enter your email and password !",
-    //     );
-    // }
-
     try {
-        const response = await axios.get('http://'+IP+':8080/AR/link',
+        const response = await axios.get('http://'+IP+':8080/AR/ilian',
         {
             'headers': {'Authorization': 'Bearer  ' + this.props.accessToken}
         });
-        this.setState({services: response.data})
+        this.setState({services: response.data.link})
+        this.setState({actions: response.data.actions})
+        this.setState({reactions: response.data.reactions})
     } catch (error) {
         this.setState({isError: true})
         Alert.alert(
@@ -71,8 +45,61 @@ class HomeScreen extends Component {
     }
   }
 
+  _descriptionAction(item) {
+    const descr = this.state.actions.find(descr => descr.id === item.idActions);
+    if (descr!==undefined) {
+      return(descr.description)
+    }
+  }
+
+  _descriptionReaction(item) {
+    const descr = this.state.reactions.find(descr => descr.id === item.idReactions);
+    if (descr!==undefined) {
+      return(descr.description)
+    }
+  }
+
+  _iconAction(item) {
+    const descr = this.state.actions.find(descr => descr.id === item.idActions);
+    if (descr!==undefined) {
+      const icon = Services.find(icon => icon.id === descr.id_service);
+      return (
+        <icon.type name={icon.name} size={50} style={{marginTop: '3%'}} color="white" />
+      )
+    }
+  }
+
+  _iconReaction(item) {
+    const descr = this.state.reactions.find(descr => descr.id === item.idReactions);
+    if (descr!==undefined) {
+      const icon = Services.find(icon => icon.id === descr.id_service);
+      return (
+        <icon.type name={icon.name} size={50} style={{marginTop: '3%'}} color="white" />
+      )
+    }
+  }
+
+  _colorAction(item) {
+    const descr = this.state.actions.find(descr => descr.id === item.idActions);
+    if (descr!==undefined) {
+      const icon = Services.find(icon => icon.id === descr.id_service);
+      return (
+        icon.color
+      )
+    }
+  }
+
+  _colorReaction(item) {
+    const descr = this.state.reactions.find(descr => descr.id === item.idReactions);
+    if (descr!==undefined) {
+      const icon = Services.find(icon => icon.id === descr.id_service);
+      return (
+        icon.color
+      )
+    }
+  }
+
   render() {
-    // console.log(this.state.services)
     return (
       <View style={styles.container}>
         <FlatList
@@ -81,13 +108,13 @@ class HomeScreen extends Component {
           renderItem={({item}) => {  return (
               <View style={styles.view_card}>
                 <LinearGradient
-                  colors={['#136ea3', '#8c6fed']}
+                  colors={[this._colorAction(item), this._colorReaction(item)]}
                   style={{width: '100%', height: "100%", borderRadius: 10}}
                 >
                   <View style={{flexDirection: "row", width: '100%', height: "100%"}}>
                     <View style={{width: "50%", height: "100%", alignItems: "center",}}>
-                      <Icon name="twitter" size={50} style={{marginTop: '3%'}} color="white" />
-                      <Text style={[styles.txt_descr, {fontSize: 18, fontWeight: "bold"}]}>{item.idActions}</Text>
+                      {this._iconAction(item)}
+                      <Text style={[styles.txt_descr, {fontSize: 18, fontWeight: "bold"}]}>{this._descriptionAction(item)}</Text>
                         <FlatList
                           data={item.paramsAction}
                           keyExtractor={(item) => item.name}
@@ -100,8 +127,8 @@ class HomeScreen extends Component {
                     </View>
 
                     <View style={{width: "50%", height: "100%", alignItems: "center",}}>
-                      <MaterialCommunityIcons name="discord" style={{marginTop: '3%'}} size={50} color="white" />
-                      <Text style={[styles.txt_descr, {fontSize: 18, fontWeight: "bold"}]}>{item.idReactions}</Text>
+                      {this._iconReaction(item)}
+                      <Text style={[styles.txt_descr, {fontSize: 18, fontWeight: "bold"}]}>{this._descriptionReaction(item)}</Text>
                         <FlatList
                           data={item.paramsReaction}
                           keyExtractor={(item) => item.name}
