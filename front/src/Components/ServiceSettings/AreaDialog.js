@@ -6,6 +6,7 @@ import { LoadingButton } from "@mui/lab";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 import axios from "axios";
 import AlertError from "../Tools/AlertError";
+import { greyIconFromId } from "../Tools/Services";
 
 export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
     const [action, setAction] = useState('')
@@ -111,7 +112,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                                         return (
                                             <MenuItem value={element} key={`${element.id}-${index}-menuitems-action`}>
                                                 <ListItemIcon>
-                                                    {element.icon}
+                                                    {greyIconFromId(element.id_service)}
                                                 </ListItemIcon>
                                                 <ListItemText>{element.description}</ListItemText>
                                             </MenuItem>
@@ -136,7 +137,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                                         return (
                                             <MenuItem value={element} key={`${element.id}-${index}-menuitems-reaction`}>
                                                 <ListItemIcon>
-                                                    {element.icon}
+                                                    {greyIconFromId(element.id_service)}
                                                 </ListItemIcon>
                                                 <ListItemText>{element.description}</ListItemText>
                                             </MenuItem>
