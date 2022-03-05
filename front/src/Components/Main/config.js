@@ -11,6 +11,7 @@ export const DISCORD = 7
 export const TWITCH = 8
 export const YOUTUBE = 9
 export const TELEGRAM = 10
+export const CHAT = 10
 
 export const theme_default = {
     palette: {
