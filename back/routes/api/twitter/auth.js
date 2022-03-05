@@ -13,11 +13,11 @@ async function authTwitter(req, res, next) {
             code: req.body.code,
             grant_type: 'authorization_code',
             client_id: twitter.client_id,
-            redirect_uri: 'http://localhost:8082/App/TwitterRedirect',
+            redirect_uri: process.env.REACT_APP_DASHBOARD_FRONT + '/App/TwitterRedirect',
             code_verifier: 'challenge'
         }}
         let auth = 'Basic ' + btoa(twitter.client_id + ":" + twitter.client_secret);
-        const response = await axios.post(`https://api.twitter.com/2/oauth2/token?grant_type=authorization_code&code=${req.body.code}&client_id=${twitter.client_id}&redirect_uri=http://localhost:8082/App/TwitterRedirect&code_verifier=challenge`, body,
+        const response = await axios.post(`https://api.twitter.com/2/oauth2/token?grant_type=authorization_code&code=${req.body.code}&client_id=${twitter.client_id}&redirect_uri=${process.env.REACT_APP_DASHBOARD_FRONT}/App/TwitterRedirect&code_verifier=challenge`, body,
             {
                 'headers': {
                     'Content-type': 'application/x-www-form-urlencoded',

@@ -1,11 +1,10 @@
 import { Button, Grid } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import React from "react";
 
 export default function SpotifyRedirect() {
     const [isError, setIsError] = useState(false);
-    const isMounted = useRef(null);
     const findCodeInURL = (url) => {
         let result = url.indexOf("code");
         if (result !== -1) {
@@ -46,7 +45,7 @@ export default function SpotifyRedirect() {
                     setIsError(true);
                 }
             } finally {
-                window.location.href = "http://localhost:8082/App/Spotify"
+                window.location.href = `${process.env.REACT_APP_DASHBOARD_FRONT}/App/Spotify`
             }
         }
     }
