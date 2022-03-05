@@ -280,7 +280,7 @@ async function YouPostATweet(arData) {
 
 async function SomeonePostATweet(arData) {
     let user = await getTwitterUser(arData);
-    if (user === undefined || me.data === undefined || user.data.id === undefined) return;
+    if (user === undefined || user.data === undefined || user.data.id === undefined) return;
     let tweets = await getTwitterUserTweets(arData, user.data.id);
     if (tweets === undefined || tweets.meta.newest_id === undefined) return;
     let lastUserTweet = userLastTweet.find((e) => e.user_id === user.data.id && e.id_reaction === arData.id_reactions);
