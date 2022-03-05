@@ -3,11 +3,12 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import ActionsReactions from "./ActionReactions";
 import Services from "./Services";
-import PropFromId from '../Tools/Services';
+import {PropFromId, iconFromName} from '../Tools/Services';
 import AlertError from "../Tools/AlertError";
 
 export default function ServicesSettings({onServicesSub}) {
     const [areas, setAreas] = useState({
+        services: [],
         actions: [],
         reactions: [],
         myAreas: []
@@ -65,7 +66,11 @@ export default function ServicesSettings({onServicesSub}) {
         }
     }
 
-    const handleServicesSub = async (services, serviceToDel) => {
+    const handleServicesSub = async (serviceToDel) => {
+        setAreas({
+            myAreas: areas.services,
+            ...areas
+        })
         if (serviceToDel !== undefined) {
             await areas.myAreas.forEach(async (area) => {
                 if (area.action.id_service === serviceToDel.id || area.reaction.id_service === serviceToDel.id) {
@@ -73,8 +78,8 @@ export default function ServicesSettings({onServicesSub}) {
                 }
             });
         }
-        await onServicesSub(services);
-        services.filter((e) => e.isActive === true).length !== 0 ? setCanAddArea(true) : setCanAddArea(false);
+        await onServicesSub(areas.services);
+        areas.services.filter((e) => e.isActive === true).length !== 0 ? setCanAddArea(true) : setCanAddArea(false);
         await getActionsAndReactions(true);
     }
 
@@ -199,6 +204,7 @@ export default function ServicesSettings({onServicesSub}) {
                             params: params
                         }
                     })
+                    console.log(areas);
                     await (async () => {
                         try {
                             setIsLoading(true);
@@ -218,20 +224,55 @@ export default function ServicesSettings({onServicesSub}) {
                                     areasFetched[index].action.params = areasFetched[index].paramsAction;
                                     areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
                                 })
-                                areas.actions = arFetched.actions;
-                                areas.reactions = arFetched.reactions;
-                                areas.myAreas = areasFetched;
-                                setAreas(areas);
+                                console.log(areas);
+                                (async () => {
+                                    try {
+                                        setIsLoading(true);
+                                        const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/services`,
+                                            {
+                                                cancelToken: source.token,
+                                                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                                            });
+                                        if (isMounted && isMounted.current) {
+                                            let servicesFetched = response.data;
+                                            servicesFetched.forEach((element, index) => {
+                                                servicesFetched[index] = {
+                                                    icon: iconFromName(element.name),
+                                                    ...element
+                                                }
+                                            })
+                                            console.log(areas);
+                                            checkIfCanAdd(servicesFetched.filter((e) => e.isActive === true).length);
+                                            areas.services = servicesFetched;
+                                            areas.actions = arFetched.actions;
+                                            areas.reactions = arFetched.reactions;
+                                            areas.myAreas = areasFetched;
+                                            console.log(areas);
+                                            setAreas(areas);
+                                            setIsLoading(false);
+                                        }
+                                    } catch (err) {
+                                        console.log(err);
+                                        if (err.response) {
+                                            setIsError(true);
+                                            setIsLoading(false);
+                                        }
+                                    }
+                                })()
+                                setIsLoading(false);
                             }
                         } catch (err) {
+                            console.log(err);
                             if (err.response) {
                                 setIsError(true);
+                                setIsLoading(false);
                             }
                         }
                     })()
                     setIsLoading(false);
                 }
             } catch (err) {
+                console.log(err);
                 if (err.response) {
                     setIsError(true);
                     setIsLoading(false);
@@ -246,7 +287,7 @@ export default function ServicesSettings({onServicesSub}) {
 
     return (
         <Grid container item xs={12}>
-            <Services onServiceSub={handleServicesSub} onGetService={checkIfCanAdd} checkIfAR={checkIfAR}/>
+            <Services services={areas.services} onServiceSub={handleServicesSub} checkIfAR={checkIfAR} isLoading={isLoading}/>
             <Divider/>
             <ActionsReactions
             actions={areas.actions}

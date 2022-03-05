@@ -10,7 +10,7 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import { ReactComponent as DiscordIcon } from '../../assets/discord.svg'
 import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg'
 import axios from "axios";
-import PropFromId from '../Tools/Services';
+import {PropFromId} from '../Tools/Services';
 import AlertError from "../Tools/AlertError";
 
 export default function ServicePage({service, arLinks}) {

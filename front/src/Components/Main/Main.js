@@ -24,7 +24,7 @@ import WrongPageRouter from "../Tools/WrongPageRouter";
 import ServicePage from '../ServicePage/ServicePage';
 import Weather from "../Weather/Weather";
 import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext";
-import PropFromId from '../Tools/Services';
+import {PropFromId} from '../Tools/Services';
 import TwitterRedirect from '../Tools/Twitter/TwitterRedirect';
 import SpotifyRedirect from '../Tools/Spotify/SpotifyRedirect';
 
