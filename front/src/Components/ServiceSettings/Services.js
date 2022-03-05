@@ -12,8 +12,6 @@ import React from "react";
 import AlertError from "../Tools/AlertError";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 import DialogConfirmationUnsub from "./UnsubDialog";
-import TelegramLoginButton from 'react-telegram-login';
-import ReactDOM from 'react-dom';
 
 export default function Services({onServiceSub, onGetService, checkIfAR}) {
     const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +34,7 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
     }
 
     useEffect(() => {
+        console.log('test2')
         isMounted.current = true
         const source = axios.CancelToken.source();
         (async () => {
@@ -113,10 +112,6 @@ export default function Services({onServiceSub, onGetService, checkIfAR}) {
             }
         })()
     }
-
-    const handleTelegramResponse = response => {
-        console.log(response);
-    };
 
     const handleServiceActivation = async (service) => {
         if (service.isActive) {

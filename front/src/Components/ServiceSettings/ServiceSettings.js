@@ -7,9 +7,11 @@ import PropFromId from '../Tools/Services';
 import AlertError from "../Tools/AlertError";
 
 export default function ServicesSettings({onServicesSub}) {
-    const [actions, setActions] = useState([]);
-    const [reactions, setReactions] = useState([]);
-    const [myAreas, setMyAreas] = useState([]);
+    const [areas, setAreas] = useState({
+        actions: [],
+        reactions: [],
+        myAreas: []
+    })
     const [canAddArea, setCanAddArea] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +52,10 @@ export default function ServicesSettings({onServicesSub}) {
                 });
             if (response.status === 200) {
                 area.isActive = !area.isActive;
-                setMyAreas([...myAreas]);
+                setAreas({
+                    myAreas: areas.myAreas,
+                    ...areas
+                })
             }
         } catch (err) {
             console.log(err);
@@ -62,7 +67,7 @@ export default function ServicesSettings({onServicesSub}) {
 
     const handleServicesSub = async (services, serviceToDel) => {
         if (serviceToDel !== undefined) {
-            await myAreas.forEach(async (area) => {
+            await areas.myAreas.forEach(async (area) => {
                 if (area.action.id_service === serviceToDel.id || area.reaction.id_service === serviceToDel.id) {
                     await deleteAR(area.id, false);
                 }
@@ -78,7 +83,7 @@ export default function ServicesSettings({onServicesSub}) {
     }
 
     const checkIfAR = (service) => {
-        let value = myAreas.some((e) => e.action.id_service === service.id || e.reaction.id_service === service.id);
+        let value = areas.myAreas.some((e) => e.action.id_service === service.id || e.reaction.id_service === service.id);
         return (value);
     }
 
@@ -134,14 +139,15 @@ export default function ServicesSettings({onServicesSub}) {
                     areasFetched[index].action.params = areasFetched[index].paramsAction;
                     areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
                 })
-                setMyAreas(areasFetched);
+                areas.actions = arFetched.actions;
+                areas.reactions = arFetched.reactions;
+                areas.myAreas = areasFetched;
+                setAreas(areas);
             } catch (err) {
                 if (err.response) {
                     setIsError(true);
                 }
             }
-            setActions(arFetched.actions);
-            setReactions(arFetched.reactions);
             setIsLoading(!isLoadingOver);
         } catch (err) {
             if (err.response) {
@@ -152,6 +158,7 @@ export default function ServicesSettings({onServicesSub}) {
     }
 
     useEffect(() => {
+        console.log('testtttt');
         isMounted.current = true
         const source = axios.CancelToken.source();
         (async () => {
@@ -211,7 +218,10 @@ export default function ServicesSettings({onServicesSub}) {
                                     areasFetched[index].action.params = areasFetched[index].paramsAction;
                                     areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
                                 })
-                                setMyAreas(areasFetched);
+                                areas.actions = arFetched.actions;
+                                areas.reactions = arFetched.reactions;
+                                areas.myAreas = areasFetched;
+                                setAreas(areas);
                             }
                         } catch (err) {
                             if (err.response) {
@@ -219,8 +229,6 @@ export default function ServicesSettings({onServicesSub}) {
                             }
                         }
                     })()
-                    setActions(arFetched.actions);
-                    setReactions(arFetched.reactions);
                     setIsLoading(false);
                 }
             } catch (err) {
@@ -241,9 +249,9 @@ export default function ServicesSettings({onServicesSub}) {
             <Services onServiceSub={handleServicesSub} onGetService={checkIfCanAdd} checkIfAR={checkIfAR}/>
             <Divider/>
             <ActionsReactions
-            actions={actions}
-            reactions={reactions}
-            areas={myAreas}
+            actions={areas.actions}
+            reactions={areas.reactions}
+            areas={areas.myAreas}
             isLoading={isLoading}
             canAddArea={canAddArea}
             onDialogClose={onDialogClose}

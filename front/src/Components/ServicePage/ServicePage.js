@@ -13,7 +13,7 @@ import axios from "axios";
 import PropFromId from '../Tools/Services';
 import AlertError from "../Tools/AlertError";
 
-export default function ServicePage({service, widgets}) {
+export default function ServicePage({service, arLinks}) {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [actions, setActions] = useState([]);
