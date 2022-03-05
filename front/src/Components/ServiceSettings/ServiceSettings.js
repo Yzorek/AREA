@@ -169,106 +169,66 @@ export default function ServicesSettings({onServicesSub}) {
         (async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/`,
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/ilian`,
                 {
                     cancelToken: source.token,
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                 });
+                console.log(response.data);
                 if (isMounted && isMounted.current) {
-                    let arFetched = response.data;
-                    arFetched.actions.forEach((element, index) => {
+                    let actionsFetched = response.data.actions;
+                    actionsFetched.forEach((element, index) => {
                         let params = [];
                         if (element.params) {
                             element?.params.forEach((param) => {
                                 params.push({name: param, value: ''});
                             });
                         }
-                        arFetched.actions[index] = {
+                        actionsFetched[index] = {
                             icon: PropFromId(element.id_service)['icon'],
                             color: PropFromId(element.id_service)['color'],
                             ...element,
                             params: params
                         }
                     })
-                    arFetched.reactions.forEach((element, index) => {
+                    let reactionsFetched = response.data.reactions;
+                    reactionsFetched.forEach((element, index) => {
                         let params = [];
                         if (element.params) {
                             element?.params.forEach((param) => {
                                 params.push({name: param, value: ''});
                             });
                         }
-                        arFetched.reactions[index] = {
+                        reactionsFetched[index] = {
                             icon: PropFromId(element.id_service)['icon'],
                             color: PropFromId(element.id_service)['color'],
                             ...element,
                             params: params
                         }
                     })
-                    console.log(areas);
-                    await (async () => {
-                        try {
-                            setIsLoading(true);
-                            const res = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`,
-                            {
-                                cancelToken: source.token,
-                                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                            });
-                            if (isMounted && isMounted.current) {
-                                let areasFetched = res.data;
-                                areasFetched.forEach((element, index) => {
-                                    areasFetched[index] = {
-                                        action: arFetched.actions.find((e) => e.id === element.idActions),
-                                        reaction: arFetched.reactions.find((e) => e.id === element.idReactions),
-                                        ...element
-                                    }
-                                    areasFetched[index].action.params = areasFetched[index].paramsAction;
-                                    areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
-                                })
-                                console.log(areas);
-                                (async () => {
-                                    try {
-                                        setIsLoading(true);
-                                        const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/services`,
-                                            {
-                                                cancelToken: source.token,
-                                                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
-                                            });
-                                        if (isMounted && isMounted.current) {
-                                            let servicesFetched = response.data;
-                                            servicesFetched.forEach((element, index) => {
-                                                servicesFetched[index] = {
-                                                    icon: iconFromName(element.name),
-                                                    ...element
-                                                }
-                                            })
-                                            console.log(areas);
-                                            checkIfCanAdd(servicesFetched.filter((e) => e.isActive === true).length);
-                                            areas.services = servicesFetched;
-                                            areas.actions = arFetched.actions;
-                                            areas.reactions = arFetched.reactions;
-                                            areas.myAreas = areasFetched;
-                                            console.log(areas);
-                                            setAreas(areas);
-                                            setIsLoading(false);
-                                        }
-                                    } catch (err) {
-                                        console.log(err);
-                                        if (err.response) {
-                                            setIsError(true);
-                                            setIsLoading(false);
-                                        }
-                                    }
-                                })()
-                                setIsLoading(false);
-                            }
-                        } catch (err) {
-                            console.log(err);
-                            if (err.response) {
-                                setIsError(true);
-                                setIsLoading(false);
-                            }
+                    let areasFetched = response.data.link;
+                    areasFetched.forEach((element, index) => {
+                        areasFetched[index] = {
+                            action: actionsFetched.find((e) => e.id === element.idActions),
+                            reaction: reactionsFetched.find((e) => e.id === element.idReactions),
+                            ...element
                         }
-                    })()
+                        areasFetched[index].action.params = areasFetched[index].paramsAction;
+                        areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
+                    })
+                    let servicesFetched = response.data.services;
+                    servicesFetched.forEach((element, index) => {
+                        servicesFetched[index] = {
+                            icon: iconFromName(element.name),
+                            ...element
+                        }
+                    })
+                    checkIfCanAdd(servicesFetched.filter((e) => e.isActive === true).length);
+                    areas.services = servicesFetched;
+                    areas.actions = actionsFetched;
+                    areas.reactions = reactionsFetched;
+                    areas.myAreas = areasFetched;
+                    setAreas(areas);
                     setIsLoading(false);
                 }
             } catch (err) {
