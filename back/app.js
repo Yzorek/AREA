@@ -5,6 +5,7 @@ const logger = require('morgan');
 const cors = require('cors');
 const http = require("http");
 const Server = require("socket.io");
+require('dotenv').config()
 const {Telegraf} = require("telegraf");
 const token = '5160965468:AAHAcyYNrKYWrRCR_9eOfYl94Z6DIWSk7KM';
 

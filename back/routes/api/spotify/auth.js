@@ -12,7 +12,7 @@ async function authSpotify(req, res, next) {
         let body = new URLSearchParams({
                 'code': req.body.code.split('&')[0],
                 'grant_type': 'authorization_code',
-                'redirect_uri': 'http://localhost:8082/App/SpotifyRedirect',
+                'redirect_uri': process.env.REACT_APP_DASHBOARD_FRONT + '/App/SpotifyRedirect',
             }
         );
         let auth = 'Basic ' + Buffer.from(spotify.client_id + ":" + spotify.client_secret).toString("base64");
