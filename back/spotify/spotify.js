@@ -110,6 +110,42 @@ async function getPlaybackState(arData) {
     }
 }
 
+async function turnPlaybackStateToResume(arData) {
+    let spotifyToken = "";
+    try {
+        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(arData.id_user)]);
+
+        if (data.rowCount === 0) {
+            console.log("This user doesn't exist");
+        } else {
+            spotifyToken = data.rows[0].spotify_token;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+    let bearer = 'Bearer ' + spotifyToken;
+    console.log(bearer)
+    try {
+        let res = await axios.put(`https://api.spotify.com/v1/me/player/play`,
+            {
+                "context_uri": "spotify:track:78oZ26xvmtCfarveRXs3dq",
+                "offset": {
+                    "position": 0
+                },
+                "position_ms": 0,
+            },
+            {
+                'headers': {
+                    'Authorization': bearer,
+                    'Content-type': 'application/json',
+                }
+            });
+        return (res.data)
+    } catch (err) {
+        console.log(err.response.data.error)
+    }
+}
+
 async function userLikedTrack(arData) {
     let me = await getUserIdSpotify(arData)
     let lastTrackID = await getLastTrackID(arData)
@@ -167,30 +203,32 @@ async function userPlayTrack(arData) {
             playerState: undefined,
         })
     } else {
-        if (userPlayState.playerState !== playerState.actions.disallows.resuming) {
-            if (playerState.actions.disallows.resuming === true) {
-                let data = {
-                    username: me,
-                    playerState: playerState.actions.disallows.resuming,
-                    track_uri: playerState.item.uri,
+        if (playerState.actions) {
+            if (userPlayState.playerState !== playerState.actions.disallows.resuming) {
+                if (playerState.actions.disallows.resuming === true) {
+                    let data = {
+                        username: me,
+                        playerState: playerState.actions.disallows.resuming,
+                        track_uri: playerState.item.uri,
+                    }
+                    if (arData.id_reactions === 2) {
+                        let params_reaction = JSON.parse(arData.params_reaction);
+                        require('../bot_telegram/app').sendMessageSpotifyLikedTrackInTelegramToGroup(data, params_reaction[0].value)
+                    } else if (arData.id_reactions === 3) {
+                        let params_reaction = JSON.parse(arData.params_reaction);
+                        require('../bot_discord/app').sendMessageSpotifyInGuilds(params_reaction[1].value, params_reaction[0].value, data)
+                    } else if (arData.id_reactions === 1) {
+                        let params_reaction = JSON.parse(arData.params_reaction);
+                        require('../bot_discord/app').sendMessageSpotifyInMessage(params_reaction[0].value, data)
+                    } else if (arData.id_reactions === 5) {
+                        let params_reaction = JSON.parse(arData.params_reaction);
+                        require('../bot_telegram/app').sendMessageSpotifyLikedTrackToUserTelegram(data, params_reaction[0].value)
+                    } else if (arData.id_reactions === 4) {
+                        require('../twitter/twitter').postTweet(arData)
+                    }
                 }
-                if (arData.id_reactions === 2) {
-                    let params_reaction = JSON.parse(arData.params_reaction);
-                    require('../bot_telegram/app').sendMessageSpotifyLikedTrackInTelegramToGroup(data, params_reaction[0].value)
-                } else if (arData.id_reactions === 3) {
-                    let params_reaction = JSON.parse(arData.params_reaction);
-                    require('../bot_discord/app').sendMessageSpotifyInGuilds(params_reaction[1].value, params_reaction[0].value, data)
-                } else if (arData.id_reactions === 1) {
-                    let params_reaction = JSON.parse(arData.params_reaction);
-                    require('../bot_discord/app').sendMessageSpotifyInMessage(params_reaction[0].value, data)
-                } else if (arData.id_reactions === 5) {
-                    let params_reaction = JSON.parse(arData.params_reaction);
-                    require('../bot_telegram/app').sendMessageSpotifyLikedTrackToUserTelegram(data, params_reaction[0].value)
-                } else if (arData.id_reactions === 4) {
-                    require('../twitter/twitter').postTweet(arData)
-                }
+                userPlayState.playerState = playerState.actions.disallows.resuming
             }
-            userPlayState.playerState = playerState.actions.disallows.resuming
         }
     }
 }
@@ -203,6 +241,8 @@ async function reloadSpotifyManagement() {
             if (item.id_actions === 7) {
                 console.log("==== Get Tracks ====")
                 userLikedTrack(item)
+                console.log("==== Play Tracks ====")
+                turnPlaybackStateToResume(item)
             } else if (item.id_actions === 10) {
                 console.log("==== Get State Playback ====")
                 userPlayTrack(item)
@@ -215,4 +255,5 @@ async function reloadSpotifyManagement() {
 
 module.exports = {
     reloadSpotifyManagement,
+    turnPlaybackStateToResume,
 }
