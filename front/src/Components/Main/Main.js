@@ -68,11 +68,13 @@ export default function Main() {
                     setIsFirstLoading(false);
                 }
             } catch (err) {
+                console.log(err);
                 if (err.response) {
                     alert('Error has occured please retry your connection.');
                     navigate('/Login');
                     setIsLoading(false);
                 }
+                setIsLoading(false);
             }
         })()
         return () => {
