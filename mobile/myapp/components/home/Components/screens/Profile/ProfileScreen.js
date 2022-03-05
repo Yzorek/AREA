@@ -21,7 +21,7 @@ class ProfileScreen extends Component {
       isSaving: false,
       isLoading: false,
       Reload: true,
-      email: "", password: "", firstName: "", lastName: "", username: "", conf_pwd: ""
+      email: "", password: "", firstName: "", lastName: "", username: "", conf_pwd: "", avatar: ""
     };
   }
 
@@ -47,6 +47,7 @@ class ProfileScreen extends Component {
         lastName: this.state.data.lastName,
         email: this.state.data.email,
         password: this.state.data.password,
+        avatar: this.state.data.avatar,
       })
     } catch (error) {
       this.setState({
@@ -83,10 +84,20 @@ class ProfileScreen extends Component {
     }
   }
 
+  _displayAvatar() {
+    if (this.state.avatar!==null) {
+      return (<Image style={styles.profil_img} source={{uri: this.state.avatar}}/>)
+    }
+    else {
+      return (<Image style={styles.profil_img} source={{uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}}/>)
+    }
+  }
+
   render() {
+    console.log(this.state.avatar)
     return (
       <View style={styles.container}>
-        <Image style={styles.profil_img} source={{uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}}/>
+        {this._displayAvatar()}
         <View style={{flexDirection: "row", alignItems: 'center', marginBottom: "5%"}}>
           <Text style={styles.txt_name}>{this.state.username}</Text>
         </View>

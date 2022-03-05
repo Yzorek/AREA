@@ -3,14 +3,14 @@ import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, Dimensions,
 import { connect } from 'react-redux'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../../charte/colors';
 
 const bottomBar = [
     {id: 7, label: "Home", typicon: FontAwesome5, namicon: "home"},
-    {id: 8, label: "Notifications", typicon: Ionicons, namicon: "notifications"},
-    {id: 9, label: "Profil", typicon: Ionicons, namicon: "person"},
     {id: 10, label: "Service Settings", typicon: Ionicons, namicon: "settings"},
+    {id: 9, label: "Profil", typicon: Ionicons, namicon: "person"},
+    {id: 8, label: "Manage Account", typicon: MaterialCommunityIcons, namicon: "account-cog"},
 ];
 
 class Bottom extends Component{

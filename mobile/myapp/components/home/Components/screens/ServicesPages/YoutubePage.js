@@ -80,7 +80,7 @@ class YoutubePage extends Component {
                 <View style={styles.textinput}>
                   <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ActionInput_1: value})}}/>
                 </View>
-                <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsAction: {name: data.label[0], value: this.state.ActionInput_1}, okIsPressed: true})}}>
+                <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsAction: [{name: data.label[0], value: this.state.ActionInput_1}], okIsPressed: true})}}>
                   <Text style={{fontWeight: "bold"}}>OK</Text>
                 </TouchableOpacity>
               </View>
@@ -126,7 +126,7 @@ class YoutubePage extends Component {
                 <View style={styles.textinput}>
                   <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ReactionInput_1: value})}}/>
                 </View>
-                <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsReaction: {name: data.label[0], value: this.state.ReactionInput_1}, okIsPressed_2: true})}}>
+                <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsReaction: [{name: data.label[0], value: this.state.ReactionInput_1}], okIsPressed_2: true})}}>
                   <Text style={{fontWeight: "bold"}}>OK</Text>
                 </TouchableOpacity>
               </View>
