@@ -10,7 +10,7 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import { ReactComponent as DiscordIcon } from '../../assets/discord.svg'
 import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg'
 import axios from "axios";
-import {PropFromId} from '../Tools/Services';
+import {iconFromName, PropFromId} from '../Tools/Services';
 import AlertError from "../Tools/AlertError";
 
 export default function ServicePage({service, arLinks}) {
@@ -210,25 +210,6 @@ export default function ServicePage({service, arLinks}) {
 
     const handleAddOpen = async () => {
         setIsAddOpen(true);
-    }
-
-    const iconFromName = (name) => {
-        switch (name) {
-            case ('Twitter'):
-                return (<TwitterIcon sx={{ fontSize: 50, color: 'white' }}/>);
-            case ('Instagram'):
-                return (<InstagramIcon sx={{ fontSize: 50, color: 'white' }}/>);
-            case ('Telegram'):
-                return (<TelegramIcon sx={{ fontSize: 50, color: 'white' }}/>);
-            case ('Twitch'):
-                return (<SvgIcon component={TwitchIcon} sx={{ fontSize: 50, color: 'white' }} inheritViewBox/>);
-            case ('Discord'):
-                return (<SvgIcon component={DiscordIcon} sx={{ fontSize: 50, color: 'white' }} inheritViewBox/>);
-            case ('Youtube'):
-                return (<YouTubeIcon sx={{ fontSize: 50, color: 'white' }}/>);
-            default:
-                return (<TwitterIcon sx={{ fontSize: 50, color: 'white' }}/>);
-        }
     }
 
     return (
