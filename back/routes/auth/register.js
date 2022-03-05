@@ -38,7 +38,7 @@ async function sendToken(req, res) {
 
 function identificationMail(req, res, next) {
     try {
-        fctMail.createMail(req.body.email, "Welcome to Ulys! Please confirme your email! to Ulys application!", `http://localhost:8082/identification/${res.locals.id}?code=${makeCode(6)}`,
+        fctMail.createMail(req.body.email, "Welcome to Ulys! Please confirme your email! to Ulys application!", `${process.env.REACT_APP_DASHBOARD_FRONT}/identification/${res.locals.id}?code=${makeCode(6)}`,
             `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
@@ -289,7 +289,7 @@ function identificationMail(req, res, next) {
                                                                     <w:anchorlock/>
                                                                     <center style="color:#FFFFFF;font-family:arial,helvetica,sans-serif;">
                                                     <![endif]-->
-                                                    <a href="http://localhost:8082/identification/${res.locals.id}?code=${makeCode(6)}" target="_blank"
+                                                    <a href="${process.env.REACT_APP_DASHBOARD_FRONT}/identification/${res.locals.id}?code=${makeCode(6)}" target="_blank"
                                                        style="box-sizing: border-box;display: inline-block;font-family:arial,helvetica,sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #234066; border-radius: 7px;-webkit-border-radius: 7px; -moz-border-radius: 7px; width:62%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;border-top-width: 0px; border-top-style: dotted; border-top-color: #CCC; border-left-width: 0px; border-left-style: dotted; border-left-color: #CCC; border-right-width: 0px; border-right-style: dotted; border-right-color: #CCC; border-bottom-width: 0px; border-bottom-style: dotted; border-bottom-color: #CCC;">
                                                         <span style="display:block;padding:10px 20px;line-height:120%;"><span
                                                                 style="font-size: 14px; line-height: 16.8px;">Click here to confirm your email</span></span>
@@ -342,7 +342,7 @@ function identificationMail(req, res, next) {
                                                     <!--[if (mso)|(IE)]>
                                                     <td style="padding:10px"><![endif]-->
 
-                                                    <a href="http://localhost:8082" target="_self"
+                                                    <a href="${process.env.REACT_APP_DASHBOARD_FRONT}" target="_self"
                                                        style="padding:10px;display:inline-block;color:#0068A5;font-family:'Rubik',sans-serif;font-size:14px;text-decoration:none">
                                                         Accueil
                                                     </a>
@@ -361,7 +361,7 @@ function identificationMail(req, res, next) {
                                                     <!--[if (mso)|(IE)]>
                                                     <td style="padding:10px"><![endif]-->
 
-                                                    <a href="http://localhost:8082/App/Dashboard" target="_self"
+                                                    <a href="${process.env.REACT_APP_DASHBOARD_FRONT}/App/Dashboard" target="_self"
                                                        style="padding:10px;display:inline-block;color:#0068A5;font-family:'Rubik',sans-serif;font-size:14px;text-decoration:none">
                                                         Dashboard
                                                     </a>
@@ -380,7 +380,7 @@ function identificationMail(req, res, next) {
                                                     <!--[if (mso)|(IE)]>
                                                     <td style="padding:10px"><![endif]-->
 
-                                                    <a href="http://localhost:8082/App/Profile/Me" target="_self"
+                                                    <a href="${process.env.REACT_APP_DASHBOARD_FRONT}/App/Profile/Me" target="_self"
                                                        style="padding:10px;display:inline-block;color:#0068A5;font-family:'Rubik',sans-serif;font-size:14px;text-decoration:none">
                                                         Profile
                                                     </a>
@@ -399,7 +399,7 @@ function identificationMail(req, res, next) {
                                                     <!--[if (mso)|(IE)]>
                                                     <td style="padding:10px"><![endif]-->
 
-                                                    <a href="http://localhost:8082/App/Service" target="_self"
+                                                    <a href="${process.env.REACT_APP_DASHBOARD_FRONT}/App/Service" target="_self"
                                                        style="padding:10px;display:inline-block;color:#0068A5;font-family:'Rubik',sans-serif;font-size:14px;text-decoration:none">
                                                         Service
                                                     </a>

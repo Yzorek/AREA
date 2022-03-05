@@ -5,7 +5,6 @@ import {Button, Divider, Grid, IconButton, InputAdornment, Paper, Snackbar, Text
 import {Email, Create, Lock, Visibility, VisibilityOff, Google} from "@mui/icons-material";
 import {Alert, LoadingButton} from '@mui/lab';
 import { GoogleLogin } from 'react-google-login';
-import TelegramLoginButton from 'react-telegram-login';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -19,7 +18,7 @@ export default function Login() {
     const onSuccessGoogle = (response) => {
         (async () => {
             try {
-                await loginInSerer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
+                await loginInServer('google', response.profileObj.googleId, response.profileObj.email, response.profileObj.familyName, response.profileObj.givenName, response.profileObj.imageUrl)
             } catch (err) {
                 console.log(err);
             }
@@ -32,7 +31,7 @@ export default function Login() {
         setIsGoogleError(true);
     }
 
-    async function loginInSerer(type, pass, mail, lName = "", FName = "", avatar = "") {
+    async function loginInServer(type, pass, mail, lName = "", FName = "", avatar = "") {
         try {
             setIsLoading(true);
             let body = {
@@ -63,7 +62,7 @@ export default function Login() {
 
     async function onSubmit(e) {
         e.preventDefault();
-        await loginInSerer('local', password, email);
+        await loginInServer('local', password, email);
     }
 
     const handleTelegramResponse = response => {
@@ -146,7 +145,6 @@ export default function Login() {
                                 onFailure={onFailureGoogle}
                                 cookiePolicy={'single_host_origin'}
                             />
-                            <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="OdauBot" />,
                         </Grid>
                     </Grid>
 

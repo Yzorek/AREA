@@ -142,4 +142,4 @@ const mapStateToProps = (state) => {
   ip: state.ip
   }
 }
-export default connect(mapStateToProps)(UpdatePwd) 
+export default connect(mapStateToProps)(UpdatePwd)

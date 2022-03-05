@@ -6,6 +6,7 @@ import { LoadingButton } from "@mui/lab";
 import TutorialContext from "../Tools/TutorialContext/TutorialContext";
 import axios from "axios";
 import AlertError from "../Tools/AlertError";
+import { greyIconFromId } from "../Tools/Services";
 
 export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
     const [action, setAction] = useState('')
@@ -31,13 +32,13 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                 });
             setIsLoading(false)
+            onClose(true);
         } catch (err) {
             if (err.response) {
                 setIsError(true)
                 setIsLoading(false)
             }
         }
-        onClose(true);
     }
 
     const handleClose = () => {
@@ -63,10 +64,6 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
         }
 
         await saveArea();
-        onClose({
-            action: action,
-            reaction: reAction
-        });
         setAction('');
         setReAction('');
         setIsActionNeeded(false);
@@ -115,7 +112,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                                         return (
                                             <MenuItem value={element} key={`${element.id}-${index}-menuitems-action`}>
                                                 <ListItemIcon>
-                                                    {element.icon}
+                                                    {greyIconFromId(element.id_service)}
                                                 </ListItemIcon>
                                                 <ListItemText>{element.description}</ListItemText>
                                             </MenuItem>
@@ -140,7 +137,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                                         return (
                                             <MenuItem value={element} key={`${element.id}-${index}-menuitems-reaction`}>
                                                 <ListItemIcon>
-                                                    {element.icon}
+                                                    {greyIconFromId(element.id_service)}
                                                 </ListItemIcon>
                                                 <ListItemText>{element.description}</ListItemText>
                                             </MenuItem>
@@ -150,7 +147,7 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                             </FormControl>
                         </Grid>
                         <Grid container item xs={12}>
-                            <Grid container item xs={6} justifyContent={'center'} alignItems={'center'} direction={'column'}>
+                            <Grid container item xs={6} justifyContent={'center'} alignItems={'center'}>
                                 {action && action.params.map((element, index) => {
                                     return (
                                         <Grid container item xs={12} key={`${index}-action-params`} style={{'paddingTop': 20}}>

@@ -1,7 +1,6 @@
 import { Add } from "@mui/icons-material";
 import { Button, Divider, Grid, Skeleton, SvgIcon, Typography } from "@mui/material";
-import { useState } from "react";
-import { Actions, Reactions } from "../ServiceSettings/ActionsList";
+import { useEffect, useRef, useState } from "react";
 import AreaDialog from "../ServiceSettings/AreaDialog";
 import AreaComponent from "../Tools/AreaComponent";
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -10,51 +9,207 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import { ReactComponent as DiscordIcon } from '../../assets/discord.svg'
 import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg'
+import axios from "axios";
+import {iconFromName, PropFromId} from '../Tools/Services';
+import AlertError from "../Tools/AlertError";
 
-export default function ServicePage({service, widgets}) {
+export default function ServicePage({service, arLinks}) {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [areas, setAreas] = useState([])
+    const [actions, setActions] = useState([]);
+    const [reactions, setReactions] = useState([]);
+    const [areas, setAreas] = useState([]);
+    const [isError, setIsError] = useState(false);
+    const isMounted = useRef(null);
 
-    const handleAddClose = (value) => {
-        if (Object.keys(value).length !== 0) {              // TODO pass by request
-            let newArray = areas;
-            newArray.push({
-                action: value.action,
-                reaction: value.reaction,
-                isActive: true,
+    const getActionsAndReactions = async (isLoadingOver) => {
+        try {
+            setIsLoading(true);
+            const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/`,
+            {
+                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
             });
-            setAreas(newArray);
+            let arFetched = response.data;
+            arFetched.actions.forEach((element, index) => {
+                let params = [];
+                if (element.params) {
+                    element?.params.forEach((param) => {
+                        params.push({name: param, value: ''});
+                    });
+                }
+                arFetched.actions[index] = {
+                    icon: PropFromId(element.id_service)['icon'],
+                    color: PropFromId(element.id_service)['color'],
+                    ...element,
+                    params: params
+                }
+            })
+            arFetched.reactions.forEach((element, index) => {
+                let params = [];
+                if (element.params) {
+                    element?.params.forEach((param) => {
+                        params.push({name: param, value: ''});
+                    });
+                }
+                arFetched.reactions[index] = {
+                    icon: PropFromId(element.id_service)['icon'],
+                    color: PropFromId(element.id_service)['color'],
+                    ...element,
+                    params: params
+                }
+            })
+            try {
+                setIsLoading(true);
+                const res = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/link`,
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+                let areasFetched = res.data;
+                areasFetched.forEach((element, index) => {
+                    areasFetched[index] = {
+                        action: arFetched.actions.find((e) => e.id === element.idActions),
+                        reaction: arFetched.reactions.find((e) => e.id === element.idReactions),
+                        ...element
+                    }
+                    areasFetched[index].action.params = areasFetched[index].paramsAction;
+                    areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
+                })
+                setAreas(areasFetched);
+            } catch (err) {
+                if (err.response) {
+                    setIsError(true);
+                }
+            }
+            setActions(arFetched.actions);
+            setReactions(arFetched.reactions);
+            setIsLoading(!isLoadingOver);
+        } catch (err) {
+            if (err.response) {
+                setIsError(true);
+                setIsLoading(!isLoadingOver);
+            }
+        }
+    }
+
+    useEffect(() => {
+        isMounted.current = true
+        const source = axios.CancelToken.source();
+        (async () => {
+            try {
+                setIsLoading(true);
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/`,
+                {
+                    cancelToken: source.token,
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+                if (isMounted && isMounted.current) {
+                    let arFetched = response.data;
+                    arFetched.actions.forEach((element, index) => {
+                        let params = [];
+                        if (element.params) {
+                            element?.params.forEach((param) => {
+                                params.push({name: param, value: ''});
+                            });
+                        }
+                        arFetched.actions[index] = {
+                            icon: PropFromId(element.id_service)['icon'],
+                            color: PropFromId(element.id_service)['color'],
+                            ...element,
+                            params: params
+                        }
+                    })
+                    arFetched.reactions.forEach((element, index) => {
+                        let params = [];
+                        if (element.params) {
+                            element?.params.forEach((param) => {
+                                params.push({name: param, value: ''});
+                            });
+                        }
+                        arFetched.reactions[index] = {
+                            icon: PropFromId(element.id_service)['icon'],
+                            color: PropFromId(element.id_service)['color'],
+                            ...element,
+                            params: params
+                        }
+                    })
+                    await (async () => {
+                        try {
+                            setIsLoading(true);
+                            const res = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/AR/service/link?idService=${service.id}`,
+                            {
+                                cancelToken: source.token,
+                                'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                            });
+                            if (isMounted && isMounted.current) {
+                                let areasFetched = res.data;
+                                areasFetched.forEach((element, index) => {
+                                    areasFetched[index] = {
+                                        action: arFetched.actions.find((e) => e.id === element.idActions),
+                                        reaction: arFetched.reactions.find((e) => e.id === element.idReactions),
+                                        ...element
+                                    }
+                                    areasFetched[index].action.params = areasFetched[index].paramsAction;
+                                    areasFetched[index].reaction.params = areasFetched[index].paramsReaction;
+                                })
+                                setAreas(areasFetched);
+                            }
+                        } catch (err) {
+                            if (err.response) {
+                                setIsError(true);
+                            }
+                        }
+                    })()
+                    setActions(arFetched.actions);
+                    setReactions(arFetched.reactions);
+                    setIsLoading(false);
+                }
+            } catch (err) {
+                if (err.response) {
+                    setIsError(true);
+                    setIsLoading(false);
+                }
+            }
+        })()
+        return () => {
+            isMounted.current = false;
+            source.cancel("Component Services GET user data got unmounted");
+        }
+    }, [service])
+
+    const handleAddClose = async (value) => {
+        if (value === true) {
+            await getActionsAndReactions(true);
         }
         setIsAddOpen(false);
     }
 
-    const handleAreaActivation = (item) => {                // TODO request
-        item.isActive = !item.isActive;
-        setAreas([...areas]);
+    const handleAreaActivation = async (area) => {
+        try {
+            let body = {
+                idAction: area.action.id,
+                idReaction: area.reaction.id,
+                paramsAction: area.action.params,
+                paramsReaction: area.reaction.params,
+                isActive: !area.isActive
+            }
+            let response = await axios.put(`${process.env.REACT_APP_DASHBOARD_API}/AR/link/${area.id}`, body,
+                {
+                    'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
+                });
+            if (response.status === 200) {
+                area.isActive = !area.isActive;
+                setAreas([...areas]);
+            }
+        } catch (err) {
+            console.log(err);
+            if (err.response) {
+                setIsError(true)
+            }
+        }
     }
 
     const handleAddOpen = async () => {
         setIsAddOpen(true);
-    }
-
-    const iconFromName = (name) => {
-        switch (name) {
-            case ('Twitter'):
-                return (<TwitterIcon sx={{ fontSize: 50, color: 'white' }}/>);
-            case ('Instagram'):
-                return (<InstagramIcon sx={{ fontSize: 50, color: 'white' }}/>);
-            case ('Telegram'):
-                return (<TelegramIcon sx={{ fontSize: 50, color: 'white' }}/>);
-            case ('Twitch'):
-                return (<SvgIcon component={TwitchIcon} sx={{ fontSize: 50, color: 'white' }} inheritViewBox/>);
-            case ('Discord'):
-                return (<SvgIcon component={DiscordIcon} sx={{ fontSize: 50, color: 'white' }} inheritViewBox/>);
-            case ('Youtube'):
-                return (<YouTubeIcon sx={{ fontSize: 50, color: 'white' }}/>);
-            default:
-                return (<TwitterIcon sx={{ fontSize: 50, color: 'white' }}/>);
-        }
     }
 
     return (
@@ -90,11 +245,12 @@ export default function ServicePage({service, widgets}) {
                     <AreaDialog
                         isAddOpen={isAddOpen}
                         onClose={handleAddClose}
-                        actions={Actions}                               // TEMP
-                        reactions={Reactions}
+                        actions={actions}
+                        reactions={reactions}
                     />
                 </Grid>
             </Grid>
+            <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>
     )
 }

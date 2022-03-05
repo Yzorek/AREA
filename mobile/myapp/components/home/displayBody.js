@@ -2,14 +2,16 @@ import React, { Component, useEffect } from "react";
 import { Text, SafeAreaView, StyleSheet, View } from "react-native";
 import { connect } from 'react-redux'
 
+import HomeScreen from "./Components/screens/HomeScreene"
 import SettingsScreen from "./Components/screens/SettingsScreen";
-import ProfileScreen from "./Components/screens/Profile/ProfileScreen"
-import TrelloPage from "./Components/screens/ServicesPages/TrelloPage";
-import TwitterPage from "./Components/screens/ServicesPages/TwitterPage";
-import TelegramPage from "./Components/screens/ServicesPages/TelegramPage";
-import TwitchPage from "./Components/screens/ServicesPages/TwitchPage";
-import YoutubePage from "./Components/screens/ServicesPages/YoutubePage";
-import DiscordPage from "./Components/screens/ServicesPages/DiscordPage";
+import ProfileScreen from "./Components/screens/Profile/ProfileScreene"
+import TrelloPage from "./Components/screens/ServicesPages/TrelloPagee";
+import TwitterPage from "./Components/screens/ServicesPages/TwitterPagee";
+import TelegramPage from "./Components/screens/ServicesPages/TelegramPagee";
+import TwitchPage from "./Components/screens/ServicesPages/TwitchPagee";
+import YoutubePage from "./Components/screens/ServicesPages/YoutubePagee";
+import DiscordPage from "./Components/screens/ServicesPages/DiscordPagee";
+import AccountScreen from "./Components/screens/AccountScreen";
 
 class DisplayBody extends Component {
   constructor(props) {
@@ -27,6 +29,18 @@ class DisplayBody extends Component {
     else if (this.props.clickBottom===9) {
       return (
         <ProfileScreen/>
+      )
+    }
+
+    else if (this.props.clickBottom===7) {
+      return (
+        <HomeScreen/>
+      )
+    }
+
+    else if (this.props.clickBottom===8) {
+      return (
+        <AccountScreen/>
       )
     }
 

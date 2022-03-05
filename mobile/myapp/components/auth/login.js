@@ -21,7 +21,7 @@ class Login extends Component{
         this.setState({isMount: true})
     }
 
-    _onSuccessGoogle = () => {
+    _onSuccessGoogle = async () => {
         const config = {
             androidClientId: "278231454576-i92vk8rv49ge3gguru6bp0gpqs63js0g.apps.googleusercontent.com",
             scopes: ['profile', 'email']
@@ -32,20 +32,28 @@ class Login extends Component{
             .then(async (result) => {
                 const {type, user} = result
                 if (type==='success') {
-                    console.log(user)
-                    // let body = {
-                    //     email: user.email,
-                    //     password: user.id,
-                    //     type: 'google'
-                    // }
-                    // const response = await axios.post(
-                    //     'http://'+IP+':8080/auth/login', body
-                    // );
-                    // console.log(response)
-                    // this.props.dispatch({type: "accessToken", value: response.data.accessToken})
-                    // this.props.dispatch({type: 'index', value: 2});
-                    // this.setState({isError: false})
-                    this.props.dispatch({type: 'index', value: 2});
+                    try {
+                        let body = {
+                            email: user.email, //STRING
+                            password: user.id, //STRING
+                            username: user.name, //STRING
+                            firstName: user.familyName, //STRING
+                            lastName: user.givenName, //STRING
+                            avatar: user.photoUrl, //STRING
+                            auth: "google"
+                        }
+                        const response = await axios.post(
+                            'http://'+IP+':8080/auth/login', body
+                        );
+                        this.props.dispatch({type: "accessToken", value: response.data.accessToken})
+                        this.props.dispatch({type: 'index', value: 2});
+                        this.setState({isError: false})
+                    } catch (error) {
+                        this.setState({isError: true})
+                        Alert.alert(
+                            "You can't Login In with Google !",
+                        );
+                    }
                 }
                 else {
                     Alert.alert(
@@ -70,7 +78,7 @@ class Login extends Component{
                 let body = {
                     email: email,
                     password: pwd,
-                    type: type
+                    auth: type
                 }
                 const response = await axios.post(
                     'http://'+IP+':8080/auth/login', body
@@ -88,58 +96,12 @@ class Login extends Component{
         this.setState({isMount: false})
     }
 
-    _loginGoogle = async () => {
-        const IP = this.props.ip
-        const config = {
-            androidClientId: "278231454576-i92vk8rv49ge3gguru6bp0gpqs63js0g.apps.googleusercontent.com",
-            scopes: ['profile', 'email']
-        };
-        Google
-            .logInAsync(config)
-            .then(async (result) => {
-                const {type, user} = result
-                if (type=='success') {
-                    try {
-                        let body = {
-                            email: user.email,
-                            password: user.id,
-                            type: 'google'
-                        }
-                        console.log(result)
-                        const response = await axios.post(
-                            'http://'+IP+':8080/auth/login', body
-                        );
-                        this.props.dispatch({type: "accessToken", value: response.data.accessToken})
-                        this.props.dispatch({type: 'index', value: 2});
-                        this.setState({isError: false})
-                    } catch (error) {
-                        this.setState({isError: true})
-                        Alert.alert(
-                            "Please enter your email and password !",
-                        );
-                    }
-                }
-                else {
-                    Alert.alert(
-                        "Error !",
-                        "You can't Login In with Google !",
-                    );
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                Alert.alert(
-                    "You can't Login In with Google !",
-                );
-            })
-    }
-
     _onSubmit = async () => {
         await this._conditionToGoHome('local', this.state.email, this.state.password)
-        console.log("token => "+this.props.accessToken)
     }
 
     render() {
+        console.log("token => "+this.props.accessToken)
         return (
             <View style={styles.container}>
                 <Image

@@ -24,7 +24,9 @@ import WrongPageRouter from "../Tools/WrongPageRouter";
 import ServicePage from '../ServicePage/ServicePage';
 import Weather from "../Weather/Weather";
 import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext";
-import PropFromId from '../Tools/Services';
+import {PropFromId} from '../Tools/Services';
+import TwitterRedirect from '../Tools/Twitter/TwitterRedirect';
+import SpotifyRedirect from '../Tools/Spotify/SpotifyRedirect';
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -66,11 +68,13 @@ export default function Main() {
                     setIsFirstLoading(false);
                 }
             } catch (err) {
+                console.log(err);
                 if (err.response) {
                     alert('Error has occured please retry your connection.');
                     navigate('/Login');
                     setIsLoading(false);
                 }
+                setIsLoading(false);
             }
         })()
         return () => {
@@ -112,7 +116,7 @@ export default function Main() {
     }
 
     return <ThemeProvider theme={theme}>
-        <SocketContextProvider>
+        {/*<SocketContextProvider>*/}
             <UserContextProvider user={user}>
                 <TutorialContextProvider value={tutorial}>
                     <Grid container item xs={12}>
@@ -129,11 +133,13 @@ export default function Main() {
                                             justifyContent={'center'}>
                                 <MainLoader/>
                             </Grid> : <Routes>
-                                <Route path={`/`} element={<Navigate to={'Dashboard'}/>}/>
+                                <Route path={`/`} element={<Navigate to={'Service'}/>}/>
                                 {services.filter((item) => item.isActive === true).map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.name} element={<SelectedRouter app={<ServicePage service={item} areas={{}} widgets={{}}/>} idRoute={item.pageId} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
                                 <Route path={`Service/`} element={<SelectedRouter app={<ServiceSettings onServicesSub={handleServicesSub}/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Profile/*`} element={<SelectedRouter app={<Profile handleThemeChange={handleThemeChange}/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
+                                <Route path={`TwitterRedirect`} element={<SelectedRouter app={<TwitterRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route path={`SpotifyRedirect`} element={<SelectedRouter app={<SpotifyRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`Weather/*`}
                                     element={<SelectedRouter app={<Weather/>} idRoute={API_WEATHER}
                                     setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
@@ -150,6 +156,6 @@ export default function Main() {
                     </Grid>
                 </TutorialContextProvider>
             </UserContextProvider>
-        </SocketContextProvider>
+            {/*</SocketContextProvider>*/}
     </ThemeProvider>
 }
