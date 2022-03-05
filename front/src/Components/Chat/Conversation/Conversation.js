@@ -1,15 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {CircularProgress, Grid, IconButton, InputAdornment, TextField} from "@mui/material";
+import {CircularProgress, Grid, IconButton, InputAdornment, TextField, Tooltip} from "@mui/material";
 import axios from "axios";
 import AlertError from "../../Tools/AlertError";
 import SkeletonConversation from "./SkeletonConversation";
-import {AddBox, Edit, Search} from "@mui/icons-material";
+import {AddBox, Search} from "@mui/icons-material";
+import DialogNewConversation from "./DialogNewConversation";
 
 export default function Conversation({}) {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState([]);
     const [isReload, setIsReload] = useState(false)
     const [isError, setIsError] = useState(false)
+    const [openDialogNewConv, setOpenDialogNewConv] = useState(false);
     const isMounted = useRef(null)
 
     useEffect(() => {
@@ -28,11 +30,13 @@ export default function Conversation({}) {
                 if (isMounted && isMounted.current) {
                     setData(response.data)
                     setIsLoading(false)
+                    setIsReload(false)
                 }
             } catch (err) {
                 if (err.response) {
                     setIsError(true)
                     setIsLoading(false)
+                    setIsReload(false)
                 }
             }
         })()
@@ -42,10 +46,17 @@ export default function Conversation({}) {
         };
     }, [isReload])
 
-    return <Grid container item xs={3} style={{height: '100%'}} sx={{borderRight: 1, borderColor: 'divider'}} display={'block'}>
+    function handleCloseDialogNewConv(isToReload) {
+        setOpenDialogNewConv(false);
+        setIsReload(isToReload);
+    }
+
+    return <Grid container item xs={3} style={{height: '100%'}} sx={{borderRight: 1, borderColor: 'divider'}}
+                 display={'block'}>
         <Grid container item xs={12} sx={{p: 1, borderBottom: 1, borderColor: 'divider'}}>
             <Grid item xs={10}>
-                <TextField disabled={isLoading} variant={'outlined'} label={'Search bar'} size={'small'} color={'primary'} fullWidth type={'search'} InputProps={{
+                <TextField disabled={isLoading} variant={'outlined'} label={'Search bar'} size={'small'}
+                           color={'primary'} fullWidth type={'search'} InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
                             {!isLoading ? <Search/> : <CircularProgress style={{height: 20, width: 20}}/>}
@@ -54,12 +65,15 @@ export default function Conversation({}) {
                 }}/>
             </Grid>
             <Grid container item xs={2} justifyContent={'center'} alignItems={'center'}>
-                <IconButton>
-                    <AddBox/>
-                </IconButton>
+                <Tooltip title={'Add new conversation'}>
+                    <IconButton onClick={() => setOpenDialogNewConv(true)}>
+                        <AddBox/>
+                    </IconButton>
+                </Tooltip>
             </Grid>
         </Grid>
-        <SkeletonConversation/>
+        {isLoading && <SkeletonConversation/>}
+        <DialogNewConversation open={openDialogNewConv} handleClose={handleCloseDialogNewConv}/>
         <AlertError isError={isError} setIsError={setIsError}/>
     </Grid>
 }
