@@ -197,7 +197,7 @@ async function getTwitterUserMentions(arData, userId) {
 
 async function YouAreMentionned(arData) {
     let me = await getTwitterUserMe(arData);
-    if (me === undefined || me.data.id === undefined) return;
+    if (me === undefined || me.data === undefined || me.data.id === undefined) return;
     let mentions = await getTwitterUserMentions(arData, me.data.id);
     if (mentions === undefined || mentions.meta.newest_id === undefined) return;
     let lastTweetMention = lastMentinonned.find((e) => e.user_id === me.data.id && e.id_reaction === arData.id_reactions);
@@ -239,7 +239,7 @@ async function YouAreMentionned(arData) {
 
 async function YouPostATweet(arData) {
     let me = await getTwitterUserMe(arData);
-    if (me === undefined || me.data.id === undefined) return;
+    if (me === undefined || me.data === undefined || me.data.id === undefined) return;
     let tweets = await getTwitterUserTweets(arData, me.data.id);
     if (tweets === undefined || tweets.meta.newest_id === undefined) return;
     let lastUserTweet = lastTweet.find((e) => e.user_id === me.data.id && e.id_reaction === arData.id_reactions);
@@ -280,7 +280,7 @@ async function YouPostATweet(arData) {
 
 async function SomeonePostATweet(arData) {
     let user = await getTwitterUser(arData);
-    if (user === undefined || user.data.id === undefined) return;
+    if (user === undefined || me.data === undefined || user.data.id === undefined) return;
     let tweets = await getTwitterUserTweets(arData, user.data.id);
     if (tweets === undefined || tweets.meta.newest_id === undefined) return;
     let lastUserTweet = userLastTweet.find((e) => e.user_id === user.data.id && e.id_reaction === arData.id_reactions);
