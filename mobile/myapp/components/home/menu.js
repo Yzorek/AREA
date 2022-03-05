@@ -88,6 +88,7 @@ class Display_menu extends React.Component {
     _logOut() {
         this.props.dispatch({ type: "index", value: 0 })
         this.props.dispatch({ type: "accessToken", value: "" })
+		this.props.dispatch({type: "clickBottom", value: 7})
     }
 
 	render() {
