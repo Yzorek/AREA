@@ -8,7 +8,7 @@ let lastTweet = []
 let userLastTweet = []
 let lastMentinonned = []
 
-async function postTwitchTweet(aRdata, twitchData) {
+async function postTweet(aRdata) {
     let twitterToken = "";
     try {
         let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(aRdata.id_user)]);
@@ -329,6 +329,6 @@ async function reloadTweetsManagement() {
 }
 
 module.exports = {
-    postTwitchTweet,
+    postTweet,
     reloadTweetsManagement
 }

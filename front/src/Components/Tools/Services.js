@@ -12,7 +12,7 @@ export default function PropFromId(id) {
         case (1):
             return ({icon: <TwitterIcon/>, pageId: TWITTER, color: '#1C9CEB', name: 'Twitter'});
         case (2):
-            return ({icon: <InstagramIcon/>, pageId: INSTAGRAM, color: '#CC0063', name: 'Instagram'});
+            return ({icon: <InstagramIcon/>, pageId: INSTAGRAM, color: '#CC0063', name: 'Spotify'});
         case (3):
             return ({icon: <SvgIcon component={DiscordIcon} inheritViewBox/>, pageId: DISCORD, color: '#5562EA', name: 'Discord'});
         case (4):
