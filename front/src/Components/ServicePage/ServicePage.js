@@ -174,7 +174,7 @@ export default function ServicePage({service, arLinks}) {
             isMounted.current = false;
             source.cancel("Component Services GET user data got unmounted");
         }
-    }, [])
+    }, [service])
 
     const handleAddClose = async (value) => {
         if (value === true) {
