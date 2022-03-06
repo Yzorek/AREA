@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from '../../charte/colors';
 
 const bottomBar = [
-    {id: 7, label: "Home", typicon: FontAwesome5, namicon: "home"},
+    {id: 11, label: "Home", typicon: FontAwesome5, namicon: "home"},
     {id: 10, label: "Service Settings", typicon: Ionicons, namicon: "settings"},
     {id: 9, label: "Profil", typicon: Ionicons, namicon: "person"},
     {id: 8, label: "Manage Account", typicon: MaterialCommunityIcons, namicon: "account-cog"},

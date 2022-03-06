@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import axios from 'axios';
 import colors from "../../../../../charte/colors";
 
-class TrelloPage extends Component {
+class SpotifyPage extends Component {
   constructor(props) {
     super(props);
       this.state = {
@@ -109,7 +109,7 @@ class TrelloPage extends Component {
     return (
       <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
         <Text style={{margin: "2%", fontSize: 15, color: colors.third}}>No Parameter</Text>
-        <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsAction: []})}}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsAction: [], okIsPressed: true})}}>
          <Text style={{fontWeight: "bold"}}>OK</Text>
         </TouchableOpacity>
       </View>
@@ -155,7 +155,7 @@ class TrelloPage extends Component {
     return (
       <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
         <Text style={{margin: "2%", fontSize: 15, color: colors.third}}>No Parameter</Text>
-        <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsReaction: []})}}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsReaction: [], okIsPressed_2: true})}}>
         <Text style={{fontWeight: "bold"}}>OK</Text>
         </TouchableOpacity>
       </View>
@@ -175,7 +175,7 @@ class TrelloPage extends Component {
         {
           'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
         });
-        this.props.dispatch({type: 'clickBottom', value: 7});
+        this.props.dispatch({type: 'clickBottom', value: 11});
     } catch (err) {
       this.setState({isError: true})
       Alert.alert(
@@ -206,7 +206,7 @@ class TrelloPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <MaterialCommunityIcons name="trello" style={styles.logo} size={90} color="#008FE4" />
+        <MaterialCommunityIcons name="spotify" style={styles.logo} size={90} color="#1DB954" />
         <View style={styles.input}>
           <Text style={styles.txt_input}>Action *</Text>
           <RNPickerSelect
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: "2%",
     borderWidth: 1,
-    backgroundColor: "#008FE4",
+    backgroundColor: "#1DB954",
     marginBottom: "5%",
     marginTop: "3%",
   },
@@ -287,4 +287,4 @@ const mapStateToProps = (state) => {
     clickBottom: state.clickBottom
   }
 }
-export default connect(mapStateToProps)(TrelloPage)
+export default connect(mapStateToProps)(SpotifyPage)

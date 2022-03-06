@@ -16,7 +16,7 @@ class Body extends Component {
     if (this.props.index===3) {
       return (
           <SafeAreaProvider>
-              <SplashScreen/>
+            <SplashScreen/>
           </SafeAreaProvider>
       );
     }
