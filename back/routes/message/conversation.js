@@ -1,5 +1,6 @@
 const fctDataBase = require("../../tools/fctDBRequest");
 const fctToken = require("../../tools/fctToken");
+const {parse} = require("nodemon/lib/cli");
 
 async function newConversation(req, res) {
     let dataToken = fctToken.getTokenData(req);
@@ -55,7 +56,7 @@ async function checkConversation(req, res, next) {
     }
 }
 
-async function getUserInfoConversation(req, res) {
+async function getUserInfoConversation(req, res, next) {
     let dataToken = fctToken.getTokenData(req);
     try {
         let data = await fctDataBase.request('SELECT id, username, first_name, last_name, avatar FROM clients;', []);
@@ -69,8 +70,7 @@ async function getUserInfoConversation(req, res) {
             })
             item.users = target;
         })
-
-        res.status(200).send(res.locals.conversation)
+        next()
     } catch (err) {
         res.status(500).send({
             message: 'err bdd'
@@ -90,7 +90,49 @@ async function getConversation(req, res, next) {
         })
         res.locals.conversation = target
         next()
+    } catch (err) {
+        res.status(500).send({
+            message: 'err bdd'
+        })
+    }
+}
 
+async function getConversationByID(req, res, next) {
+    try {
+        let data = await fctDataBase.request('SELECT * FROM conversation WHERE id=$1;', [parseInt(req.params.id)]);
+
+        res.locals.conversation = data.rows
+        next()
+    } catch (err) {
+        res.status(500).send({
+            message: 'err bdd'
+        })
+    }
+}
+
+async function getMsgByConv(req, res, next) {
+    try {
+        //let data = await fctDataBase.request('SELECT * FROM conversation WHERE id=$1;', [parseInt(req.params.id)]);
+
+        res.status(200).send({
+            conversation: res.locals.conversation[0]
+        })
+        next()
+    } catch (err) {
+        res.status(500).send({
+            message: 'err bdd'
+        })
+    }
+}
+
+async function newMsgByConv(req, res, next) {
+    try {
+        //let data = await fctDataBase.request('SELECT * FROM conversation WHERE id=$1;', [parseInt(req.params.id)]);
+
+        res.status(200).send({
+            conversation: res.locals.conversation[0]
+        })
+        next()
     } catch (err) {
         res.status(500).send({
             message: 'err bdd'
@@ -102,5 +144,7 @@ module.exports = {
     newConversation,
     checkConversation,
     getConversation,
-    getUserInfoConversation
+    getUserInfoConversation,
+    getConversationByID,
+    getMsgByConv
 }

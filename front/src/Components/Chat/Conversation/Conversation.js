@@ -15,9 +15,9 @@ import AlertError from "../../Tools/AlertError";
 import SkeletonConversation from "./SkeletonConversation";
 import {AddBox, Search} from "@mui/icons-material";
 import DialogNewConversation from "./DialogNewConversation";
-import {AvatarGroup, Skeleton} from "@mui/lab";
+import {AvatarGroup} from "@mui/lab";
 
-export default function Conversation({}) {
+export default function Conversation({handleChangeSelectedIdConv, selectedIdConv}) {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState([]);
     const [isReload, setIsReload] = useState(true)
@@ -84,11 +84,24 @@ export default function Conversation({}) {
             </Grid>
         </Grid>
         {isLoading ? <SkeletonConversation/> : <List style={{width: '100%', padding: 0}}>
-            {data.map(item => <ListItem key={`Conversation - ${item.id}`} style={{width: '100%'}}
-                                        sx={{borderBottom: 1, borderColor: 'divider'}}>
-                <ListItemAvatar>
+            {data.map(item => <ListItem button key={`Conversation - ${item.id}`} style={{width: '100%'}}
+                                        onClick={() => handleChangeSelectedIdConv(item.id)}
+                                        sx={{
+                                            transition: '0.5s',
+                                            bgcolor: selectedIdConv === item.id ? 'primary.main' : '',
+                                            color: selectedIdConv === item.id ? 'white' : 'black',
+                                            borderLeft: selectedIdConv === item.id ? '5px solid' : null,
+                                            borderLeftColor: 'secondary.main',
+                                            boxShadow: selectedIdConv === item.id ? 'grey 4px 3px 5px' : null,
+                                            //borderBottom: 1,
+                                            //borderColor: 'divider',
+                                            [`&:hover`]: {
+                                                bgcolor: selectedIdConv === item.id ? 'primary.main' : 'grey.300',
+                                            },
+                                        }}>
+                <ListItemAvatar style={{marginRight: 10}}>
                     <AvatarGroup total={item.users.length}>
-                        {item.users.map(user => <Avatar key={`Avatar user conv - ${user.id}`} alt={user.username} src={user.avatar}/>)}
+                        {item.users.map(user => <Tooltip title={user.username}><Avatar key={`Avatar user conv - ${user.id}`} alt={user.username} src={user.avatar}/></Tooltip>)}
                     </AvatarGroup>
                 </ListItemAvatar>
                 <ListItemText primary={

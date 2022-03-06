@@ -1,10 +1,10 @@
 import React from 'react';
-import {Grid, IconButton, ListItem, ListItemAvatar, ListItemText, Tooltip} from "@mui/material";
-import {Skeleton} from "@mui/lab";
+import {Avatar, Grid, IconButton, ListItem, ListItemAvatar, ListItemText, Tooltip} from "@mui/material";
+import {AvatarGroup, Skeleton} from "@mui/lab";
 import {Menu} from "@mui/icons-material";
 import PopoverMenuConv from "./PopoverMenuConv";
 
-export default function RecapConv({}) {
+export default function RecapConv({isLoading, data}) {
     const [anchorElMenu, setAnchorElMenu] = React.useState(null);
 
     const handleOpenMenu = (event) => {
@@ -18,17 +18,28 @@ export default function RecapConv({}) {
     return <Grid container item xs={12} style={{height: 57}} sx={{borderBottom: 1, borderColor: 'divider'}}>
         <ListItem style={{width: '100%'}} secondaryAction={
             <Tooltip title={'Menu conversation'}>
-                <IconButton edge="end" onClick={handleOpenMenu}>
+                <IconButton disabled={isLoading} edge="end" onClick={handleOpenMenu}>
                     <Menu/>
                 </IconButton>
             </Tooltip>
         }>
-            <ListItemAvatar>
-                <Skeleton variant="circular" width={40} height={40}/>
-            </ListItemAvatar>
-            <ListItemText primary={
-                <Skeleton style={{width: '95%'}}/>
-            }/>
+            {isLoading || !data || !data.conversation ? <>
+                    <ListItemAvatar>
+                    <Skeleton variant="circular" width={40} height={40}/>
+                </ListItemAvatar>
+                    <ListItemText primary={
+                        <Skeleton style={{width: '95%'}}/>
+                    }/></>
+                :
+                <><ListItemAvatar style={{marginRight: 10}}>
+                    <AvatarGroup total={data.conversation.users.length}>
+                        {data.conversation.users.map(user => <Tooltip title={user.username}><Avatar key={`Avatar user conv - ${user.id}`} alt={user.username}
+                                                                                       src={user.avatar}/></Tooltip>)}
+                    </AvatarGroup>
+                </ListItemAvatar>
+                    <ListItemText primary={
+                        data.conversation.name
+                    }/></>}
         </ListItem>
         <PopoverMenuConv handleClose={handleCloseMenu} anchorEl={anchorElMenu}/>
     </Grid>
