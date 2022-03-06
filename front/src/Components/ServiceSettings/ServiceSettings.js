@@ -163,7 +163,6 @@ export default function ServicesSettings({onServicesSub}) {
     }
 
     useEffect(() => {
-        console.log('testtttt');
         isMounted.current = true
         const source = axios.CancelToken.source();
         (async () => {
@@ -174,7 +173,6 @@ export default function ServicesSettings({onServicesSub}) {
                     cancelToken: source.token,
                     'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                 });
-                console.log(response.data);
                 if (isMounted && isMounted.current) {
                     let actionsFetched = response.data.actions;
                     actionsFetched.forEach((element, index) => {

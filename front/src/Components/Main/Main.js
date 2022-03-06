@@ -27,6 +27,7 @@ import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext"
 import {PropFromId} from '../Tools/Services';
 import TwitterRedirect from '../Tools/Twitter/TwitterRedirect';
 import SpotifyRedirect from '../Tools/Spotify/SpotifyRedirect';
+import RedditRedirect from '../Tools/Reddit/RedditRedirect';
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -140,6 +141,7 @@ export default function Main() {
                                 <Route path={`Profile/*`} element={<SelectedRouter app={<Profile handleThemeChange={handleThemeChange}/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`TwitterRedirect`} element={<SelectedRouter app={<TwitterRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`SpotifyRedirect`} element={<SelectedRouter app={<SpotifyRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route path={`RedditRedirect`} element={<SelectedRouter app={<RedditRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`Weather/*`}
                                     element={<SelectedRouter app={<Weather/>} idRoute={API_WEATHER}
                                     setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>

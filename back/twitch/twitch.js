@@ -54,6 +54,8 @@ async function ChannelStartNewStream(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUser(item, params_reaction[0].value))
             } else if (data.id_reactions === 4) {
                 result_stream.data.forEach(item => require('../twitter/twitter').postTweet(data))
+            } else if (data.id_reactions === 6) {
+                result_stream.data.forEach(item => require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, data))
             }
             alreadyPushChannelStartNew.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream")
@@ -93,6 +95,8 @@ async function ChannelStartOverflow(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserOverflow(item, params_reaction[0].value))
             } else if (data.id_reactions === 4) {
                 result_stream.data.forEach(item => require('../twitter/twitter').postTweet(data))
+            } else if (data.id_reactions === 6) {
+                result_stream.data.forEach(item => require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, data))
             }
             alreadyPushOverflow.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream overflow")
@@ -132,6 +136,8 @@ async function ChannelStartSpecificGame(data) {
                 result_stream.data.forEach(item => require('../bot_telegram/app').sendMessageTwitchInTelegramToUserSpecificGame(item, params_reaction[0].value))
             } else if (data.id_reactions === 4) {
                 result_stream.data.forEach(item => require('../twitter/twitter').postTweet(data))
+            } else if (data.id_reactions === 6) {
+                result_stream.data.forEach(item => require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, data))
             }
             alreadyPushSpecificGame.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
             console.log("New stream specific games")

@@ -23,6 +23,7 @@ const ARRouter = require('./routes/actionReaction/actionReaction');
 const apiTwitchRouter = require('./routes/api/twitch/twitch');
 const apiTwitterRouter = require('./routes/api/twitter/twitter');
 const apiSpotifyRouter = require('./routes/api/spotify/spotify');
+const apiRedditRouter = require('./routes/api/reddit/reddit');
 
 const app = express();
 const server = http.createServer(app);
@@ -35,7 +36,7 @@ app.use((req, res, next) => {
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cors())
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -52,6 +53,7 @@ app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 app.use('/twitter', apiTwitterRouter);
 app.use('/spotify', apiSpotifyRouter);
+app.use('/reddit', apiRedditRouter);
 
 let myUser = []
 let myGroup = []
@@ -69,6 +71,7 @@ bot.launch()
 
 require('./bot_discord/app');
 require('./bot_telegram/app')
+const {playSpecificSong, getLinkWithSpotify} = require("./spotify/spotify");
 require('./socket/socket')(io);
 
 
