@@ -11,7 +11,7 @@ import {
     GENERAL_DASHBOARD,
     GENERAL_PROFILE,
     SERVICE_SETTINGS,
-    API_WEATHER
+    API_WEATHER, CHAT
 } from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
@@ -27,6 +27,7 @@ import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext"
 import {PropFromId} from '../Tools/Services';
 import TwitterRedirect from '../Tools/Twitter/TwitterRedirect';
 import SpotifyRedirect from '../Tools/Spotify/SpotifyRedirect';
+import Chat from "../Chat/Chat";
 import RedditRedirect from '../Tools/Reddit/RedditRedirect';
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
@@ -143,6 +144,7 @@ export default function Main() {
                                 <Route path={`Profile/*`} element={<SelectedRouter app={<Profile handleThemeChange={handleThemeChange}/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`TwitterRedirect`} element={<SelectedRouter app={<TwitterRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`SpotifyRedirect`} element={<SelectedRouter app={<SpotifyRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route path={`Chat`} element={<SelectedRouter app={<Chat/>} idRoute={CHAT} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`RedditRedirect`} element={<SelectedRouter app={<RedditRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`Weather/*`}
                                     element={<SelectedRouter app={<Weather/>} idRoute={API_WEATHER}

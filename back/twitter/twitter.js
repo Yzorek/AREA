@@ -401,14 +401,11 @@ async function reloadTweetsManagement() {
             getRefreshToken(userId);
         })
         linkForTwitter.forEach(item => {
-            if (item.id_actions === 5) {
-                console.log("==== Mentionned tweet ====")
+            if (item.id_actions === 4) {
                 YouAreMentionned(item)
-            } else if (item.id_actions === 11) {
-                console.log("==== You post a tweet ====")
+            } else if (item.id_actions === 9) {
                 YouPostATweet(item)
             } else if (item.id_actions === 1) {
-                console.log("==== Someone post a tweet ====")
                 SomeonePostATweet(item)
             }
         })

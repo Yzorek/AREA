@@ -1,12 +1,5 @@
 import { Grid, Collapse, Icon, IconButton, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import { ReactComponent as DiscordIcon } from '../../assets/discord.svg';
-import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg';
-import SvgIcon from '@mui/icons-material/Twitter';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import {iconFromName, PropFromId} from '../Tools/Services';

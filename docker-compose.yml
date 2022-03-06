@@ -38,14 +38,14 @@ services:
     depends_on:
       - back
     volumes:
-      - client:/apk
+      - apk:/common_volume/apk
 
   mobile:
-    build:
-      context: ./mobile
-      target: prod
-    volumes:
-      - apk:/usr/src/app/android/app/build/outputs/apk/:rw
+      build:
+        context: ./mobile
+        target: prod
+      volumes:
+        - apk:/common_volume/apk
 
 volumes:
   db-data:

@@ -23,6 +23,9 @@ const ARRouter = require('./routes/actionReaction/actionReaction');
 const apiTwitchRouter = require('./routes/api/twitch/twitch');
 const apiTwitterRouter = require('./routes/api/twitter/twitter');
 const apiSpotifyRouter = require('./routes/api/spotify/spotify');
+
+const messageRouter = require('./routes/message/message');
+
 const apiRedditRouter = require('./routes/api/reddit/reddit');
 
 const app = express();
@@ -53,6 +56,8 @@ app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 app.use('/twitter', apiTwitterRouter);
 app.use('/spotify', apiSpotifyRouter);
+app.use('/msg', messageRouter);
+
 app.use('/reddit', apiRedditRouter);
 
 let myUser = []
@@ -71,7 +76,6 @@ bot.launch()
 
 require('./bot_discord/app');
 require('./bot_telegram/app')
-const {playSpecificSong, getLinkWithSpotify} = require("./spotify/spotify");
 require('./socket/socket')(io);
 
 
