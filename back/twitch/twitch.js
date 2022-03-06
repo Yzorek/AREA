@@ -97,7 +97,7 @@ async function ChannelStartOverflow(data) {
                 result_stream.data.forEach(item => require('../reddit/reddit').postSubReddit(data))
             }
             alreadyPushOverflow.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
-        } else if (!result_stream.data || result_stream.data.length <= 0 || parseInt(params_action[1].value) < parseInt(result_stream.data[0].viewer_count)) {
+        } else if (!result_stream.data || result_stream.data.length <= 0 || parseInt(params_action[1].value) > parseInt(result_stream.data[0].viewer_count)) {
             let index = alreadyPushOverflow.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
             alreadyPushOverflow.splice(index, 1);
         }

@@ -180,19 +180,20 @@
   {
     "name": "Clash Royale",
     "description": "Make Clash Royale actions reactions with Clash Royale api",
-    "settings": false,
+    "settings": true,
     "actions": [
       {
-        "name": "You win a game",
-        "description": "When you win a game, triggers reaction",
-        "value": true
+        "name": "Win a game",
+        "description": "When you win a game then do the reaction of your choice",
+        "value": false
       },
 
       {
-        "name": "You lose a game",
-        "description": "When you lose a game, triggers reaction",
+        "name": "Lose a game",
+        "description": "When you lose a game then do the reaction of your choice",
         "value": false
       }
+
     ],
     "reactions": [
       {
