@@ -76,7 +76,7 @@ bot.launch()
 
 require('./bot_discord/app');
 require('./bot_telegram/app')
-require('./socket/socket')(io);
+//require('./socket/socket')(io);
 
 
 function loopAR(i) {

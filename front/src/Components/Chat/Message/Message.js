@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Avatar, Grid, IconButton, ListItem, ListItemAvatar, ListItemText, TextField} from "@mui/material";
+import {Alert, Avatar, Grid, IconButton, ListItem, ListItemAvatar, ListItemText, TextField} from "@mui/material";
 import RecapConv from "./RecapConv";
 import {Send} from "@mui/icons-material";
 import MainLoader from "../../Tools/MainLoader";
@@ -7,6 +7,7 @@ import axios from "axios";
 import AlertError from "../../Tools/AlertError";
 import UserContext from "../../Tools/UserContext/UserContext";
 import moment from "moment";
+import tutorialContext from "../../Tools/TutorialContext/TutorialContext";
 
 function DesignSender({data}) {
     return <Grid container item xs={12} justifyContent={'flex-start'}>
@@ -43,6 +44,7 @@ export default function Message({selectedIdConv}) {
     const [isError, setIsError] = useState(false);
     let userContext = useContext(UserContext);
     const isMounted = useRef(null)
+    let tutorialMode = useContext(tutorialContext)
     let messagesEndRef;
 
     useEffect(() => {
@@ -105,8 +107,9 @@ export default function Message({selectedIdConv}) {
     }
 
     if (selectedIdConv <= 0)
-        return <Grid container item xs={9} display={'block'} style={{height: '100%'}}>
-            sheeesh
+        return <Grid container item xs={9} style={{height: '100%'}} alignItems={'center'} justifyContent={'center'}>
+            {tutorialMode.isActive && <Alert severity={'info'} >You can create a conversation with add box icon button on top left.</Alert>}
+            <Alert severity={'info'} >Select your conversation on your left.</Alert>
         </Grid>
 
     return <Grid container item xs={9} display={'block'} style={{height: '100%'}} component={'form'}
