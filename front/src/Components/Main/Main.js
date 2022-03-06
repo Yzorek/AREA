@@ -11,7 +11,7 @@ import {
     GENERAL_DASHBOARD,
     GENERAL_PROFILE,
     SERVICE_SETTINGS,
-    API_WEATHER
+    API_WEATHER, CHAT
 } from "./config";
 import {UserContextProvider} from "../Tools/UserContext/UserContext";
 import axios from "axios";
@@ -27,6 +27,8 @@ import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext"
 import {PropFromId} from '../Tools/Services';
 import TwitterRedirect from '../Tools/Twitter/TwitterRedirect';
 import SpotifyRedirect from '../Tools/Spotify/SpotifyRedirect';
+import Chat from "../Chat/Chat";
+import RedditRedirect from '../Tools/Reddit/RedditRedirect';
 
 function SelectedRouter({setIdSelectedDrawerButton, app, idRoute}) {
     setIdSelectedDrawerButton(idRoute)
@@ -105,13 +107,15 @@ export default function Main() {
     const setServicesData = (data) => {
         let newServices = data;
         newServices.forEach((item, index) => {
-            let {icon, pageId} = PropFromId(item.id);
+            let {icon, pageId, path} = PropFromId(item.id);
             newServices[index] = {
                 icon,
                 pageId,
+                path,
                 ...item
             }
         });
+        console.log(newServices)
         setServices(newServices);
     }
 
@@ -134,12 +138,14 @@ export default function Main() {
                                 <MainLoader/>
                             </Grid> : <Routes>
                                 <Route path={`/`} element={<Navigate to={'Service'}/>}/>
-                                {services.filter((item) => item.isActive === true).map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.name} element={<SelectedRouter app={<ServicePage service={item} areas={{}} widgets={{}}/>} idRoute={item.pageId} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
+                                {services.filter((item) => item.isActive === true).map((item, index) => <Route key={`${item.name}-${index}-router-service`} path={item.path} element={<SelectedRouter app={<ServicePage service={item}/>} idRoute={item.pageId} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>)}
                                 <Route path={`Service/`} element={<SelectedRouter app={<ServiceSettings onServicesSub={handleServicesSub}/>} idRoute={SERVICE_SETTINGS} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Dashboard`} element={<SelectedRouter app={<Dashboard/>} idRoute={GENERAL_DASHBOARD} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`Profile/*`} element={<SelectedRouter app={<Profile handleThemeChange={handleThemeChange}/>} idRoute={GENERAL_PROFILE} setIdSelectedDrawerButton={setIdSelectedDrawerButton} />}/>
                                 <Route path={`TwitterRedirect`} element={<SelectedRouter app={<TwitterRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`SpotifyRedirect`} element={<SelectedRouter app={<SpotifyRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route path={`Chat`} element={<SelectedRouter app={<Chat/>} idRoute={CHAT} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
+                                <Route path={`RedditRedirect`} element={<SelectedRouter app={<RedditRedirect/>} setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>
                                 <Route path={`Weather/*`}
                                     element={<SelectedRouter app={<Weather/>} idRoute={API_WEATHER}
                                     setIdSelectedDrawerButton={setIdSelectedDrawerButton}/>}/>

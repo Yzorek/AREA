@@ -24,6 +24,10 @@ const apiTwitchRouter = require('./routes/api/twitch/twitch');
 const apiTwitterRouter = require('./routes/api/twitter/twitter');
 const apiSpotifyRouter = require('./routes/api/spotify/spotify');
 
+const messageRouter = require('./routes/message/message');
+
+const apiRedditRouter = require('./routes/api/reddit/reddit');
+
 const app = express();
 const server = http.createServer(app);
 const io = Server(server, {origins: '*:*'});
@@ -35,7 +39,7 @@ app.use((req, res, next) => {
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cors())
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -52,6 +56,9 @@ app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 app.use('/twitter', apiTwitterRouter);
 app.use('/spotify', apiSpotifyRouter);
+app.use('/msg', messageRouter);
+
+app.use('/reddit', apiRedditRouter);
 
 let myUser = []
 let myGroup = []
@@ -69,15 +76,15 @@ bot.launch()
 
 require('./bot_discord/app');
 require('./bot_telegram/app')
-require('./socket/socket')(io);
+//require('./socket/socket')(io);
 
 
 function loopAR(i) {
     setTimeout(async () => {
-        console.log('AR reload loops n:', i);
         await require('./twitch/twitch').reloadStreamsManagement();
         await require('./twitter/twitter').reloadTweetsManagement();
         await require('./spotify/spotify').reloadSpotifyManagement();
+        await require('./clashRoyale/clashRoyale').reloadCRManagement();
         loopAR(++i);
     }, 10000)
 }

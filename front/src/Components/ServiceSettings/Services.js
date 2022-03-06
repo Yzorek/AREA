@@ -53,12 +53,13 @@ export default function Services({services, onServiceSub, checkIfAR, isLoading})
             } else {
                 subUnsubToService(service, false);
             }
-        }
-        else {
+        } else {
             if (service.name === 'Twitter') {
-                window.location.href = "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/TwitterRedirect&scope=tweet.read%20tweet.write%20users.read%20follows.read%20follows.write&state=state&code_challenge=challenge&code_challenge_method=plain"
-            } else if(service.name === 'Spotify') {
-                window.location.href = "https://accounts.spotify.com/authorize?response_type=code&client_id=187c0fc794714871bbe61948b5232d56&scope=user-read-private%20user-read-email%20user-library-read%20user-read-playback-state&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/SpotifyRedirect&state=generateRandomString(16)"
+                window.location.href = "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/TwitterRedirect&scope=offline.access%20tweet.read%20tweet.write%20users.read%20follows.read%20follows.write&state=state&code_challenge=challenge&code_challenge_method=plain"
+            } else if (service.name === 'Spotify') {
+                window.location.href = "https://accounts.spotify.com/authorize?response_type=code&client_id=187c0fc794714871bbe61948b5232d56&scope=user-read-private%20user-read-email%20user-library-read%20user-read-playback-state%20user-modify-playback-state&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/SpotifyRedirect&state=generateRandomString(16)"
+            } else if (service.name === 'Reddit') {
+                window.location.href = "https://www.reddit.com/api/v1/authorize?client_id=A1dJ6sEJqHjO27RHN4pwTw&response_type=code&state=generateRandomString(16)&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/RedditRedirect&duration=temporary&scope=identity%20submit"
             } else {
                 subUnsubToService(service, false);
             }

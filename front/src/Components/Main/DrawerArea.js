@@ -10,8 +10,8 @@ import {
     ListItemButton,
     ListItemIcon, ListItemText, Box, ListItem, Skeleton, Alert
 } from "@mui/material";
-import {API_WEATHER, drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
-import {Cloud, Dashboard, Person} from "@mui/icons-material";
+import {API_WEATHER, CHAT, drawWith, GENERAL_DASHBOARD, GENERAL_PROFILE, SERVICE_SETTINGS} from "./config";
+import {Cloud, Dashboard, Message, Person} from "@mui/icons-material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import {useNavigate} from "react-router-dom";
 import UserContext from "../Tools/UserContext/UserContext";
@@ -76,6 +76,8 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                                           label={<Typography variant={"subtitle1"}> Dashboard </Typography>} idSelected={idSelected} isLoading={isLoading}/>
                 <ClassicListItemButtonNav redirectTo={'Profile'} icon={<Person/>} id={GENERAL_PROFILE} label={<Typography variant={"subtitle1"}> Profile </Typography>}
                                           idSelected={idSelected} isLoading={isLoading}/>
+                <ClassicListItemButtonNav redirectTo={'Chat'} icon={<Message/>} id={CHAT} label={<Typography variant={"subtitle1"}> Message </Typography>}
+                                          idSelected={idSelected} isLoading={isLoading}/>
             </List>
             <List
                 dense
@@ -103,7 +105,7 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                      else
                      return (
                         <ClassicListItemButtonNav icon={item.icon}
-                        redirectTo={item.name}
+                        redirectTo={item.path}
                         id={item.pageId}
                         label={item.name}
                         key={`${item.id} - service bar - ${index}`}

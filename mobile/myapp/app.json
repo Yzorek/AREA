@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "myapp",
-    "slug": "myapp",
+    "name": "Ulys",
+    "slug": "Ulys",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,8 +21,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/Ulys.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.houssam.Ulys",
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyBaOe0BN6HMJORo8u6umAm2qGffG2Qr0Ls",
+          "certificateHash": "93A2C6F079AD91F6D449F3D67A645050FC2C0A33"
+        }
       }
     },
     "web": {

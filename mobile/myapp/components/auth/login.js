@@ -24,6 +24,7 @@ class Login extends Component{
     _onSuccessGoogle = async () => {
         const config = {
             androidClientId: "278231454576-i92vk8rv49ge3gguru6bp0gpqs63js0g.apps.googleusercontent.com",
+            androidStandaloneAppClientId: "93A2C6F079AD91F6D449F3D67A645050FC2C0A33",
             scopes: ['profile', 'email']
         };
         const IP = this.props.ip

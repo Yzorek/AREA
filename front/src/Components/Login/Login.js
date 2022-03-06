@@ -65,10 +65,6 @@ export default function Login() {
         await loginInServer('local', password, email);
     }
 
-    const handleTelegramResponse = response => {
-        console.log(response);
-    };
-
     return <Grid container item xs={12} alignItems={'center'} justifyContent={'center'} style={{height: '100vh'}}>
         <Grid item xs={12} sm={8} md={4}>
             <Paper elevation={8} style={{width: '100%'}}>

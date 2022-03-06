@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./app.js"
+    "start": "nodemon ./app.js"
   },
   "dependencies": {
     "axios": "^0.25.0",
@@ -17,18 +17,18 @@
     "jade": "~1.11.0",
     "moment": "^2.29.1",
     "morgan": "~1.9.1",
-    "node-telegram-bot-api": "^0.56.0",
     "node-twitch": "^0.4.5",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1",
+    "qs": "^6.10.3",
     "socket.io": "^4.4.1",
-    "trello": "^0.11.0"
-  },
-  "devDependencies": {
+    "telegraf": "^4.7.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
-    "nodemailer": "^6.7.2",
-    "telegraf": "^4.7.0"
+    "nodemailer": "^6.7.2"
+  },
+  "devDependencies": {
+
   }
 }

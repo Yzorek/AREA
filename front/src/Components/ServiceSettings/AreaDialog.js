@@ -8,13 +8,16 @@ import axios from "axios";
 import AlertError from "../Tools/AlertError";
 import { greyIconFromId } from "../Tools/Services";
 
-export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
+export default function AreaDialog({isAddOpen, onClose, actions, reactions, pageService}) {
     const [action, setAction] = useState('')
     const [reAction, setReAction] = useState('')
     const [isActionNeeded, setIsActionNeeded] = useState(false);
     const [isReActionNeeded, setIsReActionNeeded] = useState(false);
     const [isError, setIsError] = useState(false);
-    const [isParamError, setIsParamError] = useState(false);
+    const [isParamError, setIsParamError] = useState({
+        message: "",
+        isError: false
+    });
     let tutorialMode = useContext(TutorialContext);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -46,6 +49,8 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
     }
 
     const handleSave = async () => {
+        console.log(action)
+        console.log(reAction)
         if (action === '') {
             setIsActionNeeded(true);
             return;
@@ -55,11 +60,15 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
             return;
         }
         if (action.params.some((item) => (item.value === '')) === true) {
-            setIsParamError(true);
+            setIsParamError({message: 'Please set the params', isError: true});
             return;
         }
         if (reAction.params.some((item) => (item.value === '')) === true) {
-            setIsParamError(true);
+            setIsParamError({message: 'Please set the params', isError: true});
+            return;
+        }
+        if (action.id_service === reAction.id_service) {
+            setIsParamError({message: 'Link same service is forbidden', isError: true});
             return;
         }
 
@@ -108,7 +117,8 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                                 onChange={handleActChange}
                                 renderValue={(value) => value.description}
                                 style={{width: '100%'}}>
-                                    {actions.map((element, index) => {
+                                    {pageService && actions.filter((element) => element.id_service === pageService.id).length !== 0 ?
+                                    actions.filter((element) => element.id_service === pageService.id).map((element, index) => {
                                         return (
                                             <MenuItem value={element} key={`${element.id}-${index}-menuitems-action`}>
                                                 <ListItemIcon>
@@ -117,7 +127,18 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                                                 <ListItemText>{element.description}</ListItemText>
                                             </MenuItem>
                                         )
-                                    })}
+                                    }) :
+                                    actions.map((element, index) => {
+                                        return (
+                                            <MenuItem value={element} key={`${element.id}-${index}-menuitems-action`}>
+                                                <ListItemIcon>
+                                                    {greyIconFromId(element.id_service)}
+                                                </ListItemIcon>
+                                                <ListItemText>{element.description}</ListItemText>
+                                            </MenuItem>
+                                        )
+                                    })
+                                }
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -181,10 +202,10 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions}) {
                     SAVE
                 </LoadingButton>
             </DialogActions>
-            <Snackbar open={isParamError} autoHideDuration={6000} onClose={() => setIsParamError(false)}
+            <Snackbar open={isParamError.isError} autoHideDuration={6000} onClose={() => setIsParamError({message: '', isError: false})}
                       anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-                <Alert onClose={() => setIsParamError(false)} severity="warning" sx={{width: '100%'}}>
-                    Please set the params
+                <Alert onClose={() => setIsParamError({message: '', isError: false})} severity="warning" sx={{width: '100%'}}>
+                    {isParamError.message}
                 </Alert>
             </Snackbar>
             <AlertError isError={isError} setIsError={setIsError}/>

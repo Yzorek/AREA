@@ -1,15 +1,8 @@
 import { Grid, Collapse, Icon, IconButton, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import { ReactComponent as DiscordIcon } from '../../assets/discord.svg';
-import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg';
-import SvgIcon from '@mui/icons-material/Twitter';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import {PropFromId} from '../Tools/Services';
+import {iconFromName, PropFromId} from '../Tools/Services';
 
 export default function AreaComponent({area, onActivation}) {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -30,25 +23,6 @@ export default function AreaComponent({area, onActivation}) {
         });
 
         return (actionNbChar < reactionNbChar);
-    }
-
-    const iconFromName = (name) => {
-        switch (name) {
-            case ('Twitter'):
-                return (<TwitterIcon sx={{ fontSize: 40, color: 'white' }}/>);
-            case ('Instagram'):
-                return (<InstagramIcon sx={{ fontSize: 40, color: 'white' }}/>);
-            case ('Telegram'):
-                return (<TelegramIcon sx={{ fontSize: 40, color: 'white' }}/>);
-            case ('Twitch'):
-                return (<SvgIcon component={TwitchIcon} sx={{ fontSize: 40, color: 'white' }} inheritViewBox/>);
-            case ('Discord'):
-                return (<SvgIcon component={DiscordIcon} sx={{ fontSize: 40, color: 'white' }} inheritViewBox/>);
-            case ('Youtube'):
-                return (<YouTubeIcon sx={{ fontSize: 40, color: 'white' }}/>);
-            default:
-                return (<TwitterIcon sx={{ fontSize: 40, color: 'white' }}/>);
-        }
     }
 
     return (
