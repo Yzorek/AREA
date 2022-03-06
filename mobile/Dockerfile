@@ -1,12 +1,6 @@
-FROM androidsdk/android-30:latest as prod
+FROM node:16-buster as prod
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get install nodejs -y
+ENV NODE_ENV=production
 
-COPY ./myapp/ /home/
-WORKDIR /home/
-
-RUN npm install
-WORKDIR /home/android/
-
-CMD ["./gradlew", "assembleRelease"]
+WORKDIR /app
+COPY ./myapp/APK/ ./
