@@ -1,9 +1,10 @@
-import { Button, Grid } from "@mui/material";
+import {Button, Grid} from "@mui/material";
+import {useState} from "react";
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import AlertError from "../AlertError";
 
-export default function TwitterRedirect() {
+export default function RedditRedirect() {
     const [isError, setIsError] = useState(false);
     const findCodeInURL = (url) => {
         let result = url.indexOf("code");
@@ -20,14 +21,14 @@ export default function TwitterRedirect() {
                 let body = {
                     code: res
                 }
-                await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/twitter/auth`, body,
+                await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/reddit/auth`, body,
                     {
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     });
                 try {
                     let subBody = {
                         action: 'sub',
-                        serviceId: 1
+                        serviceId: 5
                     };
                     await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/services/subscribe`, subBody,
                         {
@@ -43,20 +44,22 @@ export default function TwitterRedirect() {
                     setIsError(true);
                 }
             } finally {
-                window.location.href = `${process.env.REACT_APP_DASHBOARD_FRONT}/App/Twitter`
+                window.location.href = `${process.env.REACT_APP_DASHBOARD_FRONT}/App/Reddit`
             }
         }
     }
 
     return (
-        <Grid container
-              spacing={4}
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              style={{ minHeight: '100vh' }}>
-            <Button variant={'contained'} color={'secondary'} onClick={() => {handleGoBack()}}>Go back</Button>
-            <AlertError isError={isError} setIsError={setIsError}/>
-        </Grid>
+            <Grid container
+                  spacing={4}
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  style={{ minHeight: '100vh' }}>
+                <Button variant={'contained'} color={'secondary'} onClick={() => {
+                    handleGoBack()
+                }}>Go back</Button>
+                <AlertError isError={isError} setIsError={setIsError}/>
+            </Grid>
     )
 }

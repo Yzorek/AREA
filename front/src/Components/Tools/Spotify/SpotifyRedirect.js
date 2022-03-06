@@ -50,7 +50,12 @@ export default function SpotifyRedirect() {
     }
 
     return (
-        <Grid>
+        <Grid container
+              spacing={4}
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              style={{ minHeight: '100vh' }}>
             <Button variant={'contained'} color={'secondary'} onClick={() => {handleGoBack()}}>Go back</Button>
             <AlertError isError={isError} setIsError={setIsError}/>
         </Grid>

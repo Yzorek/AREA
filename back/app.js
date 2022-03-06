@@ -23,6 +23,7 @@ const ARRouter = require('./routes/actionReaction/actionReaction');
 const apiTwitchRouter = require('./routes/api/twitch/twitch');
 const apiTwitterRouter = require('./routes/api/twitter/twitter');
 const apiSpotifyRouter = require('./routes/api/spotify/spotify');
+const apiRedditRouter = require('./routes/api/reddit/reddit');
 
 const app = express();
 const server = http.createServer(app);
@@ -52,6 +53,7 @@ app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 app.use('/twitter', apiTwitterRouter);
 app.use('/spotify', apiSpotifyRouter);
+app.use('/reddit', apiRedditRouter);
 
 let myUser = []
 let myGroup = []
