@@ -81,7 +81,6 @@ require('./bot_telegram/app')
 
 function loopAR(i) {
     setTimeout(async () => {
-        console.log('AR reload loops n:', i);
         await require('./twitch/twitch').reloadStreamsManagement();
         await require('./twitter/twitter').reloadTweetsManagement();
         await require('./spotify/spotify').reloadSpotifyManagement();

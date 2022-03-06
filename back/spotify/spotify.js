@@ -182,8 +182,6 @@ async function getPlaybackState(arData) {
 }
 
 async function searchForItem(arData, song) {
-    console.log(arData)
-    console.log('song: ', song);
     let spotifyToken = "";
     try {
         let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(arData.id_user)]);
@@ -205,7 +203,6 @@ async function searchForItem(arData, song) {
                     'Content-type': 'application/json',
                 }
             });
-        console.log(res.data)
         return (res.data)
     } catch (err) {
         console.log(err)
@@ -283,6 +280,8 @@ async function userLikedTrack(arData) {
                     require('../bot_telegram/app').sendMessageSpotifyLikedTrackToUserTelegram(data, params_reaction[0].value)
                 } else if (arData.id_reactions === 4) {
                     require('../twitter/twitter').postTweet(arData)
+                } else if (arData.id_reactions === 7) {
+                    require('../reddit/reddit').postSubReddit(arData)
                 }
             }
             trackAdded.track_id = lastTrackID.track.id;
@@ -332,6 +331,8 @@ async function userPlayTrack(arData) {
                         require('../bot_telegram/app').sendMessageSpotifyLikedTrackToUserTelegram(data, params_reaction[0].value)
                     } else if (arData.id_reactions === 4) {
                         require('../twitter/twitter').postTweet(arData)
+                    } else if (arData.id_reactions === 7) {
+                        require('../reddit/reddit').postSubReddit(arData)
                     }
                 }
                 userPlayState.playerState = playerState.actions.disallows.resuming

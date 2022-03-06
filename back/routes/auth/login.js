@@ -74,7 +74,6 @@ async function getInfoUser(req, res, next) {
                     auth: req.body.auth,
                 }
                 const response = await axios.post(`http://localhost:8080/auth/register`, body);
-                console.log(response.data);
                 res.status(200).send(response.data);
             } else {
                 res.status(403).send({

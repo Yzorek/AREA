@@ -10,13 +10,12 @@ const reddit = {
 async function authReddit(req, res, next) {
     try {
         let body = new URLSearchParams({
-                'code': req.body.code.split('&')[0],
                 'grant_type': 'authorization_code',
+                'code': req.body.code.split('#')[0],
                 'redirect_uri': process.env.REACT_APP_DASHBOARD_FRONT + '/App/RedditRedirect',
             }
         );
         let auth = 'Basic ' + Buffer.from(reddit.client_id + ":" + reddit.client_secret).toString("base64");
-        console.log(auth)
         const response = await axios.post(`https://www.reddit.com/api/v1/access_token`, body,
             {
                 headers: {
@@ -27,7 +26,6 @@ async function authReddit(req, res, next) {
         try {
             let dataToken = fctToken.getTokenData(req);
             await fctDataBase.request('UPDATE clients SET reddit_token=$1 WHERE id=$2;', [response.data.access_token, parseInt(dataToken.id)]);
-            console.log(response.data);
             res.status(200).send(response.data);
         } catch (err) {
             res.status(500).send({
