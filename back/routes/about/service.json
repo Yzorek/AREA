@@ -1,10 +1,180 @@
-{
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true
+[
+  {
+    "name": "Twitter",
+    "description": "Make actions and reactions with Twitter api",
+    "actions": [
+      {
+        "name": "A new tweet from specific user is posted",
+        "description": "When a user post a new tweet on Twitter then do the reaction of your choice",
+        "value": true
+      },
+
+      {
+        "name": "When you are mentioned",
+        "description": "When you are mentioned then do the reaction of your choice",
+        "value": false
+      },
+
+      {
+        "name": "You post a tweet",
+        "description": "When you post a tweet then do the reaction of your choice",
+        "value": false
+      }
+
+    ],
+    "reactions": [
+      {
+        "name": "Post a tweet",
+        "description": "When an action is activated then post a tweet on your Twitter account",
+        "value": true
+      }
+    ]
   },
-  "exclude": [
-    "node_modules"
-  ]
-}
+
+
+  {
+    "name": "Twitch",
+    "description": "Make Twitch actions reactions with Twitch api",
+    "actions": [
+      {
+        "name": "A streamer starts a game specific stream",
+        "description": "When a streamer starts a specific game stream then do the reaction of your choice",
+        "value": true
+      },
+
+      {
+        "name": "You start a stream",
+        "description": "When you start a stream then do the reaction of your choice",
+        "value": false
+      },
+
+      {
+        "name": "A streamer exceed an amount of viewer",
+        "description": "When a streamer exceed an amount of viewer then do the reaction of your choice",
+        "value": true
+      },
+
+      {
+        "name": "A select streamer starts a new stream",
+        "description": "When a select streamer starts a new stream then do the reaction of your choice",
+        "value": true
+      }
+
+    ],
+    "reactions": [
+      {
+        "name": "",
+        "description": "",
+        "value": false
+      }
+    ]
+  },
+
+
+  {
+    "name": "Reddit",
+    "description": "Make Reddit actions reactions with Reddit api",
+    "actions": [
+      {
+        "name": "Reddit temp 1",
+        "description": "",
+        "value": false
+      },
+
+      {
+        "name": "Reddit temp 2",
+        "description": "",
+        "value": false
+      }
+
+    ],
+    "reactions": [
+      {
+        "name": "",
+        "description": "",
+        "value": false
+      }
+    ]
+  },
+
+
+  {
+    "name": "Spotify",
+    "description": "Make Spotify actions reactions with Spotify api",
+    "actions": [
+      {
+        "name": "You like a song",
+        "description": "When you like a song then do the reaction of your choice",
+        "value": false
+      },
+
+      {
+        "name": "You start listening a song",
+        "description": "When you start listening a song then do the reaction of your choice",
+        "value": false
+      }
+
+    ],
+    "reactions": [
+      {
+        "name": "Will play a secific song",
+        "description": "When an action is activated then play a specific song of your choice on your Spotify account",
+        "value": true
+      }
+    ]
+  },
+
+
+  {
+    "name": "Discord",
+    "description": "Make Discord actions reactions with Discord api",
+    "actions": [
+      {
+        "name": "",
+        "description": "",
+        "value": false
+      }
+
+    ],
+    "reactions": [
+      {
+        "name": "Message a specific user on discord",
+        "description": "When an action is activated then send a message with your Discord account",
+        "value": true
+      },
+
+      {
+        "name": "Message on discord server",
+        "description": "When an action is activated then psend a message on a Discord server",
+        "value": true
+      }
+    ]
+  },
+
+
+  {
+    "name": "Telegram",
+    "description": "Make Telegram actions reactions with Telegram api",
+    "actions": [
+      {
+        "name": "",
+        "description": "",
+        "value": false
+      }
+
+    ],
+    "reactions": [
+      {
+        "name": "Send a message to group chat",
+        "description": "When an action is activated then send a message to a group chat of your choice on your Telegram account",
+        "value": true
+      },
+
+      {
+        "name": "Send message at a specific user",
+        "description": "When an action is activated then send a message at a specific user on your Telegram account",
+        "value": true
+      }
+    ]
+  }
+]
