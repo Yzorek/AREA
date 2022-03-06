@@ -51,8 +51,8 @@ async function getLinkByService(req, res) {
 
         let target = []
         data.rows.forEach((item) => {
-                if (res.locals.reactions.find(elem => elem.id === item.id_actions).id_service === parseInt(req.query.idService) ||
-                    res.locals.actions.find(elem => elem.id === item.id_actions).id_service === parseInt(req.query.idService))
+                if (res.locals.reactions.find(elem => elem.id === item.id_reactions)?.id_service === parseInt(req.query.idService) ||
+                    res.locals.actions.find(elem => elem.id === item.id_actions)?.id_service === parseInt(req.query.idService))
                     target.push({
                             id: item.id,
                             idActions: item.id_actions,
@@ -67,6 +67,7 @@ async function getLinkByService(req, res) {
 
         res.status(200).send(target)
     } catch (err) {
+        console.log(err);
         res.status(500).send({
             message: 'bdd error'
         })

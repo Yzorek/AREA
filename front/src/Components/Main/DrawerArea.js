@@ -103,7 +103,7 @@ export default function DrawerArea({isLoading, idSelected, services}) {
                      else
                      return (
                         <ClassicListItemButtonNav icon={item.icon}
-                        redirectTo={item.name}
+                        redirectTo={item.path}
                         id={item.pageId}
                         label={item.name}
                         key={`${item.id} - service bar - ${index}`}
