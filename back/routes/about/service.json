@@ -79,22 +79,15 @@
     "settings": false,
     "actions": [
       {
-        "name": "Reddit temp 1",
-        "description": "",
-        "value": false
-      },
-
-      {
-        "name": "Reddit temp 2",
+        "name": "",
         "description": "",
         "value": false
       }
-
     ],
     "reactions": [
       {
-        "name": "",
-        "description": "",
+        "name": "Post a subreddit",
+        "description": "Make a new post on a selected subreddit with a title and a text",
         "value": false
       }
     ]
@@ -180,6 +173,32 @@
         "name": "Send message at a specific user",
         "description": "When an action is activated then send a message at a specific user on your Telegram account",
         "value": true
+      }
+    ]
+  },
+
+  {
+    "name": "Clash Royale",
+    "description": "Make Clash Royale actions reactions with Clash Royale api",
+    "settings": false,
+    "actions": [
+      {
+        "name": "You win a game",
+        "description": "When you win a game, triggers reaction",
+        "value": true
+      },
+
+      {
+        "name": "You lose a game",
+        "description": "When you lose a game, triggers reaction",
+        "value": false
+      }
+    ],
+    "reactions": [
+      {
+        "name": "",
+        "description": "",
+        "value": false
       }
     ]
   }
