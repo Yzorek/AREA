@@ -43,6 +43,7 @@ export default function Message({selectedIdConv}) {
     const [isError, setIsError] = useState(false);
     let userContext = useContext(UserContext);
     const isMounted = useRef(null)
+    let messagesEndRef;
 
     useEffect(() => {
         console.log(userContext)
@@ -59,9 +60,9 @@ export default function Message({selectedIdConv}) {
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
                     })
                 if (isMounted && isMounted.current) {
-                    console.log(response.data)
                     setData(response.data)
                     setIsLoading(false)
+                    scrollToBottom()
                 }
             } catch (err) {
                 if (err.response) {
@@ -90,11 +91,17 @@ export default function Message({selectedIdConv}) {
                 sender: userContext,
             })
             setMsg("")
+            scrollToBottom()
         } catch (err) {
             if (err.response) {
                 setIsError(true);
             }
         }
+    }
+
+    const scrollToBottom = () => {
+        console.log("En bas la!")
+        messagesEndRef.scrollIntoView({ behavior: "smooth" });
     }
 
     if (selectedIdConv <= 0)
@@ -115,6 +122,7 @@ export default function Message({selectedIdConv}) {
                         return <DesignReceiver data={elem}/>
                     return <DesignSender data={elem}/>
                 })}
+                <div ref={(el) => { messagesEndRef = el; }}/>
             </Grid>}
         <Grid container item xs={12} sx={{borderTop: 1, borderColor: 'divider', p: 1}}>
             <Grid item xs={2}/>

@@ -31,7 +31,7 @@ function SkeletonUserNewConv() {
     </ListItem>)
 }
 
-export default function DialogNewConversation({open, handleClose}) {
+export default function DialogNewConversation({open, handleClose, handleChangeSelectedIdConv}) {
     const [data, setData] = useState([])
     const [selectedUser, setSelectedUser] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -84,6 +84,8 @@ export default function DialogNewConversation({open, handleClose}) {
                 {
                     'headers': {'Authorization': `Bearer ${localStorage.getItem('JWT')}`}
                 })
+            if (response.data.id)
+                handleChangeSelectedIdConv(response.data.id)
             setIsSaveLoading(false);
             handleCloseDialog(true);
         } catch (err) {

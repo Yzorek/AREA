@@ -19,18 +19,18 @@ export default function PopoverMenuConv({anchorEl, handleClose}) {
                 </ListItemIcon>
                 <ListItemText primary={'Edit conversation name'}/>
             </ListItemButton>
-            <ListItemButton>
+            {/*<ListItemButton>
                 <ListItemIcon>
                     <ExitToApp/>
                 </ListItemIcon>
                 <ListItemText primary={'Leave conversation'}/>
             </ListItemButton>
-            <ListItemButton>
+                <ListItemButton>
                 <ListItemIcon>
-                    <People/>
+                <People/>
                 </ListItemIcon>
                 <ListItemText primary={'Add people'}/>
-            </ListItemButton>
+                </ListItemButton>*/}
         </List>
     </Popover>
 }

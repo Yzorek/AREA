@@ -109,7 +109,7 @@ export default function Conversation({handleChangeSelectedIdConv, selectedIdConv
                 }/>
             </ListItem>)}
         </List>}
-        <DialogNewConversation open={openDialogNewConv} handleClose={handleCloseDialogNewConv}/>
+        <DialogNewConversation open={openDialogNewConv} handleClose={handleCloseDialogNewConv} handleChangeSelectedIdConv={handleChangeSelectedIdConv}/>
         <AlertError isError={isError} setIsError={setIsError}/>
     </Grid>
 }
