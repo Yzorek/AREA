@@ -182,5 +182,32 @@
         "value": true
       }
     ]
+  },
+
+  {
+    "name": "Clash Royale",
+    "description": "Make Clash Royale actions reactions with Clash Royale api",
+    "settings": true,
+    "actions": [
+      {
+        "name": "Win a game",
+        "description": "When you win a game then do the reaction of your choice",
+        "value": false
+      },
+
+      {
+        "name": "Lose a game",
+        "description": "When you lose a game then do the reaction of your choice",
+        "value": false
+      }
+
+    ],
+    "reactions": [
+      {
+        "name": "",
+        "description": "",
+        "value": false
+      }
+    ]
   }
 ]
