@@ -14,7 +14,10 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions, page
     const [isActionNeeded, setIsActionNeeded] = useState(false);
     const [isReActionNeeded, setIsReActionNeeded] = useState(false);
     const [isError, setIsError] = useState(false);
-    const [isParamError, setIsParamError] = useState(false);
+    const [isParamError, setIsParamError] = useState({
+        message: "",
+        isError: false
+    });
     let tutorialMode = useContext(TutorialContext);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -46,6 +49,8 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions, page
     }
 
     const handleSave = async () => {
+        console.log(action)
+        console.log(reAction)
         if (action === '') {
             setIsActionNeeded(true);
             return;
@@ -55,11 +60,15 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions, page
             return;
         }
         if (action.params.some((item) => (item.value === '')) === true) {
-            setIsParamError(true);
+            setIsParamError({message: 'Please set the params', isError: true});
             return;
         }
         if (reAction.params.some((item) => (item.value === '')) === true) {
-            setIsParamError(true);
+            setIsParamError({message: 'Please set the params', isError: true});
+            return;
+        }
+        if (action.id_service === reAction.id_service) {
+            setIsParamError({message: 'Link same service is forbidden', isError: true});
             return;
         }
 
@@ -193,10 +202,10 @@ export default function AreaDialog({isAddOpen, onClose, actions, reactions, page
                     SAVE
                 </LoadingButton>
             </DialogActions>
-            <Snackbar open={isParamError} autoHideDuration={6000} onClose={() => setIsParamError(false)}
+            <Snackbar open={isParamError.isError} autoHideDuration={6000} onClose={() => setIsParamError({message: '', isError: false})}
                       anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-                <Alert onClose={() => setIsParamError(false)} severity="warning" sx={{width: '100%'}}>
-                    Please set the params
+                <Alert onClose={() => setIsParamError({message: '', isError: false})} severity="warning" sx={{width: '100%'}}>
+                    {isParamError.message}
                 </Alert>
             </Snackbar>
             <AlertError isError={isError} setIsError={setIsError}/>
