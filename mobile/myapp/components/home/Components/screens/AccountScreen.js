@@ -25,7 +25,7 @@ class AccountScreen extends Component {
         });
         this.props.dispatch({type: "index", value: 0})
         this.props.dispatch({type: "accessToken", value: ""})
-        this.props.dispatch({type: "clickBottom", value: 7})
+        this.props.dispatch({type: "clickBottom", value: 11})
     } catch (error) {
         this.setState({isError: true})
         Alert.alert(
