@@ -90,7 +90,7 @@ function loopAR(i) {
     }, 10000)
 }
 
-//loopAR(0);
+loopAR(0);
 
 server.listen(8080, () => {
     console.log('listening on *:8080');
