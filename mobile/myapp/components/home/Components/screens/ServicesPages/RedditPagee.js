@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import axios from 'axios';
 import colors from "../../../../../charte/colors";
 
-class YoutubePage extends Component {
+class RedditPage extends Component {
   constructor(props) {
     super(props);
       this.state = {
@@ -206,7 +206,7 @@ class YoutubePage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Icon name="youtube" style={styles.logo} size={90} color="#ff0000" />
+        <Icon name="reddit" style={styles.logo} size={90} color="#FF4500" />
         <View style={styles.input}>
           <Text style={styles.txt_input}>Action *</Text>
           <RNPickerSelect
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: "2%",
     borderWidth: 1,
-    backgroundColor: "#ff0000",
+    backgroundColor: "#FF4500",
     marginBottom: "5%",
     marginTop: "3%",
   },
@@ -287,4 +287,4 @@ const mapStateToProps = (state) => {
     clickBottom: state.clickBottom
   }
 }
-export default connect(mapStateToProps)(YoutubePage)
+export default connect(mapStateToProps)(RedditPage)

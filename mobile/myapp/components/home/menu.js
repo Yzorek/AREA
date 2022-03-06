@@ -9,10 +9,10 @@ import axios from 'axios';
 
 const Navigation = [
     {id: 1, type: AntDesign, name: "twitter"},
-    {id: 2, type: MaterialCommunityIcons, name: "trello"},
+    {id: 2, type: MaterialCommunityIcons, name: "spotify"},
     {id: 3, type: MaterialCommunityIcons, name: "discord"},
     {id: 4, type: FontAwesome, name: "twitch"},
-    {id: 5, type: FontAwesome, name: "youtube"},
+    {id: 5, type: FontAwesome, name: "reddit"},
     {id: 6, type: FontAwesome, name: "telegram"},
   ]
 

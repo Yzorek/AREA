@@ -9,10 +9,10 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 const Services = [
   {id: 1, type: AntDesign, name: "twitter", color: "#1C9CEB"},
-  {id: 2, type: MaterialCommunityIcons, name: "trello", color: "#1DB954"},
+  {id: 2, type: MaterialCommunityIcons, name: "spotify", color: "#1DB954"},
   {id: 3, type: MaterialCommunityIcons, name: "discord", color: "#5562EA"},
   {id: 4, type: FontAwesome, name: "twitch", color: "#8C45F7"},
-  {id: 5, type: FontAwesome, name: "youtube", color: "#F70000"},
+  {id: 5, type: FontAwesome, name: "reddit", color: "#FF4500"},
   {id: 6, type: FontAwesome, name: "telegram", color: "#26A2E1"},
 ]
 
@@ -109,6 +109,7 @@ class HomeScreen extends Component {
               <View style={styles.view_card}>
                 <LinearGradient
                   colors={[this._colorAction(item), this._colorReaction(item)]}
+                  start={ {x: 0, y: 0.5} } end={ {x: 1, y: 0.5} }
                   style={{width: '100%', height: "100%", borderRadius: 10}}
                 >
                   <View style={{flexDirection: "row", width: '100%', height: "100%"}}>
