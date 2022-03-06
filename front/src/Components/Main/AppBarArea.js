@@ -138,15 +138,15 @@ export default function AppBarArea({isLoading, handleTutorialChange}) {
             <Grid container item xs={12}>
                 <Grid container item xs={6} alignItems={'center'}>
                     <Grid item xs={7} style={{marginLeft: drawWith + 10}}>
-                        <TextField disabled={isLoading || !userContext} fullWidth size={"small"} label={'Search Bar'}
-                                   variant={'outlined'} type={'search'}
-                                   InputProps={{
-                                       endAdornment: (
-                                           <InputAdornment position="end">
-                                               <Search/>
-                                           </InputAdornment>
-                                       )
-                                   }}/>
+                        {/*<TextField disabled={isLoading || !userContext} fullWidth size={"small"} label={'Search Bar'}
+                                    variant={'outlined'} type={'search'}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <Search/>
+                                            </InputAdornment>
+                                        )
+                                    }}/>*/}
                     </Grid>
                 </Grid>
                 <Grid container item xs={6} justifyContent={'flex-end'} alignItems={'center'} spacing={2}>
@@ -154,13 +154,13 @@ export default function AppBarArea({isLoading, handleTutorialChange}) {
                         <CircularProgress style={{width: 25, height: 25}}/>
                     </Grid> : <Grid item>
                         <Tooltip title="Chat">
-                            <IconButton>
+                            <IconButton onClick={() => navigate('/App/Chat')}>
                                 <ChatBubble/>
                             </IconButton>
                         </Tooltip>
                     </Grid>}
 
-                    {isLoading || !userContext ? <Grid item>
+                    {/*isLoading || !userContext ? <Grid item>
                         <CircularProgress style={{width: 25, height: 25}}/>
                     </Grid> : <Grid item>
                         <Tooltip title="Notifications">
@@ -168,7 +168,7 @@ export default function AppBarArea({isLoading, handleTutorialChange}) {
                                 <Notifications/>
                             </IconButton>
                         </Tooltip>
-                    </Grid>}
+                    </Grid>*/}
 
                     {isLoading || !userContext ? <Grid item>
                         <CircularProgress style={{width: 25, height: 25}}/>
