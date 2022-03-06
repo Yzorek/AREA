@@ -159,10 +159,10 @@ async function reloadStreamsManagement() {
         let linkForTwitch = await getLinkWithTwitch()
 
         linkForTwitch.forEach(item => {
-            if (item.id_actions === 9 || item.id_actions === 4) {
+            if (item.id_actions === 7 || item.id_actions === 3) {
                 console.log("==== Result Stream ====")
                 ChannelStartNewStream(item)
-            } else if (item.id_actions === 8) {
+            } else if (item.id_actions === 6) {
                 console.log("==== Amout view ====")
                 ChannelStartOverflow(item)
             } else if (item.id_actions === 2) {

@@ -9,7 +9,7 @@ export const TWITTER = 5
 export const SPOTIFY = 6
 export const DISCORD = 7
 export const TWITCH = 8
-export const YOUTUBE = 9
+export const REDDIT = 9
 export const TELEGRAM = 10
 export const CLASH_ROYALE = 11
 
