@@ -27,7 +27,6 @@ async function authReddit(req, res, next) {
         try {
             let dataToken = fctToken.getTokenData(req);
             await fctDataBase.request('UPDATE clients SET reddit_token=$1 WHERE id=$2;', [response.data.access_token, parseInt(dataToken.id)]);
-            console.log(response.data);
             res.status(200).send(response.data);
         } catch (err) {
             res.status(500).send({
