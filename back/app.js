@@ -81,6 +81,7 @@ function loopAR(i) {
         await require('./twitch/twitch').reloadStreamsManagement();
         await require('./twitter/twitter').reloadTweetsManagement();
         await require('./spotify/spotify').reloadSpotifyManagement();
+        await require('./clashRoyale/clashRoyale').reloadCRManagement();
         loopAR(++i);
     }, 10000)
 }

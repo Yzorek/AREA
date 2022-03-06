@@ -48,9 +48,23 @@ function sendMessageTwitterToUserTelegram(data, user_name) {
 }
 
 function sendMessageTwitterToGroupTelegram(data, group_name) {
-    let target = require('../app').myUser.find(item => item.username.toLowerCase() === group_name.toLowerCase())
+    let target = require('../app').myGroup.find(item => item.username.toLowerCase() === group_name.toLowerCase())
     if (target)
         axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" + 'https://twitter.com/' + data.username + "/status/" + data.tweet_id)
+}
+
+function sendMessageCRToUserTelegram(data, user_name) {
+    let target = require('../app').myUser.find(item => item.username.toLowerCase() === user_name.toLowerCase())
+    let str = data.isWin ? " has just won a game!" : " has just lost a game!";
+    if (target)
+        axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" + data.pseudo + str)
+}
+
+function sendMessageCRToGroupTelegram(data, group_name) {
+    let target = require('../app').myGroup.find(item => item.username.toLowerCase() === group_name.toLowerCase())
+    let str = data.isWin ? " has just won a game!" : " has just lost a game!";
+    if (target)
+        axios.post(telegramUrl + "/sendMessage?chat_id=" + target.id + "&text=" + data.pseudo + str)
 }
 
 function sendMessageSpotifyLikedTrackToUserTelegram(data, user_name) {
@@ -88,4 +102,6 @@ module.exports = {
     sendMessageTwitterToGroupTelegram,
     sendMessageSpotifyLikedTrackInTelegramToGroup,
     sendMessageSpotifyLikedTrackToUserTelegram,
+    sendMessageCRToUserTelegram,
+    sendMessageCRToGroupTelegram
 }
