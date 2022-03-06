@@ -13,7 +13,11 @@ CREATE TABLE clients (
     id_status       INT,
     is_tutorial_mode bool,
     twitter_token   varchar(255),
+    twitter_refresh varchar(255),
+    twitter_date   varchar(255),
     spotify_token   varchar(255),
+    spotify_refresh varchar(255),
+    spotify_date   varchar(255),
     primary key(id)
 );
 

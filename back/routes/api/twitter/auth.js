@@ -1,6 +1,7 @@
 const axios = require("axios");
 const fctDataBase = require("../../../tools/fctDBRequest");
 const fctToken = require('../../../tools/fctToken');
+const moment = require("moment");
 
 const twitter = {
     client_id: "YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ", //a mettre dans le fichier config
@@ -27,6 +28,8 @@ async function authTwitter(req, res, next) {
         try {
             let dataToken = fctToken.getTokenData(req);
             await fctDataBase.request('UPDATE clients SET twitter_token=$1 WHERE id=$2;', [response.data.access_token, parseInt(dataToken.id)]);
+            await fctDataBase.request('UPDATE clients SET twitter_refresh=$1 WHERE id=$2;', [response.data.refresh_token, parseInt(dataToken.id)]);
+            await fctDataBase.request('UPDATE clients SET twitter_date=$1 WHERE id=$2;', [moment().format('YYYY-MM-DDTHH:mm:ss'), parseInt(dataToken.id)]);
             console.log(response.data);
             res.status(200).send(response.data);
         } catch (err) {
