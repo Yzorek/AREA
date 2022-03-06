@@ -15,8 +15,8 @@ router.get('/user', fctToken.auth, fctUser.getUser)
 router.post('/conversation', fctToken.auth, fctConversation.checkConversation, fctConversation.newConversation)
 router.get('/conversation', fctToken.auth, fctConversation.getConversation, fctConversation.getUserInfoConversation, (req, res) => res.status(200).send(res.locals.conversation))
 
-router.post('/conversation/msg/:id', fctToken.auth, )
+router.post('/conversation/:id', fctToken.auth, fctConversation.newMsgByConv)
 
-router.get('/conversation/:id', fctToken.auth, fctConversation.getConversationByID, fctConversation.getUserInfoConversation, fctConversation.getMsgByConv)
+router.get('/conversation/:id', fctToken.auth, fctConversation.getConversationByID, fctConversation.getUserInfoConversation, fctConversation.getMsgByConv, fctConversation.linkUserWithMsgConv)
 
 module.exports = router;

@@ -2,11 +2,60 @@ const express = require('express');
 const axios = require('axios');
 const fctDataBase = require("../tools/fctDBRequest");
 const router = express.Router();
-const https = require('https')
+const https = require('https');
+const moment = require("moment");
+
+const twitter = {
+    client_id: "YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ", //a mettre dans le fichier config
+    client_secret: "OhEVgTOExeb4OSe4A3EOzrKRzttKbPrUB10MULU-3B4jIKLMll"
+};
 
 let lastTweet = []
 let userLastTweet = []
 let lastMentinonned = []
+
+async function getRefreshToken(userId) {
+    let twitterToken = "";
+    let date = "";
+    try {
+        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(userId)]);
+
+        if (data.rowCount === 0) {
+            console.log("This user doesn't exist");
+        } else {
+            twitterToken = data.rows[0].twitter_refresh;
+            date = data.rows[0].twitter_date;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+    if (moment().diff(date, 'seconds') < 7000) {
+        return;
+    }
+    let auth = 'Basic ' + btoa(twitter.client_id + ":" + twitter.client_secret);
+    try {
+        let body = {
+            refresh_token: twitterToken,
+            grant_type: 'refresh_token',
+        }
+        const response = await axios.post(`https://api.twitter.com/2/oauth2/token?grant_type=refresh_token&refresh_token=${twitterToken}`, body,
+            {
+                'headers': {
+                    'Content-type': 'application/x-www-form-urlencoded',
+                    'Authorization': auth
+                }
+            });
+        try {
+            await fctDataBase.request('UPDATE clients SET twitter_token=$1 WHERE id=$2;', [response.data.access_token, parseInt(userId)]);
+            await fctDataBase.request('UPDATE clients SET twitter_refresh=$1 WHERE id=$2;', [response.data.refresh_token, parseInt(userId)]);
+            await fctDataBase.request('UPDATE clients SET twitter_date=$1 WHERE id=$2;', [moment().format('YYYY-MM-DDTHH:mm:ss'), parseInt(userId)]);
+        } catch (err) {
+            console.log(err);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 async function postTweet(aRdata) {
     let twitterToken = "";
@@ -47,6 +96,21 @@ async function getLinkWithTwitter() {
         data.rows.forEach(item => {
             if (item.is_active)
                 target.push(item);
+        })
+        return target;
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+}
+
+async function getTwitterUsers() {
+    try {
+        let data = await fctDataBase.request('SELECT * FROM link_service WHERE id_service=\'1\';');
+        let target = []
+
+        data.rows.forEach(item => {
+            target.push(item.id_user);
         })
         return target;
     } catch (err) {
@@ -222,6 +286,9 @@ async function YouAreMentionned(arData) {
                 } else if (arData.id_reactions === 1) {
                     let params_reaction = JSON.parse(arData.params_reaction);
                     require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
+                } else if (arData.id_reactions === 6) {
+                    let params_reaction = JSON.parse(arData.params_reaction);
+                    require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, arData)
                 }
             }
             lastTweetMention.last_tweet = mentions.meta.newest_id;
@@ -263,6 +330,9 @@ async function YouPostATweet(arData) {
                 } else if (arData.id_reactions === 1) {
                     let params_reaction = JSON.parse(arData.params_reaction);
                     require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
+                } else if (arData.id_reactions === 6) {
+                    let params_reaction = JSON.parse(arData.params_reaction);
+                    require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, arData)
                 }
             }
             lastUserTweet.last_tweet = tweets.meta.newest_id;
@@ -304,6 +374,9 @@ async function SomeonePostATweet(arData) {
                 } else if (arData.id_reactions === 1) {
                     let params_reaction = JSON.parse(arData.params_reaction);
                     require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
+                } else if (arData.id_reactions === 6) {
+                    let params_reaction = JSON.parse(arData.params_reaction);
+                    require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, arData)
                 }
             }
             lastUserTweet.last_tweet = tweets.meta.newest_id;
@@ -322,7 +395,11 @@ async function SomeonePostATweet(arData) {
 async function reloadTweetsManagement() {
     try {
         let linkForTwitter = await getLinkWithTwitter()
+        let twitterSubed = await getTwitterUsers()
 
+        twitterSubed.forEach(userId => {
+            getRefreshToken(userId);
+        })
         linkForTwitter.forEach(item => {
             if (item.id_actions === 5) {
                 console.log("==== Mentionned tweet ====")

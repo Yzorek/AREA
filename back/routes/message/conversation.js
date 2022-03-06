@@ -1,6 +1,7 @@
 const fctDataBase = require("../../tools/fctDBRequest");
 const fctToken = require("../../tools/fctToken");
 const {parse} = require("nodemon/lib/cli");
+const moment = require("moment");
 
 async function newConversation(req, res) {
     let dataToken = fctToken.getTokenData(req);
@@ -110,13 +111,31 @@ async function getConversationByID(req, res, next) {
     }
 }
 
+async function linkUserWithMsgConv(req, res, next) {
+    try {
+        let data = await fctDataBase.request('SELECT id, username, first_name, last_name, avatar FROM clients;', []);
+
+        res.locals.msg.forEach((item) => {
+            let target = data.rows.find(e => e.id === parseInt(item.id_sender))
+
+            item.sender = target;
+        })
+        res.status(200).send({
+            conversation: res.locals.conversation[0],
+            msg: res.locals.msg,
+        })
+    } catch (err) {
+        res.status(500).send({
+            message: 'err bdd'
+        })
+    }
+}
+
 async function getMsgByConv(req, res, next) {
     try {
-        //let data = await fctDataBase.request('SELECT * FROM conversation WHERE id=$1;', [parseInt(req.params.id)]);
+        let data = await fctDataBase.request('SELECT * FROM messages WHERE id_conv=$1;', [parseInt(req.params.id)]);
 
-        res.status(200).send({
-            conversation: res.locals.conversation[0]
-        })
+        res.locals.msg = data.rows;
         next()
     } catch (err) {
         res.status(500).send({
@@ -126,11 +145,12 @@ async function getMsgByConv(req, res, next) {
 }
 
 async function newMsgByConv(req, res, next) {
+    let dataToken = fctToken.getTokenData(req);
     try {
-        //let data = await fctDataBase.request('SELECT * FROM conversation WHERE id=$1;', [parseInt(req.params.id)]);
+        await fctDataBase.request('INSERT INTO messages(id_conv, id_sender, msg, date) VALUES ($1, $2, $3, $4);', [parseInt(req.params.id), dataToken.id, req.body.msg, `${moment().format('YYYY-MM-DDTHH:mm:ss')}`]);
 
         res.status(200).send({
-            conversation: res.locals.conversation[0]
+            message: 'done!'
         })
         next()
     } catch (err) {
@@ -146,5 +166,7 @@ module.exports = {
     getConversation,
     getUserInfoConversation,
     getConversationByID,
-    getMsgByConv
+    getMsgByConv,
+    newMsgByConv,
+    linkUserWithMsgConv
 }
