@@ -14,6 +14,7 @@ const Navigation = [
     {id: 4, type: FontAwesome, name: "twitch"},
     {id: 5, type: FontAwesome, name: "reddit"},
     {id: 6, type: FontAwesome, name: "telegram"},
+	{id: 7, type: FontAwesome, name: "gamepad"},
   ]
 
 class Display_menu extends React.Component {
@@ -49,9 +50,16 @@ class Display_menu extends React.Component {
 
     _icon(item) {
         const icon = Navigation.find(icon => icon.id === item.id);
-        return (
-          <icon.type name={icon.name} color="white" size={30} />
-        )
+        if (item.name==="Clash Royale") {
+			return (
+			  <Image style={styles.profil_img} source={{uri: "https://www.freeiconspng.com/thumbs/clash-royale-png/high-resolution-clash-royale-png-icon-21.png"}}/>
+			)
+		  }
+		  else {
+			return (
+			  <icon.type name={icon.name} color="white" size={30} />
+			)
+		  }
       }
 
 	_navigation_color(item) {
@@ -88,7 +96,7 @@ class Display_menu extends React.Component {
     _logOut() {
         this.props.dispatch({ type: "index", value: 0 })
         this.props.dispatch({ type: "accessToken", value: "" })
-		this.props.dispatch({type: "clickBottom", value: 7})
+		this.props.dispatch({type: "clickBottom", value: 11})
     }
 
 	render() {
@@ -174,7 +182,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginLeft: "2%",
         fontWeight: 'bold'
-    }
+    },
+	profil_img: {
+		width: 30,
+		height: 30,
+	},
 })
 
 const mapStateToProps = (state) => {

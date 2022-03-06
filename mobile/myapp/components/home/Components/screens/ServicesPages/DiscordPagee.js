@@ -175,7 +175,7 @@ class DiscordPage extends Component {
         {
           'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
         });
-        this.props.dispatch({type: 'clickBottom', value: 7});
+        this.props.dispatch({type: 'clickBottom', value: 11});
     } catch (err) {
       this.setState({isError: true})
       Alert.alert(

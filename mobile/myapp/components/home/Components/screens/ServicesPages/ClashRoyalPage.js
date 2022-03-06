@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { Text, StyleSheet, TextInput, TouchableOpacity, Touchable } from "react-native";
 import { View , Alert, FlatList} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import Icon from "react-native-vector-icons/FontAwesome";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from 'react-redux'
 import axios from 'axios';
 import colors from "../../../../../charte/colors";
 
-class TwitchPage extends Component {
+class ClashRoyalPage extends Component {
   constructor(props) {
     super(props);
       this.state = {
@@ -135,17 +135,17 @@ class TwitchPage extends Component {
           else if (data.label.length===2) {
             return (
               <View>
-                <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
-                  <View style={styles.textinput}>
-                    <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ReactionInput_1: value})}}/>
-                  </View>
-                  <View style={styles.textinput}>
-                    <TextInput style={{width: "100%"}} placeholder={data.label[1]} onChangeText={(value) => {this.setState({ReactionInput_2: value})}}/>
-                  </View>
+              <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
+                <View style={styles.textinput}>
+                  <TextInput style={{width: "100%"}} placeholder={data.label[0]} onChangeText={(value) => {this.setState({ReactionInput_1: value})}}/>
                 </View>
-                <TouchableOpacity style={[styles.button, {backgroundColor: colors.third, margin: "3%"}]} onPress={() => {this.setState({paramsReaction: [{name: data.label[0], value: this.state.ReactionInput_1}, {name: data.label[1], value: this.state.ReactionInput_2}], okIsPressed_2: true})}}>
-                  <Text style={{fontWeight: "bold"}}>OK</Text>
-                </TouchableOpacity>
+                <View style={styles.textinput}>
+                  <TextInput style={{width: "100%"}} placeholder={data.label[1]} onChangeText={(value) => {this.setState({ReactionInput_2: value})}}/>
+                </View>
+              </View>
+              <TouchableOpacity style={[styles.button, {backgroundColor: colors.third, margin: "3%"}]} onPress={() => {this.setState({paramsReaction: [{name: data.label[0], value: this.state.ReactionInput_1}, {name: data.label[1], value: this.state.ReactionInput_2}], okIsPressed_2: true})}}>
+                <Text style={{fontWeight: "bold"}}>OK</Text>
+              </TouchableOpacity>
               </View>
             )
           }
@@ -206,7 +206,7 @@ class TwitchPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Icon name="twitch" style={styles.logo} size={90} color="#a800a8" />
+        <FontAwesome name="gamepad" style={styles.logo} size={90} color="#488bf4" />
         <View style={styles.input}>
           <Text style={styles.txt_input}>Action *</Text>
           <RNPickerSelect
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: "2%",
     borderWidth: 1,
-    backgroundColor: "#a800a8",
+    backgroundColor: "#488bf4",
     marginBottom: "5%",
     marginTop: "3%",
   },
@@ -287,4 +287,4 @@ const mapStateToProps = (state) => {
     clickBottom: state.clickBottom
   }
 }
-export default connect(mapStateToProps)(TwitchPage)
+export default connect(mapStateToProps)(ClashRoyalPage)

@@ -12,6 +12,7 @@ import TwitchPage from "./Components/screens/ServicesPages/TwitchPagee";
 import RedditPage from "./Components/screens/ServicesPages/RedditPagee";
 import DiscordPage from "./Components/screens/ServicesPages/DiscordPagee";
 import AccountScreen from "./Components/screens/AccountScreen";
+import ClashRoyalPage from "./Components/screens/ServicesPages/ClashRoyalPage";
 
 class DisplayBody extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class DisplayBody extends Component {
       )
     }
 
-    else if (this.props.clickBottom===7) {
+    else if (this.props.clickBottom===11) {
       return (
         <HomeScreen/>
       )
@@ -78,6 +79,12 @@ class DisplayBody extends Component {
         return (
             <TelegramPage/>
         )
+    }
+
+    else if (this.props.clickBottom===7) {
+      return (
+        <ClashRoyalPage/>
+      )
     }
   }
 

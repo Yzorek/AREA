@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Linking, Image} from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux'
 import axios from 'axios';
+import { WebView } from 'react-native-webview';
 
 const Icon = [
   {id: 1, type: AntDesign, name: "twitter"},
@@ -13,6 +14,7 @@ const Icon = [
   {id: 4, type: FontAwesome, name: "twitch"},
   {id: 5, type: FontAwesome, name: "reddit"},
   {id: 6, type: FontAwesome, name: "telegram"},
+  {id: 7, type: FontAwesome, name: "gamepad"},
 ]
 
 class ServiceSettings extends Component {
@@ -46,19 +48,67 @@ class ServiceSettings extends Component {
     item.isActive = !item.isActive;
     this.setState({services: [...this.state.services]})
     const source = axios.CancelToken.source();
-    if (item.name==="Twitter") {
-      try {
-        let body = {
-            code: res
-        }
-        await axios.post('http://'+IP+':8080/twitter/auth', body,
+    if (item.name==="Twitter" && item.isActive===true) {
+      const supported = await Linking.canOpenURL('https://twitter.com/i/oauth2/authorize?response_type=code&client_id=YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ&redirect_uri=http://localhost:8081/App/TwitterRedirect&scope=offline.access%20tweet.read%20tweet.write%20users.read%20follows.read%20follows.write&state=state&code_challenge=challenge&code_challenge_method=plain');
+      if (supported) {
+        await Linking.openURL('https://twitter.com/i/oauth2/authorize?response_type=code&client_id=YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ&redirect_uri=http://localhost:8081/App/TwitterRedirect&scope=offline.access%20tweet.read%20tweet.write%20users.read%20follows.read%20follows.write&state=state&code_challenge=challenge&code_challenge_method=plain');
+        try {
+          let body = {
+            action: item.isActive ? 'sub' : 'unsub',
+            serviceId: item.id
+          };
+          await axios.post('http://'+IP+':8080/services/subscribe', body,
           {
+            cancelToken: source.token,
             'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
           });
-      } catch (error) {
-        Alert.alert(
-          "Error !",
-        );
+        } catch (error) {
+          this.setState({
+            isError: true,
+          })
+        }
+      }
+    }
+    else if (item.name==="Spotify" && item.isActive===true) {
+      const supported = await Linking.canOpenURL('https://accounts.spotify.com/authorize?response_type=code&client_id=187c0fc794714871bbe61948b5232d56&scope=user-read-private%20user-read-email%20user-library-read%20user-read-playback-state%20user-modify-playback-state&redirect_uri=http://localhost:8081/App/SpotifyRedirect&state=generateRandomString(16)');
+      if (supported) {
+        await Linking.openURL('https://accounts.spotify.com/authorize?response_type=code&client_id=187c0fc794714871bbe61948b5232d56&scope=user-read-private%20user-read-email%20user-library-read%20user-read-playback-state%20user-modify-playback-state&redirect_uri=http://localhost:8081/App/SpotifyRedirect&state=generateRandomString(16)');
+        try {
+          let body = {
+            action: item.isActive ? 'sub' : 'unsub',
+            serviceId: item.id
+          };
+          await axios.post('http://'+IP+':8080/services/subscribe', body,
+          {
+            cancelToken: source.token,
+            'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
+          });
+        } catch (error) {
+          this.setState({
+            isError: true,
+          })
+        }
+      }
+    }
+    else if (item.name==="Reddit" && item.isActive===true) {
+      const supported = await Linking.canOpenURL('https://www.reddit.com/api/v1/authorize?client_id=A1dJ6sEJqHjO27RHN4pwTw&response_type=code&state=generateRandomString(16)&redirect_uri=http://localhost:8081/App/RedditRedirect&duration=temporary&scope=identity');
+      if (supported) {
+        await Linking.openURL('https://www.reddit.com/api/v1/authorize?client_id=A1dJ6sEJqHjO27RHN4pwTw&response_type=code&state=generateRandomString(16)&redirect_uri=http://localhost:8081/App/RedditRedirect&duration=temporary&scope=identity');
+        try {
+          let body = {
+            action: item.isActive ? 'sub' : 'unsub',
+            serviceId: item.id
+          };
+          await axios.post('http://'+IP+':8080/services/subscribe', body,
+          {
+            cancelToken: source.token,
+            'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
+          });
+        } catch (error) {
+          this.setState({
+            isError: true,
+          })
+        }
       }
     }
     else {
@@ -82,9 +132,16 @@ class ServiceSettings extends Component {
   
   _icon(item) {
     const icon = Icon.find(icon => icon.id === item.id);
-    return (
-      <icon.type name={icon.name} color="white" size={42} />
-    )
+    if (item.name==="Clash Royale") {
+      return (
+        <Image style={styles.profil_img} source={{uri: "https://www.freeiconspng.com/thumbs/clash-royale-png/high-resolution-clash-royale-png-icon-21.png"}}/>
+      )
+    }
+    else {
+      return (
+        <icon.type name={icon.name} color="white" size={42} />
+      )
+    }
   }
 
   _backg(item) {
@@ -137,7 +194,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     marginTop: "10%"
-  }
+  },
+  profil_img: {
+    width: 50,
+    height: 50,
+  },
 });
 
 const mapStateToProps = (state) => {
