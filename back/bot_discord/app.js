@@ -191,6 +191,55 @@ function sendMessageTwitterInGuilds(channelsName, guilds, data) {
     }
 }
 
+function sendMessageCRInMessage(username, data) {
+    let target = client.users.cache.find(item => item.username === username);
+
+    let str = "";
+    if (data.isWin) {
+        str = " has just won a game!"
+    }
+    else {
+        str = " has just lost a game!"
+    }
+    if (target) {
+        const crEmbed = new MessageEmbed()
+            .setColor('BLUE')
+            .setTitle(data.pseudo + str)
+            .setURL("https://clashroyale.com/fr/")
+            .setImage("https://static1.millenium.org/articles/6/38/53/86/@/1553007-arena-4-reprise-article_m-2.jpg")
+            .setAuthor("Clash Royale")
+
+        target.send({embeds: [crEmbed]});
+    }
+}
+
+function sendMessageCRInGuilds(channelsName, guilds, data) {
+    let guild = client.guilds.cache.find(item => item.name.toLowerCase() === guilds.toLowerCase())
+
+    if (!guild)
+        return;
+    let channel = guild.channels.cache.find(item => item.name.toLowerCase() === channelsName.toLowerCase());
+
+    if (!channel)
+        return;
+
+    let str = "";
+    if (data.isWin) {
+        str = " has just won a game!"
+    }
+    else {
+        str = " has just lost a game!"
+    }
+    const crEmbed = new MessageEmbed()
+        .setColor('BLUE')
+        .setTitle(data.pseudo + str)
+        .setURL("https://clashroyale.com/fr/")
+        .setImage("https://static1.millenium.org/articles/6/38/53/86/@/1553007-arena-4-reprise-article_m-2.jpg")
+        .setAuthor("Clash Royale")
+
+    channel.send({embeds: [crEmbed]});
+}
+
 function sendMessageSpotifyInMessage(username, data) {
 
     let target = client.users.cache.find(item => item.username === username);
@@ -259,4 +308,6 @@ module.exports = {
     sendMessageTwitterInGuilds,
     sendMessageSpotifyInMessage,
     sendMessageSpotifyInGuilds,
+    sendMessageCRInMessage,
+    sendMessageCRInGuilds
 }

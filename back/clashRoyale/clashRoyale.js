@@ -49,27 +49,27 @@ function triggerReaction(arData, crData, isWin) {
     }
     if (arData.id_reactions === 2) {
         let params_reaction = JSON.parse(arData.params_reaction);
-        require('../bot_telegram/app').sendMessageTwitterToGroupTelegram(data, params_reaction[0].value)
+        require('../bot_telegram/app').sendMessageCRToGroupTelegram(data, params_reaction[0].value)
     } else if (arData.id_reactions === 5) {
         let params_reaction = JSON.parse(arData.params_reaction);
-        require('../bot_telegram/app').sendMessageTwitterToUserTelegram(data, params_reaction[0].value)
+        require('../bot_telegram/app').sendMessageCRToUserTelegram(data, params_reaction[0].value)
     } else if (arData.id_reactions === 3) {
         let params_reaction = JSON.parse(arData.params_reaction);
-        require('../bot_discord/app').sendMessageTwitterInGuilds(params_reaction[1].value, params_reaction[0].value, data)
+        require('../bot_discord/app').sendMessageCRInGuilds(params_reaction[1].value, params_reaction[0].value, data)
     } else if (arData.id_reactions === 1) {
         let params_reaction = JSON.parse(arData.params_reaction);
-        require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
+        require('../bot_discord/app').sendMessageCRInMessage(params_reaction[0].value, data)
     } else if (arData.id_reactions === 6) {
         let params_reaction = JSON.parse(arData.params_reaction);
         require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, arData)
     } else if (arData.id_reactions === 4) {
-        console.log('test3');
         require('../twitter/twitter').postTweet(arData);
     }
 }
 
 async function compareWinTrophies(arData) {
     let player = await getPlayerInfos(arData);
+    if (player === undefined || player.tag === undefined) return;
     let playerTrophies = playersWonTrophies.find((e) => e.user_id === arData.id_user && e.id_reaction === arData.id_reactions && e.tag === player.tag);
     if (playerTrophies !== undefined) {
         if (playerTrophies.nb_trophies !== player.trophies) {
@@ -90,6 +90,7 @@ async function compareWinTrophies(arData) {
 
 async function compareLoseTrophies(arData) {
     let player = await getPlayerInfos(arData);
+    if (player === undefined || player.tag === undefined) return;
     let playerTrophies = playersLostTrophies.find((e) => e.user_id === arData.id_user && e.id_reaction === arData.id_reactions && e.tag === player.tag);
     if (playerTrophies !== undefined) {
         if (playerTrophies.nb_trophies !== player.trophies) {

@@ -112,7 +112,7 @@ CREATE TABLE reactions (
     primary key(id)
 );
 
-INSERT INTO reactions(description, id_service, params) VALUES ('Message a specific user on discord', 3, ARRAY['Username', 'Message']);
+INSERT INTO reactions(description, id_service, params) VALUES ('Message a specific user on discord', 3, ARRAY['Username']);
 INSERT INTO reactions(description, id_service, params) VALUES ('Send message to group chat', 6, ARRAY['Group name']);
 INSERT INTO reactions(description, id_service, params) VALUES ('Message on discord server', 3, ARRAY['Server name', 'Channel name']);
 INSERT INTO reactions(description, id_service, params) VALUES ('Post a tweet', 1, ARRAY['Tweet text']);
