@@ -23,6 +23,7 @@ const ARRouter = require('./routes/actionReaction/actionReaction');
 const apiTwitchRouter = require('./routes/api/twitch/twitch');
 const apiTwitterRouter = require('./routes/api/twitter/twitter');
 const apiSpotifyRouter = require('./routes/api/spotify/spotify');
+const messageRouter = require('./routes/message/message');
 
 const app = express();
 const server = http.createServer(app);
@@ -52,6 +53,7 @@ app.use('/download', downloadRouter);
 app.use('/AR', ARRouter);
 app.use('/twitter', apiTwitterRouter);
 app.use('/spotify', apiSpotifyRouter);
+app.use('/msg', messageRouter);
 
 let myUser = []
 let myGroup = []
@@ -65,7 +67,7 @@ bot.command('start', (ctx) => {
         myGroup.push(ctx.chat)
     ctx.reply('User Save !')
 })
-bot.launch()
+//bot.launch()
 
 require('./bot_discord/app');
 require('./bot_telegram/app')
@@ -82,7 +84,7 @@ function loopAR(i) {
     }, 10000)
 }
 
-loopAR(0);
+//loopAR(0);
 
 server.listen(8080, () => {
     console.log('listening on *:8080');

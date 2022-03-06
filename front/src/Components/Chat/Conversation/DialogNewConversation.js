@@ -27,7 +27,7 @@ function SkeletonUserNewConv() {
         </ListItemAvatar>
         <ListItemText primary={
             <Skeleton style={{width: '90%'}}/>
-        }/>
+        } secondary={<Skeleton style={{width: '60%'}}/>}/>
     </ListItem>)
 }
 
@@ -35,6 +35,7 @@ export default function DialogNewConversation({open, handleClose}) {
     const [data, setData] = useState([])
     const [selectedUser, setSelectedUser] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isSaveLoading, setIsSaveLoading] = useState(false);
     const [isError, setIsError] = useState(false)
     const isMounted = useRef(null)
     let tutorialMode = useContext(TutorialContext);
@@ -47,7 +48,7 @@ export default function DialogNewConversation({open, handleClose}) {
         setIsLoading(true);
         (async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_KEYBOON_API}/myUrl/toGet`,
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/msg/user`,
                     {
                         cancelToken: source.token,
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
@@ -71,12 +72,34 @@ export default function DialogNewConversation({open, handleClose}) {
 
 
     function handleCloseDialog(isToReload) {
+        setSelectedUser([])
         handleClose(isToReload)
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault()
-        handleClose(true)
+    const onSubmit = async (event) => {
+        event.preventDefault()
+        try {
+            setIsSaveLoading(true);
+            const response = await axios.post(`${process.env.REACT_APP_DASHBOARD_API}/msg/conversation`, selectedUser,
+                {
+                    'headers': {'Authorization': `Bearer ${localStorage.getItem('JWT')}`}
+                })
+            setIsSaveLoading(false);
+            handleCloseDialog(true);
+        } catch (err) {
+            if (err.response) {
+                setIsError(true);
+                setIsSaveLoading(false)
+            }
+        }
+    }
+
+    function handleAddNewUser(item) {
+        if (selectedUser.find(elem => item.id === elem.id))
+            selectedUser.splice(selectedUser.findIndex(elem => item.id === elem.id), 1);
+        else
+            selectedUser.push(item);
+        setSelectedUser([...selectedUser])
     }
 
     return <Dialog component={'form'} open={open} onClose={() => handleCloseDialog(false)} onSubmit={onSubmit} fullWidth
@@ -100,21 +123,30 @@ export default function DialogNewConversation({open, handleClose}) {
             </Grid>
             <Grid container item xs={12}>
                 <List style={{width: "100%", overflow: 'auto', height: 200}}>
-                    {isLoading ? <SkeletonUserNewConv/> : data.map(item => <ListItem button key={`User new conv - ${item.id}`} sx={{
-                        [`&:hover`]: {
-                            bgcolor: 'gray.200',
-                        },
-                    }} secondaryAction={<Checkbox disabled={true}/>}>
+                    {isLoading ? <SkeletonUserNewConv/> : data.map(item => <ListItem button
+                                                                                     key={`User new conv - ${item.id}`}
+                                                                                     sx={{
+                                                                                         [`&:hover`]: {
+                                                                                             bgcolor: 'gray.200',
+                                                                                         },
+                                                                                     }} onClick={() => {
+                        handleAddNewUser(item)
+                    }} secondaryAction={<Checkbox disabled={isSaveLoading}
+                                                  checked={!!selectedUser.find(elem => item.id === elem.id)}
+                                                  onClick={() => {
+                                                      handleAddNewUser(item)
+                                                  }}/>}>
                         <ListItemAvatar>
                             <Avatar alt={item.username} src={item.avatar}/>
                         </ListItemAvatar>
-                        <ListItemText primary={item.username}/>
+                        <ListItemText primary={item.username} secondary={`${item.first_name} ${item.last_name}`}/>
                     </ListItem>)}
                 </List>
             </Grid>
         </DialogContent>
         <DialogActions>
-            <LoadingButton disabled={!selectedUser.length} loading={isLoading} variant={'contained'} fullWidth color={"primary"} type={'submit'}>
+            <LoadingButton disabled={!selectedUser.length} loading={isSaveLoading} variant={'contained'} fullWidth
+                           color={"primary"} type={'submit'}>
                 Create
             </LoadingButton>
         </DialogActions>

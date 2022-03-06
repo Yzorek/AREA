@@ -1,15 +1,26 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {CircularProgress, Grid, IconButton, InputAdornment, TextField, Tooltip} from "@mui/material";
+import {
+    Avatar,
+    CircularProgress,
+    Grid,
+    IconButton,
+    InputAdornment, List,
+    ListItem,
+    ListItemAvatar, ListItemText,
+    TextField,
+    Tooltip
+} from "@mui/material";
 import axios from "axios";
 import AlertError from "../../Tools/AlertError";
 import SkeletonConversation from "./SkeletonConversation";
 import {AddBox, Search} from "@mui/icons-material";
 import DialogNewConversation from "./DialogNewConversation";
+import {AvatarGroup, Skeleton} from "@mui/lab";
 
 export default function Conversation({}) {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState([]);
-    const [isReload, setIsReload] = useState(false)
+    const [isReload, setIsReload] = useState(true)
     const [isError, setIsError] = useState(false)
     const [openDialogNewConv, setOpenDialogNewConv] = useState(false);
     const isMounted = useRef(null)
@@ -22,7 +33,7 @@ export default function Conversation({}) {
         setIsLoading(true);
         (async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_KEYBOON_API}/myUrl/toGet`,
+                const response = await axios.get(`${process.env.REACT_APP_DASHBOARD_API}/msg/conversation`,
                     {
                         cancelToken: source.token,
                         'headers': {'Authorization': `Bearer  ${localStorage.getItem('JWT')}`}
@@ -72,7 +83,19 @@ export default function Conversation({}) {
                 </Tooltip>
             </Grid>
         </Grid>
-        {isLoading && <SkeletonConversation/>}
+        {isLoading ? <SkeletonConversation/> : <List style={{width: '100%', padding: 0}}>
+            {data.map(item => <ListItem key={`Conversation - ${item.id}`} style={{width: '100%'}}
+                                        sx={{borderBottom: 1, borderColor: 'divider'}}>
+                <ListItemAvatar>
+                    <AvatarGroup total={item.users.length}>
+                        {item.users.map(user => <Avatar key={`Avatar user conv - ${user.id}`} alt={user.username} src={user.avatar}/>)}
+                    </AvatarGroup>
+                </ListItemAvatar>
+                <ListItemText primary={
+                    item.name
+                }/>
+            </ListItem>)}
+        </List>}
         <DialogNewConversation open={openDialogNewConv} handleClose={handleCloseDialogNewConv}/>
         <AlertError isError={isError} setIsError={setIsError}/>
     </Grid>
