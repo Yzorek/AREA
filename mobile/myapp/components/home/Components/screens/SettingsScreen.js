@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Switch } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -46,20 +46,37 @@ class ServiceSettings extends Component {
     item.isActive = !item.isActive;
     this.setState({services: [...this.state.services]})
     const source = axios.CancelToken.source();
-    try {
-      let body = {
-        action: item.isActive ? 'sub' : 'unsub',
-        serviceId: item.id
-      };
-      const response = await axios.post('http://'+IP+':8080/services/subscribe', body,
-      {
-        cancelToken: source.token,
-        'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
-      });
-    } catch (error) {
-      this.setState({
-        isError: true,
-      })
+    if (item.name==="Twitter") {
+      try {
+        let body = {
+            code: res
+        }
+        await axios.post('http://'+IP+':8080/twitter/auth', body,
+          {
+            'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
+          });
+      } catch (error) {
+        Alert.alert(
+          "Error !",
+        );
+      }
+    }
+    else {
+      try {
+        let body = {
+          action: item.isActive ? 'sub' : 'unsub',
+          serviceId: item.id
+        };
+        await axios.post('http://'+IP+':8080/services/subscribe', body,
+        {
+          cancelToken: source.token,
+          'headers': {'Authorization': 'Bearer  '+this.props.accessToken}
+        });
+      } catch (error) {
+        this.setState({
+          isError: true,
+        })
+      }
     }
   }
   

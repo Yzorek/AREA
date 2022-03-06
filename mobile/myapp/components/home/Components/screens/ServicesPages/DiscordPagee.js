@@ -109,7 +109,7 @@ class DiscordPage extends Component {
     return (
       <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
         <Text style={{margin: "2%", fontSize: 15, color: colors.third}}>No Parameter</Text>
-        <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsAction: []})}}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsAction: [], okIsPressed: true})}}>
          <Text style={{fontWeight: "bold"}}>OK</Text>
         </TouchableOpacity>
       </View>
@@ -155,7 +155,7 @@ class DiscordPage extends Component {
     return (
       <View style={{width: '100%', flexDirection: "row", justifyContent: 'space-between'}}>
         <Text style={{margin: "2%", fontSize: 15, color: colors.third}}>No Parameter</Text>
-        <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsReaction: []})}}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: colors.third}]} onPress={() => {this.setState({paramsReaction: [], okIsPressed_2: true})}}>
         <Text style={{fontWeight: "bold"}}>OK</Text>
         </TouchableOpacity>
       </View>
