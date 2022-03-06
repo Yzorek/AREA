@@ -1,6 +1,7 @@
 const axios = require("axios");
 const fctDataBase = require("../../../tools/fctDBRequest");
 const fctToken = require('../../../tools/fctToken');
+const moment = require("moment");
 
 const spotify = {
     client_id: "187c0fc794714871bbe61948b5232d56", //a mettre dans le fichier config
@@ -26,9 +27,11 @@ async function authSpotify(req, res, next) {
         try {
             let dataToken = fctToken.getTokenData(req);
             await fctDataBase.request('UPDATE clients SET spotify_token=$1 WHERE id=$2;', [response.data.access_token, parseInt(dataToken.id)]);
-            console.log(response.data);
+            await fctDataBase.request('UPDATE clients SET spotify_refresh=$1 WHERE id=$2;', [response.data.refresh_token, parseInt(dataToken.id)]);
+            await fctDataBase.request('UPDATE clients SET spotify_date=$1 WHERE id=$2;', [moment().format('YYYY-MM-DDTHH:mm:ss'), parseInt(dataToken.id)]);
             res.status(200).send(response.data);
         } catch (err) {
+            console.log(err);
             res.status(500).send({
                 message: 'BDD error',
             });

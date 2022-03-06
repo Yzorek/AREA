@@ -29,7 +29,6 @@ async function getRefreshToken(userId) {
     } catch (err) {
         console.log(err);
     }
-    console.log(twitterToken);
     if (moment().diff(date, 'seconds') < 7000) {
         return;
     }
@@ -46,8 +45,6 @@ async function getRefreshToken(userId) {
                     'Authorization': auth
                 }
             });
-        console.log(response.data.access_token);
-        console.log(response.data.refresh_token);
         try {
             await fctDataBase.request('UPDATE clients SET twitter_token=$1 WHERE id=$2;', [response.data.access_token, parseInt(userId)]);
             await fctDataBase.request('UPDATE clients SET twitter_refresh=$1 WHERE id=$2;', [response.data.refresh_token, parseInt(userId)]);

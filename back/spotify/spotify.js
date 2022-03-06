@@ -1,12 +1,68 @@
 const express = require('express');
 const axios = require('axios');
 const fctDataBase = require("../tools/fctDBRequest");
+const moment = require("moment");
 express.Router();
-const https = require('https')
-const {sendMessageSpotifyInGuilds} = require("../bot_discord/app");
+
+const spotify = {
+    client_id: "187c0fc794714871bbe61948b5232d56", //a mettre dans le fichier config
+    client_secret: "0204c7a6e66c4be698d5286f5bf5e7a6"
+};
 
 let lastTrackInfo = []
 let isUserCurrentlyPlaying = []
+
+async function getRefreshToken(userId) {
+    let spotifyToken = "";
+    let date = "";
+    try {
+        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(userId)]);
+
+        if (data.rowCount === 0) {
+            console.log("This user doesn't exist");
+        } else {
+            spotifyToken = data.rows[0].spotify_refresh;
+            date = data.rows[0].spotify_date;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+    if (moment().diff(date, 'seconds') < 3000) {
+        return;
+    }
+    if (spotifyToken === null || spotifyToken === undefined) {
+        try {
+            await fctDataBase.request('DELETE FROM link_service WHERE id_user=$1 AND id_service=\'2\';', [parseInt(userId)]);
+        } catch (err) {
+            console.log(err);
+        }
+        return;
+    }
+    try {
+        let body = new URLSearchParams({
+            'refresh_token': spotifyToken,
+            'grant_type': 'refresh_token',
+            'client_id': spotify.client_id
+        });
+        let auth = 'Basic ' + Buffer.from(spotify.client_id + ":" + spotify.client_secret).toString("base64");
+        const response = await axios.post(`https://accounts.spotify.com/api/token`, body,
+        {
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Authorization': auth,
+            }
+        });
+        try {
+            await fctDataBase.request('UPDATE clients SET spotify_token=$1 WHERE id=$2;', [response.data.access_token, parseInt(userId)]);
+            await fctDataBase.request('UPDATE clients SET spotify_refresh=$1 WHERE id=$2;', [response.data.refresh_token, parseInt(userId)]);
+            await fctDataBase.request('UPDATE clients SET spotify_date=$1 WHERE id=$2;', [moment().format('YYYY-MM-DDTHH:mm:ss'), parseInt(userId)]);
+        } catch (err) {
+            console.log(err);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 async function getLinkWithSpotify() {
     try {
@@ -18,6 +74,21 @@ async function getLinkWithSpotify() {
         data.rows.forEach(item => {
             if (item.is_active)
                 target.push(item);
+        })
+        return target;
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+}
+
+async function getSpotifyUsers() {
+    try {
+        let data = await fctDataBase.request('SELECT * FROM link_service WHERE id_service=\'2\';');
+        let target = []
+
+        data.rows.forEach(item => {
+            target.push(item.id_user);
         })
         return target;
     } catch (err) {
@@ -275,6 +346,11 @@ async function userPlayTrack(arData) {
 async function reloadSpotifyManagement() {
     try {
         let linkForSpotify = await getLinkWithSpotify()
+        let spotifySubed = await getSpotifyUsers()
+
+        spotifySubed.forEach(userId => {
+            getRefreshToken(userId);
+        })
 
         linkForSpotify.forEach(item => {
             if (item.id_actions === 7) {
