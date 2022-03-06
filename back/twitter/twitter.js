@@ -222,6 +222,9 @@ async function YouAreMentionned(arData) {
                 } else if (arData.id_reactions === 1) {
                     let params_reaction = JSON.parse(arData.params_reaction);
                     require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
+                } else if (arData.id_reactions === 6) {
+                    let params_reaction = JSON.parse(arData.params_reaction);
+                    require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, arData)
                 }
             }
             lastTweetMention.last_tweet = mentions.meta.newest_id;
@@ -263,6 +266,9 @@ async function YouPostATweet(arData) {
                 } else if (arData.id_reactions === 1) {
                     let params_reaction = JSON.parse(arData.params_reaction);
                     require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
+                } else if (arData.id_reactions === 6) {
+                    let params_reaction = JSON.parse(arData.params_reaction);
+                    require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, arData)
                 }
             }
             lastUserTweet.last_tweet = tweets.meta.newest_id;
@@ -304,6 +310,9 @@ async function SomeonePostATweet(arData) {
                 } else if (arData.id_reactions === 1) {
                     let params_reaction = JSON.parse(arData.params_reaction);
                     require('../bot_discord/app').sendMessageTwitterInMessage(params_reaction[0].value, data)
+                } else if (arData.id_reactions === 6) {
+                    let params_reaction = JSON.parse(arData.params_reaction);
+                    require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, arData)
                 }
             }
             lastUserTweet.last_tweet = tweets.meta.newest_id;

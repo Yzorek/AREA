@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cors())
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -69,6 +69,7 @@ bot.launch()
 
 require('./bot_discord/app');
 require('./bot_telegram/app')
+const {playSpecificSong, getLinkWithSpotify} = require("./spotify/spotify");
 require('./socket/socket')(io);
 
 
