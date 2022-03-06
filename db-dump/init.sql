@@ -128,3 +128,13 @@ CREATE TABLE conversation (
     users               text[],
     primary key(id)
 );
+
+--Messages--
+CREATE TABLE messages (
+    id                  SERIAL,
+    id_conv             int,
+    id_sender           int,
+    msg                 text,
+    date                text,
+    primary key(id)
+);
