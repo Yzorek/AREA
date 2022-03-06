@@ -10,8 +10,8 @@ const reddit = {
 async function authReddit(req, res, next) {
     try {
         let body = new URLSearchParams({
-                'code': req.body.code.split('&')[0],
                 'grant_type': 'authorization_code',
+                'code': req.body.code.split('#')[0],
                 'redirect_uri': process.env.REACT_APP_DASHBOARD_FRONT + '/App/RedditRedirect',
             }
         );

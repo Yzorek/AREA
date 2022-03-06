@@ -59,7 +59,7 @@ export default function Services({services, onServiceSub, checkIfAR, isLoading})
             } else if (service.name === 'Spotify') {
                 window.location.href = "https://accounts.spotify.com/authorize?response_type=code&client_id=187c0fc794714871bbe61948b5232d56&scope=user-read-private%20user-read-email%20user-library-read%20user-read-playback-state%20user-modify-playback-state&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/SpotifyRedirect&state=generateRandomString(16)"
             } else if (service.name === 'Reddit') {
-                window.location.href = "https://www.reddit.com/api/v1/authorize?client_id=A1dJ6sEJqHjO27RHN4pwTw&response_type=code&state=generateRandomString(16)&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/RedditRedirect&duration=temporary&scope=identity"
+                window.location.href = "https://www.reddit.com/api/v1/authorize?client_id=A1dJ6sEJqHjO27RHN4pwTw&response_type=code&state=generateRandomString(16)&redirect_uri=" + process.env.REACT_APP_DASHBOARD_FRONT + "/App/RedditRedirect&duration=temporary&scope=identity%20submit"
             } else {
                 subUnsubToService(service, false);
             }

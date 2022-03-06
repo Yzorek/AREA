@@ -4,6 +4,7 @@ const fctDataBase = require("../tools/fctDBRequest");
 const router = express.Router();
 const https = require('https');
 const moment = require("moment");
+const {postSubReddit} = require("../reddit/reddit");
 
 const twitter = {
     client_id: "YXVaTlVPUGJrYnBPcGJrdERwTFI6MTpjaQ", //a mettre dans le fichier config
