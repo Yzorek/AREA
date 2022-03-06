@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const settings = require('../config/token.json').settings;
 let tabSocket = []
 
 function newSocketConnected(socket, idUser) {
@@ -20,7 +22,9 @@ function socketDisconnected(idSocket) {
 
 module.exports = function (io) {
     io.on('connection', (socket) => {
-        newSocketConnected(socket, socket.handshake.query.idUser);
+        let response = jwt.verify(socket.handshake.headers.jwt, settings.secretKey);
+
+        newSocketConnected(socket, response.id);
         console.log('a user connected');
         socket.on("disconnect", () => {
             socketDisconnected(socket.id);

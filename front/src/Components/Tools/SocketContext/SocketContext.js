@@ -20,7 +20,11 @@ export function SocketContextProvider({children}) {
     useEffect(() => {
         (async () => {
             try {
-                const socket = await io(process.env.REACT_APP_DASHBOARD_API, { transports : ['websocket'] })
+                const socket = await io(process.env.REACT_APP_DASHBOARD_API, { transports : ['websocket'],
+                    extraHeaders: {
+                        "jwt": localStorage.getItem('JWT')
+                    }
+                })
                 setValue(socket)
                 console.log("I am connected ", process.env.REACT_APP_DASHBOARD_API)
             } catch (err) {
