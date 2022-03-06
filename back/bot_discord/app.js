@@ -103,7 +103,7 @@ function sendClassicMessage(channelsName, guilds, data) {
     channel.send({embeds: [classicMessage]});
 }
 
-function sendClassicMessageToUser(channelsName, guilds, data) {
+function sendClassicMessageToUser(username, data) {
     let target = client.users.cache.find(item => item.username === username);
     if (target) {
         const classicMessage = new MessageEmbed()
