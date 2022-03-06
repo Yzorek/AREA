@@ -45,6 +45,7 @@ INSERT INTO services(name, color) VALUES ('Discord', '#5562EA');
 INSERT INTO services(name, color) VALUES ('Twitch', '#8C45F7');
 INSERT INTO services(name, color) VALUES ('Reddit', '#FF5700');
 INSERT INTO services(name, color) VALUES ('Telegram', '#26A2E1');
+INSERT INTO services(name, color) VALUES ('Clash Royale', '#488bf4');
 
 --Link Services--
 CREATE TABLE link_service (
@@ -98,6 +99,8 @@ INSERT INTO actions(description, id_service, params) VALUES ('A streamer exceed 
 INSERT INTO actions(description, id_service, params) VALUES ('A selected streamer starts a new stream', 4, ARRAY['Streamer name']);
 INSERT INTO actions(description, id_service, params) VALUES ('You start listening a song', 2, null);
 INSERT INTO actions(description, id_service, params) VALUES ('You post a tweet', 1, null);
+INSERT INTO actions(description, id_service, params) VALUES ('You win a game', 7, ARRAY['Your tag']);
+INSERT INTO actions(description, id_service, params) VALUES ('You lose a game', 7, ARRAY['Your tag']);
 
 
 --Reactions--
