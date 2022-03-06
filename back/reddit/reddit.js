@@ -5,7 +5,7 @@ const qs = require('qs');
 express.Router();
 
 async function postSubReddit(arData) {
-    console.log(arData);
+    let params_reaction = JSON.parse(arData.params_reaction);
     let redditToken = "";
     try {
         let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(arData.id_user)]);
@@ -20,10 +20,10 @@ async function postSubReddit(arData) {
     }
     let bearer = 'Bearer ' + redditToken;
     var data = qs.stringify({
-        'title': 'test_title',
+        'title': params_reaction[1].value,
         'kind': 'self',
-        'text': 'this_is_text_test',
-        'sr': 'z',
+        'text': params_reaction[2].value,
+        'sr': params_reaction[0].value,
         'resubmit': 'true',
         'send_replies': 'true'
     });
@@ -39,7 +39,6 @@ async function postSubReddit(arData) {
     };
     try {
         let res = await axios(config)
-        console.log(res.data);
         return (res.data)
     } catch (err) {
         console.log(err)

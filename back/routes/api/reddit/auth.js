@@ -16,7 +16,6 @@ async function authReddit(req, res, next) {
             }
         );
         let auth = 'Basic ' + Buffer.from(reddit.client_id + ":" + reddit.client_secret).toString("base64");
-        console.log(auth)
         const response = await axios.post(`https://www.reddit.com/api/v1/access_token`, body,
             {
                 headers: {

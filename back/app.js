@@ -72,7 +72,7 @@ bot.command('start', (ctx) => {
         myGroup.push(ctx.chat)
     ctx.reply('User Save !')
 })
-//bot.launch()
+bot.launch()
 
 require('./bot_discord/app');
 require('./bot_telegram/app')
@@ -81,7 +81,6 @@ require('./bot_telegram/app')
 
 function loopAR(i) {
     setTimeout(async () => {
-        console.log('AR reload loops n:', i);
         await require('./twitch/twitch').reloadStreamsManagement();
         await require('./twitter/twitter').reloadTweetsManagement();
         await require('./spotify/spotify').reloadSpotifyManagement();

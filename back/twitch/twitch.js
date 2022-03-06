@@ -42,7 +42,6 @@ async function ChannelStartNewStream(data) {
         if (!params_action[0].value)
             return;
         let result_stream = await twitch.getStreams({ channel: params_action[0].value })
-        //console.log(result_stream, params_action[0].value)
         if (result_stream.data && result_stream.data.length > 0 && !alreadyPushChannelStartNew.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
             if (data.id_reactions === 3) {
                 result_stream.data.forEach(item => require('../bot_discord/app').sendMessageTwitchInGuilds(params_reaction[1].value, params_reaction[0].value, item))
@@ -56,15 +55,13 @@ async function ChannelStartNewStream(data) {
                 result_stream.data.forEach(item => require('../twitter/twitter').postTweet(data))
             } else if (data.id_reactions === 6) {
                 result_stream.data.forEach(item => require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, data))
+            } else if (data.id_reactions === 7) {
+                result_stream.data.forEach(item => require('../reddit/reddit').postSubReddit(data))
             }
             alreadyPushChannelStartNew.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
-            console.log("New stream")
         } else if (!result_stream.data || result_stream.data.length <= 0) {
             let index = alreadyPushChannelStartNew.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
             alreadyPushChannelStartNew.splice(index, 1);
-            console.log("Stream disconnect")
-        } else {
-            console.log("Already Emit")
         }
 
     } catch (err) {
@@ -96,15 +93,13 @@ async function ChannelStartOverflow(data) {
                 result_stream.data.forEach(item => require('../twitter/twitter').postTweet(data))
             } else if (data.id_reactions === 6) {
                 result_stream.data.forEach(item => require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, data))
+            } else if (data.id_reactions === 7) {
+                result_stream.data.forEach(item => require('../reddit/reddit').postSubReddit(data))
             }
             alreadyPushOverflow.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
-            console.log("New stream overflow")
         } else if (!result_stream.data || result_stream.data.length <= 0 || parseInt(params_action[1].value) < parseInt(result_stream.data[0].viewer_count)) {
             let index = alreadyPushOverflow.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
             alreadyPushOverflow.splice(index, 1);
-            console.log("Stream disconnect overflow or below")
-        } else {
-            console.log("Already Emit overflow or sup")
         }
 
     } catch (err) {
@@ -117,11 +112,9 @@ async function ChannelStartSpecificGame(data) {
         let params_action = JSON.parse(data.params_action)
         let params_reaction = JSON.parse(data.params_reaction)
 
-        console.log(params_action[0].value, "alalalalala")
         if (!params_action[0].value)
             return;
         let result_stream = await twitch.getStreams({ channel: params_action[0].value })
-        console.log(result_stream.data[0], params_action[0].value, params_action[1].value)
         if (result_stream.data && result_stream.data.length > 0 && params_action[1].value === result_stream.data[0].game_name && !alreadyPushSpecificGame.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
             if (data.id_reactions === 3) {
                 result_stream.data.forEach(item => {
@@ -137,15 +130,13 @@ async function ChannelStartSpecificGame(data) {
                 result_stream.data.forEach(item => require('../twitter/twitter').postTweet(data))
             } else if (data.id_reactions === 6) {
                 result_stream.data.forEach(item => require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, data))
+            } else if (data.id_reactions === 7) {
+                result_stream.data.forEach(item => require('../reddit/reddit').postSubReddit(data))
             }
             alreadyPushSpecificGame.push({id_user: data.id_user, streamerName: params_action[0].value, id_reactions: data.id_reactions})
-            console.log("New stream specific games")
         } else if (!result_stream.data || result_stream.data.length <= 0 || params_action[1].value !== result_stream.data[0].game_name) {
             let index = alreadyPushSpecificGame.findIndex(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)
             alreadyPushSpecificGame.splice(index, 1);
-            console.log("Stream disconnect specific game")
-        } else {
-            console.log("Already Emit specific game")
         }
 
     } catch (err) {
@@ -159,13 +150,10 @@ async function reloadStreamsManagement() {
 
         linkForTwitch.forEach(item => {
             if (item.id_actions === 7 || item.id_actions === 3) {
-                console.log("==== Result Stream ====")
                 ChannelStartNewStream(item)
             } else if (item.id_actions === 6) {
-                console.log("==== Amout view ====")
                 ChannelStartOverflow(item)
             } else if (item.id_actions === 2) {
-                console.log("==== Specific Game ====")
                 ChannelStartSpecificGame(item)
             }
         })

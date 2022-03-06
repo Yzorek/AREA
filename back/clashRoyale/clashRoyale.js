@@ -64,6 +64,8 @@ function triggerReaction(arData, crData, isWin) {
         require('../spotify/spotify').playSpecificSong(params_reaction[0].value, params_reaction[1].value, arData)
     } else if (arData.id_reactions === 4) {
         require('../twitter/twitter').postTweet(arData);
+    } else if (arData.id_reactions === 7) {
+        require('../reddit/reddit').postSubReddit(arData)
     }
 }
 
