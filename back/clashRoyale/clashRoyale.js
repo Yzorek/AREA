@@ -114,9 +114,9 @@ async function reloadCRManagement() {
         let linkForClashRoyale = await getLinkWithClashRoyale()
 
         linkForClashRoyale.forEach(item => {
-            if (item.id_actions === 12) {
+            if (item.id_actions === 10) {
                 compareWinTrophies(item)
-            } else if (item.id_actions === 13) {
+            } else if (item.id_actions === 11) {
                 compareLoseTrophies(item)
             }
         })

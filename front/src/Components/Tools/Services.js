@@ -1,16 +1,17 @@
 import TwitterIcon from '@mui/icons-material/Twitter';
-import YouTubeIcon from '@mui/icons-material/YouTube';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import { ReactComponent as DiscordIcon } from '../../assets/discord.svg'
 import { ReactComponent as TwitchIcon } from '../../assets/twitch.svg'
 import { ReactComponent as SpotifyIcon } from '../../assets/spotify.svg'
 import { ReactComponent as ClashRoyaleIcon } from '../../assets/clash-royale.svg'
+import { ReactComponent as RedditIcon } from '../../assets/reddit.svg'
 import { ReactComponent as GreyDiscordIcon } from '../../assets/discord-grey.svg'
 import { ReactComponent as GreyTwitchIcon } from '../../assets/twitch-grey.svg'
 import { ReactComponent as GreySpotifyIcon } from '../../assets/spotify-grey.svg'
 import { ReactComponent as GreyClashRoyaleIcon } from '../../assets/clash-royale-grey.svg'
+import { ReactComponent as GreyRedditIcon } from '../../assets/reddit-grey.svg'
 import SvgIcon from '@mui/icons-material/Twitter';
-import { TWITTER, SPOTIFY, DISCORD, TWITCH, YOUTUBE, TELEGRAM, CLASH_ROYALE } from "../Main/config";
+import { TWITTER, SPOTIFY, DISCORD, TWITCH, REDDIT, TELEGRAM, CLASH_ROYALE } from "../Main/config";
 
 export function PropFromId(id) {
     switch (id) {
@@ -23,7 +24,7 @@ export function PropFromId(id) {
         case (4):
             return ({icon: <SvgIcon component={TwitchIcon} inheritViewBox/>, pageId: TWITCH, color: '#8C45F7', name: 'Twitch', path: 'Twitch'});
         case (5):
-            return ({icon: <YouTubeIcon/>, pageId: YOUTUBE, color: '#F70000', name: 'Youtube', path: 'Youtube'});
+            return ({icon: <SvgIcon component={RedditIcon} inheritViewBox/>, pageId: REDDIT, color: '#FF5700', name: 'Reddit', path: 'Reddit'});
         case (6):
             return ({icon: <TelegramIcon/>, pageId: TELEGRAM, color: '#26A2E1', name: 'Telegram', path: 'Telegram'});
         case (7):
@@ -45,8 +46,8 @@ export function iconFromName(name) {
             return (<SvgIcon component={TwitchIcon} sx={{fontSize: 50, color: 'white'}} inheritViewBox/>);
         case ('Discord'):
             return (<SvgIcon component={DiscordIcon} sx={{fontSize: 50, color: 'white'}} inheritViewBox/>);
-        case ('Youtube'):
-            return (<YouTubeIcon sx={{fontSize: 50, color: 'white'}}/>);
+        case ('Reddit'):
+            return (<SvgIcon component={RedditIcon} sx={{fontSize: 50, color: 'white'}} inheritViewBox/>);
         case ('Clash Royale'):
             return (<SvgIcon component={ClashRoyaleIcon} sx={{fontSize: 50, color: 'white'}} inheritViewBox/>);
         default:
@@ -67,7 +68,7 @@ export function greyIconFromId(name) {
         case (3):
             return (<SvgIcon component={GreyDiscordIcon} inheritViewBox/>);
         case (5):
-            return (<YouTubeIcon/>);
+            return (<SvgIcon component={GreyRedditIcon} inheritViewBox/>);
         case (7):
                 return (<SvgIcon component={GreyClashRoyaleIcon} inheritViewBox/>);
         default:
