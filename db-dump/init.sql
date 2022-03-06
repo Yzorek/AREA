@@ -88,19 +88,17 @@ CREATE TABLE actions (
     primary key(id)
 );
 
-INSERT INTO actions(description, id_service, params) VALUES ('A new tweet from specific user is posted', 1, ARRAY['User @']);
-INSERT INTO actions(description, id_service, params) VALUES ('A streamer starts a game specific stream', 4, ARRAY['Streamer name', 'Game name']);
-INSERT INTO actions(description, id_service, params) VALUES ('Reddit temp 2', 5, null);
-INSERT INTO actions(description, id_service, params) VALUES ('You start a stream', 4, ARRAY['Your username']);
-INSERT INTO actions(description, id_service, params) VALUES ('When you are mentionned', 1, null);
-INSERT INTO actions(description, id_service, params) VALUES ('Reddit temp 1', 5, ARRAY['Youtuber name']);
-INSERT INTO actions(description, id_service, params) VALUES ('You like a song', 2, null);
-INSERT INTO actions(description, id_service, params) VALUES ('A streamer exceed an amount of viewer', 4, ARRAY['Streamer name', 'Amount']);
-INSERT INTO actions(description, id_service, params) VALUES ('A selected streamer starts a new stream', 4, ARRAY['Streamer name']);
-INSERT INTO actions(description, id_service, params) VALUES ('You start listening a song', 2, null);
-INSERT INTO actions(description, id_service, params) VALUES ('You post a tweet', 1, null);
-INSERT INTO actions(description, id_service, params) VALUES ('You win a game', 7, ARRAY['Your tag']);
-INSERT INTO actions(description, id_service, params) VALUES ('You lose a game', 7, ARRAY['Your tag']);
+INSERT INTO actions(description, id_service, params) VALUES ('A new tweet from specific user is posted', 1, ARRAY['User @']);                       -- 1
+INSERT INTO actions(description, id_service, params) VALUES ('A streamer starts a game specific stream', 4, ARRAY['Streamer name', 'Game name']);   -- 2
+INSERT INTO actions(description, id_service, params) VALUES ('You start a stream', 4, ARRAY['Your username']);                                      -- 3
+INSERT INTO actions(description, id_service, params) VALUES ('When you are mentionned', 1, null);                                                   -- 4
+INSERT INTO actions(description, id_service, params) VALUES ('You like a song', 2, null);                                                           -- 5
+INSERT INTO actions(description, id_service, params) VALUES ('A streamer exceed an amount of viewer', 4, ARRAY['Streamer name', 'Amount']);         -- 6
+INSERT INTO actions(description, id_service, params) VALUES ('A selected streamer starts a new stream', 4, ARRAY['Streamer name']);                 -- 7
+INSERT INTO actions(description, id_service, params) VALUES ('You start listening a song', 2, null);                                                -- 8
+INSERT INTO actions(description, id_service, params) VALUES ('You post a tweet', 1, null);                                                          -- 9
+INSERT INTO actions(description, id_service, params) VALUES ('You win a game', 7, ARRAY['Your tag']);                                               -- 10
+INSERT INTO actions(description, id_service, params) VALUES ('You lose a game', 7, ARRAY['Your tag']);                                              -- 11
 
 
 --Reactions--
@@ -112,12 +110,13 @@ CREATE TABLE reactions (
     primary key(id)
 );
 
-INSERT INTO reactions(description, id_service, params) VALUES ('Message a specific user on discord', 3, ARRAY['Username']);
-INSERT INTO reactions(description, id_service, params) VALUES ('Send message to group chat', 6, ARRAY['Group name']);
-INSERT INTO reactions(description, id_service, params) VALUES ('Message on discord server', 3, ARRAY['Server name', 'Channel name']);
-INSERT INTO reactions(description, id_service, params) VALUES ('Post a tweet', 1, ARRAY['Tweet text']);
-INSERT INTO reactions(description, id_service, params) VALUES ('Send message at a specific user', 6, ARRAY['User']);
-INSERT INTO reactions(description, id_service, params) VALUES ('Will play a specific song', 2, ARRAY['Artist name', 'Song name']);
+INSERT INTO reactions(description, id_service, params) VALUES ('Message a specific user on discord', 3, ARRAY['Username']);                         -- 1
+INSERT INTO reactions(description, id_service, params) VALUES ('Send message to group chat', 6, ARRAY['Group name']);                               -- 2
+INSERT INTO reactions(description, id_service, params) VALUES ('Message on discord server', 3, ARRAY['Server name', 'Channel name']);               -- 3
+INSERT INTO reactions(description, id_service, params) VALUES ('Post a tweet', 1, ARRAY['Tweet text']);                                             -- 4
+INSERT INTO reactions(description, id_service, params) VALUES ('Send message at a specific user', 6, ARRAY['User']);                                -- 5
+INSERT INTO reactions(description, id_service, params) VALUES ('Will play a specific song', 2, ARRAY['Artist name', 'Song name']);                  -- 6
+INSERT INTO reactions(description, id_service, params) VALUES ('Post a subreddit', 5, ARRAY['Subreddit', 'Title', 'Text']);                         -- 7
 
 
 --Link Actions Reactions--

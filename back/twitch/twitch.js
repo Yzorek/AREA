@@ -80,8 +80,7 @@ async function ChannelStartOverflow(data) {
         if (!params_action[0].value)
             return;
         let result_stream = await twitch.getStreams({ channel: params_action[0].value })
-        //console.log(result_stream, params_action[0].value)
-        if (result_stream.data && result_stream.data.length > 0 && parseInt(params_action[1].value) >= parseInt(result_stream.data[0].viewer_count) && !alreadyPushOverflow.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
+        if (result_stream.data && result_stream.data.length > 0 && parseInt(params_action[1].value) <= parseInt(result_stream.data[0].viewer_count) && !alreadyPushOverflow.find(elem => elem.id_user === data.id_user && elem.streamerName === params_action[0].value && elem.id_reactions === data.id_reactions)) {
             if (data.id_reactions === 3) {
                 result_stream.data.forEach(item => {
                     require('../bot_discord/app').sendClassicMessage(params_reaction[1].value, params_reaction[0].value, {title: 'New RECORD !!', message: `${params_action[0].value} have exceed ${params_action[1].value} viewer !`})
@@ -159,10 +158,10 @@ async function reloadStreamsManagement() {
         let linkForTwitch = await getLinkWithTwitch()
 
         linkForTwitch.forEach(item => {
-            if (item.id_actions === 9 || item.id_actions === 4) {
+            if (item.id_actions === 7 || item.id_actions === 3) {
                 console.log("==== Result Stream ====")
                 ChannelStartNewStream(item)
-            } else if (item.id_actions === 8) {
+            } else if (item.id_actions === 6) {
                 console.log("==== Amout view ====")
                 ChannelStartOverflow(item)
             } else if (item.id_actions === 2) {

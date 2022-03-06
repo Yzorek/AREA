@@ -262,9 +262,6 @@ async function userLikedTrack(arData) {
     if (lastTrackID === undefined || lastTrackID.track.id === undefined || lastTrackID.added_at === undefined) return;
     let trackAdded = lastTrackInfo.find((e) => e.user_id === me && e.id_reaction === arData.id_reactions)
     if (trackAdded !== undefined) {
-        console.log(trackAdded.track_id)
-        console.log("------------------------/////")
-        console.log(lastTrackID.track.id)
         if (trackAdded.track_id !== lastTrackID.track.id) {
             if (Date.parse(trackAdded.date) < Date.parse(lastTrackID.added_at)) {
                 let data = {
@@ -353,11 +350,9 @@ async function reloadSpotifyManagement() {
         })
 
         linkForSpotify.forEach(item => {
-            if (item.id_actions === 7) {
-                console.log("==== Get Tracks ====")
+            if (item.id_actions === 5) {
                 userLikedTrack(item)
-            } else if (item.id_actions === 10) {
-                console.log("==== Get State Playback ====")
+            } else if (item.id_actions === 8) {
                 userPlayTrack(item)
             }
         })

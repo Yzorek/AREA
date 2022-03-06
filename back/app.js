@@ -71,7 +71,6 @@ bot.launch()
 
 require('./bot_discord/app');
 require('./bot_telegram/app')
-const {playSpecificSong, getLinkWithSpotify} = require("./spotify/spotify");
 require('./socket/socket')(io);
 
 
