@@ -11,6 +11,7 @@ export const DISCORD = 7
 export const TWITCH = 8
 export const REDDIT = 9
 export const TELEGRAM = 10
+export const CHAT = 12
 export const CLASH_ROYALE = 11
 
 export const theme_default = {

@@ -2,6 +2,7 @@
   {
     "name": "Twitter",
     "description": "Make actions and reactions with Twitter api",
+    "settings": false,
     "actions": [
       {
         "name": "A new tweet from specific user is posted",
@@ -35,6 +36,7 @@
   {
     "name": "Twitch",
     "description": "Make Twitch actions reactions with Twitch api",
+    "settings": false,
     "actions": [
       {
         "name": "A streamer starts a game specific stream",
@@ -74,6 +76,7 @@
   {
     "name": "Reddit",
     "description": "Make Reddit actions reactions with Reddit api",
+    "settings": false,
     "actions": [
       {
         "name": "Reddit temp 1",
@@ -101,6 +104,7 @@
   {
     "name": "Spotify",
     "description": "Make Spotify actions reactions with Spotify api",
+    "settings": false,
     "actions": [
       {
         "name": "You like a song",
@@ -128,6 +132,7 @@
   {
     "name": "Discord",
     "description": "Make Discord actions reactions with Discord api",
+    "settings": true,
     "actions": [
       {
         "name": "",
@@ -155,6 +160,7 @@
   {
     "name": "Telegram",
     "description": "Make Telegram actions reactions with Telegram api",
+    "settings": true,
     "actions": [
       {
         "name": "",

@@ -130,3 +130,21 @@ CREATE TABLE link_actions_reactions (
     is_active           bool,
     primary key(id)
 );
+
+--Conversation--
+CREATE TABLE conversation (
+    id                  SERIAL,
+    name                text,
+    users               text[],
+    primary key(id)
+);
+
+--Messages--
+CREATE TABLE messages (
+    id                  SERIAL,
+    id_conv             int,
+    id_sender           int,
+    msg                 text,
+    date                text,
+    primary key(id)
+);
