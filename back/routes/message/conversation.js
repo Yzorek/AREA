@@ -1,6 +1,5 @@
 const fctDataBase = require("../../tools/fctDBRequest");
 const fctToken = require("../../tools/fctToken");
-const {parse} = require("nodemon/lib/cli");
 const moment = require("moment");
 
 async function newConversation(req, res) {
@@ -34,19 +33,24 @@ async function checkConversation(req, res, next) {
         req.body.forEach(elem => users.push(elem.id))
         let data = await fctDataBase.request('SELECT * FROM conversation;', []);
 
-        /*data.rows.forEach(elem => {
+        data.rows.forEach(elem => {
             if (elem.users.length === users.length) {
                 let target = []
+                let allUserIs = []
 
                 elem.users.forEach(item => target.push(parseInt(item)))
 
-                if (!target.equals(users)) {
+                target.forEach((e) => {
+                    if (users.find(p => p === e))
+                        allUserIs.push(true)
+                })
+                if (allUserIs.length === users.length) {
                     id = parseInt(elem.id)
                 }
             }
-        })*/
+        })
         if (id >= 0)
-            res.send(200).send({id: id})
+            res.status(200).send({id: id})
         else
             next()
     } catch (err) {
