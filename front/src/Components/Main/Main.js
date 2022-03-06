@@ -24,7 +24,7 @@ import WrongPageRouter from "../Tools/WrongPageRouter";
 import ServicePage from '../ServicePage/ServicePage';
 import Weather from "../Weather/Weather";
 import {TutorialContextProvider} from "../Tools/TutorialContext/TutorialContext";
-import PropFromId from '../Tools/Services';
+import {PropFromId} from '../Tools/Services';
 import TwitterRedirect from '../Tools/Twitter/TwitterRedirect';
 import SpotifyRedirect from '../Tools/Spotify/SpotifyRedirect';
 
@@ -68,11 +68,13 @@ export default function Main() {
                     setIsFirstLoading(false);
                 }
             } catch (err) {
+                console.log(err);
                 if (err.response) {
                     alert('Error has occured please retry your connection.');
                     navigate('/Login');
                     setIsLoading(false);
                 }
+                setIsLoading(false);
             }
         })()
         return () => {

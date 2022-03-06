@@ -99,7 +99,7 @@ async function getReactions(req, res, next) {
     }
 }
 
-async function getLink(req, res) {
+async function getLink(req, res, next) {
     let dataToken = fctToken.getTokenData(req);
 
     try {
@@ -115,7 +115,9 @@ async function getLink(req, res) {
             isActive: item.is_active,
         }))
 
-        res.status(200).send(target)
+        res.locals.target = target
+        next()
+        //res.status(200).send(target)
     } catch (err) {
         res.status(500).send({
             message: 'bdd error'

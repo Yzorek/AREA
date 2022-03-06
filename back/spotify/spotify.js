@@ -50,7 +50,7 @@ async function getUserIdSpotify(arData) {
             });
         return (res.data.id)
     } catch (err) {
-        console.log(err.response.data.error)
+        console.log(err)
     }
 }
 
@@ -78,7 +78,7 @@ async function getLastTrackID(arData) {
             });
         return (res.data.items[0])
     } catch (err) {
-        console.log(err.response.data.error)
+        console.log(err)
     }
 }
 
@@ -106,11 +106,13 @@ async function getPlaybackState(arData) {
             });
         return (res.data)
     } catch (err) {
-        console.log(err.response.data.error)
+        console.log(err)
     }
 }
 
-async function turnPlaybackStateToResume(arData) {
+async function searchForItem(arData, song) {
+    console.log(arData)
+    console.log('song: ', song);
     let spotifyToken = "";
     try {
         let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(arData.id_user)]);
@@ -124,13 +126,50 @@ async function turnPlaybackStateToResume(arData) {
         console.log(err);
     }
     let bearer = 'Bearer ' + spotifyToken;
-    console.log(bearer)
     try {
+        let res = await axios.get(`https://api.spotify.com/v1/search?q=${song}&type=track`,
+            {
+                'headers': {
+                    'Authorization': bearer,
+                    'Content-type': 'application/json',
+                }
+            });
+        console.log(res.data)
+        return (res.data)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+async function getTrackByArtist(info, artist) {
+    let trackFound = undefined
+    if (info)
+        trackFound = info.tracks.items.find(item => item.album.artists.some(item => item.name === artist))
+    return (trackFound)
+}
+
+async function playSpecificSong(artist, song, arData) {
+    let spotifyToken = "";
+    try {
+        let data = await fctDataBase.request('SELECT * FROM clients WHERE id=$1;', [parseInt(arData.id_user)]);
+
+        if (data.rowCount === 0) {
+            console.log("This user doesn't exist");
+        } else {
+            spotifyToken = data.rows[0].spotify_token;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+    let bearer = 'Bearer ' + spotifyToken;
+    try {
+        let item = await searchForItem(arData, song)
+        let track = await getTrackByArtist(item, artist)
         let res = await axios.put(`https://api.spotify.com/v1/me/player/play`,
             {
-                "context_uri": "spotify:track:78oZ26xvmtCfarveRXs3dq",
+                "context_uri": "spotify:album:" + track.album.id,
                 "offset": {
-                    "position": 0
+                    "position": track.track_number - 1,
                 },
                 "position_ms": 0,
             },
@@ -142,7 +181,7 @@ async function turnPlaybackStateToResume(arData) {
             });
         return (res.data)
     } catch (err) {
-        console.log(err.response.data.error)
+        console.log(err)
     }
 }
 
@@ -241,8 +280,6 @@ async function reloadSpotifyManagement() {
             if (item.id_actions === 7) {
                 console.log("==== Get Tracks ====")
                 userLikedTrack(item)
-                console.log("==== Play Tracks ====")
-                turnPlaybackStateToResume(item)
             } else if (item.id_actions === 10) {
                 console.log("==== Get State Playback ====")
                 userPlayTrack(item)
@@ -254,6 +291,7 @@ async function reloadSpotifyManagement() {
 }
 
 module.exports = {
+    getLinkWithSpotify,
     reloadSpotifyManagement,
-    turnPlaybackStateToResume,
+    playSpecificSong,
 }
